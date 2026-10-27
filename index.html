@@ -321,6 +321,20 @@ footer{margin-top:0}
 .tagband .btn{margin-top:20px}
 .tcard{width:100%;max-width:300px;display:block;margin:14px auto;border-radius:6px;box-shadow:0 14px 34px -14px rgba(80,60,30,.45);background:var(--soft);aspect-ratio:2/3}
 .album-note{max-width:520px;margin:-6px auto 22px;text-align:center}
+.counters{display:grid;gap:8px;margin-top:4px}
+.ctr{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+.ctr b{display:block;font-weight:500}
+.ctr .s{font-size:12px}
+.ctr-c{display:flex;align-items:center;gap:8px;flex:none}
+.ctr-c output{min-width:24px;text-align:center;font-family:var(--serif);font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+.ctr-c .iconbtn{font-size:22px;line-height:1;border-radius:50%;color:var(--gold-dark);border-color:var(--gold-2)}
+.ctotal{margin:2px 2px 0;text-align:right}
+.members{display:grid;gap:8px}
+.mem{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px;background:#fff}
+.mem input{grid-column:1/-1}
+.mem.me{display:flex;background:var(--soft);border-style:dashed}
+.mem-n b{display:block;font-weight:500}
+.mem-n .s{font-size:12px}
 @media (prefers-reduced-motion:reduce){.br path{stroke-dashoffset:0}.br .leaf{opacity:1}.names2 span{background-position:0 0}}
 </style>
 </head>
@@ -518,10 +532,13 @@ const DEFAULTS = {
     schedule: [{time: '16:00', item: 'Cerimônia'}, {time: '17:30', item: 'Fotos com os noivos'}, {time: '18:00', item: 'Recepção e jantar'}, {time: '20:00', item: 'Abertura da pista de dança'}],
     faq: [
       {q: 'Até quando devo confirmar presença?', a: 'Pedimos que confirme até a data indicada na página de confirmação.'},
-      {q: 'Posso levar acompanhante?', a: 'O número de pessoas está definido no seu convite. Ao confirmar, aparece quantas pessoas estão autorizadas.'},
+      {q: 'Como confirmo pela minha família?', a: 'Uma pessoa pode confirmar por todos: escreva seu nome e marque quantos adultos e crianças vão.'},
       {q: 'Como funciona a lista de presentes?', a: 'Escolha um presente e pague via Pix com o valor indicado. O item fica reservado no seu nome.'}
     ]
   },
+  kidsAge: {baby: 4, child: 10}, rsvpMode: 'lista', openMax: 10,
+  waConfirm: 'Oi, {nome}! 💛\n\nSomos nós, {noivos}. Recebemos sua confirmação para o nosso casamento ({pessoas}) e ficamos muito felizes!\n\nTer você com a gente nesse dia tão sonhado vai deixar tudo ainda mais especial. Estamos preparando cada detalhe com muito carinho, pensando em quem a gente ama.\n\n📅 {data}, às {hora}\n📍 {local}\n\nTodos os detalhes estão no nosso site: {link}\n\nCom amor,\n{noivos}',
+  waReminder: 'Oi, {nome}! Está chegando! 🥂\n\nFaltam só {dias} para o nosso casamento e a gente mal pode esperar para celebrar com você.\n\n📅 {data}, às {hora}\n📍 {local}\n{endereco}\n🗺️ Como chegar: {mapa}\n\nTraje, programação e outras informações: {link}\n\nAté lá!\nCom carinho,\n{noivos}',
   rsvpOpen: true, albumOpen: false, messagesModeration: false
 };
 
@@ -551,7 +568,7 @@ function seed(){
       G('Ana Beatriz Costa', 3, 'pendente', 0, 'Família do noivo', '31999990003'),
       G('Roberto Almeida', 1, 'recusado', 0, 'Trabalho'),
       G('Juliana Ferreira', 2, 'pendente', 0, 'Amigos'),
-      Object.assign(G('Família Souza', 4, 'confirmado', 3, 'Família do noivo'), {children: 1, diet: 'Uma pessoa vegetariana'}),
+      Object.assign(G('Família Souza', 4, 'confirmado', 3, 'Família do noivo'), {children: 1, babies: 1, diet: 'Uma pessoa vegetariana'}),
       G('Pedro Henrique Lima', 1, 'pendente', 0, 'Trabalho', '31999990004')
     ],
     gifts,
@@ -577,12 +594,21 @@ const byDate = (a, b) => String(b.created_at).localeCompare(String(a.created_at)
 const LocalDB = {
   async getSettings(){ return deepMerge(structuredClone(DEFAULTS), store.settings || {}); },
   async saveSettings(s){ store.settings = s; persist(); },
-  async findGuests(q){ const n = norm(q); if (n.length < 3) return []; return store.guests.filter(g => norm(g.name).includes(n)).slice(0, 5).map(({id, name, max_people, status, people, children}) => ({id, name, max_people, status, people, children})); },
-  async guestByCode(c){ const g = store.guests.find(x => String(x.code).toUpperCase() === String(c).toUpperCase()); return g ? {id: g.id, name: g.name, max_people: g.max_people, status: g.status, people: g.people, children: g.children || 0} : null; },
+  async findGuests(q){ const n = norm(q); if (n.length < 3) return []; return store.guests.filter(g => norm(g.name).includes(n)).slice(0, 5).map(({id, name, max_people, status, people, children, babies}) => ({id, name, max_people, status, people, children, babies})); },
+  async guestByCode(c){ const g = store.guests.find(x => String(x.code).toUpperCase() === String(c).toUpperCase()); return g ? {id: g.id, name: g.name, max_people: g.max_people, status: g.status, people: g.people, children: g.children || 0, babies: g.babies || 0} : null; },
+  async openRsvp(d){
+    if (String(d.name || '').trim().length < 3) throw new Error('Informe seu nome completo');
+    if (d.status === 'confirmado' && d.people > (Number(S.openMax) || 10)) throw new Error(`Quantidade acima do permitido (máx. ${S.openMax})`);
+    let g = store.guests.find(x => norm(x.name).replace(/\s+/g, ' ') === norm(d.name).replace(/\s+/g, ' '));
+    if (!g) { g = {id: uid(), name: d.name.trim().replace(/\s+/g, ' '), group_name: 'Confirmou pelo link', phone: '', max_people: 1, status: 'pendente', people: 0, code: mkCode(), created_at: nowISO()}; store.guests.push(g); }
+    g.max_people = Math.max(g.max_people || 1, d.people || 1);
+    return this.submitRsvp(g.id, d);
+  },
   async submitRsvp(id, d){
     const g = store.guests.find(x => x.id === id); if (!g) throw new Error('Convidado não encontrado');
     if (d.status === 'confirmado' && (d.people < 1 || d.people > g.max_people)) throw new Error(`Quantidade acima do permitido (máx. ${g.max_people})`);
-    Object.assign(g, {status: d.status, people: d.status === 'confirmado' ? d.people : 0, children: d.status === 'confirmado' ? Math.min(d.children || 0, d.people) : 0, diet: d.diet || '', companions: d.companions || '', message: d.message || '', phone: d.phone || g.phone, responded_at: nowISO()});
+    if (d.status === 'confirmado' && d.people - (d.children || 0) - (d.babies || 0) < 1) throw new Error('Informe pelo menos 1 adulto');
+    Object.assign(g, {status: d.status, people: d.status === 'confirmado' ? d.people : 0, children: d.status === 'confirmado' ? d.children || 0 : 0, babies: d.status === 'confirmado' ? d.babies || 0 : 0, diet: d.diet || '', companions: d.companions || '', message: d.message || '', phone: d.phone || g.phone, responded_at: nowISO()});
     persist(); return {ok: true, code: g.code, name: g.name};
   },
   async listGifts(){ return store.gifts.map(g => ({...g, reserved: !!g.reserved_by})).sort((a, b) => (a.sort || 0) - (b.sort || 0)); },
@@ -631,7 +657,8 @@ const SupaDB = {
   async saveSettings(s){ must(await sb.from('settings').upsert({id: 1, data: s, updated_at: nowISO()})); },
   async findGuests(q){ return must(await sb.rpc('find_guest', {q})) || []; },
   async guestByCode(c){ const r = must(await sb.rpc('guest_by_code', {p_code: c})); return (r || [])[0] || null; },
-  async submitRsvp(id, d){ return must(await sb.rpc('submit_rsvp', {p_id: id, p_status: d.status, p_people: d.people, p_children: d.children || 0, p_companions: d.companions || '', p_message: d.message || '', p_phone: d.phone || '', p_diet: d.diet || ''})); },
+  async openRsvp(d){ return must(await sb.rpc('open_rsvp', {p_name: d.name, p_phone: d.phone || '', p_status: d.status, p_people: d.people, p_children: d.children || 0, p_babies: d.babies || 0, p_companions: d.companions || '', p_message: d.message || '', p_diet: d.diet || ''})); },
+  async submitRsvp(id, d){ return must(await sb.rpc('submit_rsvp', {p_id: id, p_status: d.status, p_people: d.people, p_children: d.children || 0, p_babies: d.babies || 0, p_companions: d.companions || '', p_message: d.message || '', p_phone: d.phone || '', p_diet: d.diet || ''})); },
   async listGifts(){ return must(await sb.rpc('list_gifts')) || []; },
   async reserveGift(id, name, message){ return must(await sb.rpc('reserve_gift', {p_id: id, p_name: name, p_message: message || ''})); },
   async addContribution(c){ must(await sb.from('contributions').insert({name: c.name, amount: c.amount, message: c.message || null, gift_id: c.gift_id || null})); },
@@ -717,6 +744,11 @@ const NAV = [['', 'Início'], ['rsvp', 'Confirmar presença'], ['presentes', 'Li
 const route = () => location.hash.replace(/^#\/?/, '').split(/[?/]/)[0] || 'home';
 const titleBlock = (t, lead, eyebrow = '') => `<div class="title fade">${eyebrow ? `<p class="eyebrow">${esc(eyebrow)}</p>` : ''}<h2>${esc(t)}</h2>${divider()}${lead ? `<p class="lead">${esc(lead)}</p>` : ''}</div>`;
 const weddingDate = () => new Date(`${S.date}T${S.time || '00:00'}:00-03:00`);
+const KA = () => ({baby: Number(S.kidsAge?.baby ?? 4), child: Number(S.kidsAge?.child ?? 10)});
+function breakdown(g){
+  const k = KA(), c = Number(g.children || 0), b = Number(g.babies || 0), a = Math.max(0, Number(g.people || 0) - c - b);
+  return [plural(a, 'adulto', 'adultos'), c ? plural(c, 'criança', 'crianças') : '', b ? `${b} até ${k.baby} anos` : ''].filter(Boolean).join(' · ');
+}
 const contactLink = (txt = 'Fale com os noivos') => S.contactPhone ? `<a href="https://wa.me/${waNumber(S.contactPhone)}" target="_blank" rel="noopener">${txt}</a>` : '';
 const initials = () => `${(S.name1 || ' ')[0]} & ${(S.name2 || ' ')[0]}`;
 
@@ -825,7 +857,7 @@ const PAGES = {
     app.innerHTML = `<section class="section wrap narrow">${titleBlock('Confirmação de presença', S.rsvpDeadline ? 'Por favor, confirme até ' + fmtShort(S.rsvpDeadline) : '')}<div id="rsvp" class="card"></div></section>`;
     const code = location.hash.replace(/^#\/?/, '').split('/')[1];
     if (code && S.rsvpOpen) { const g = await DB.guestByCode(decodeURIComponent(code)).catch(() => null); if (g) return rsvpStep2(g); }
-    rsvpStep1();
+    if (S.rsvpMode === 'lista') rsvpStep1(); else rsvpOpenForm();
   },
 
   async presentes(app){
@@ -941,13 +973,31 @@ function rsvpStep1(){
       rsvpList = await DB.findGuests(v);
       out.innerHTML = rsvpList.length
         ? '<p class="s">Toque no seu nome:</p>' + rsvpList.map(g => `<button class="opt-btn" data-action="pick-guest" data-id="${g.id}"><span>${esc(g.name)}</span>${g.status !== 'pendente' ? `<span class="badge ${g.status === 'confirmado' ? 'b-ok' : 'b-bad'}">${g.status === 'confirmado' ? 'Confirmado' : 'Não vai'}</span>` : ''}</button>`).join('')
-        : `<p class="note">Não encontramos esse nome. Tente só o primeiro nome ou o sobrenome. ${contactLink('Ainda não achou? Fale com os noivos.')}</p>`;
+        : `<p class="note">Não encontramos esse nome. Tente só o primeiro nome ou o sobrenome. Se o convite foi para outra pessoa da sua família, procure pelo nome dela. ${contactLink('Ainda não achou? Fale com os noivos.')}</p>`;
     } catch (e) { out.innerHTML = `<p class="note">${esc(e.message)}</p>`; }
   }, 400));
   q.focus();
 }
+function counterHTML(n, label, sub, v, min){
+  return `<div class="ctr"><div><b>${label}</b><span class="s">${sub}</span></div><div class="ctr-c"><button type="button" class="iconbtn" data-action="ctr" data-n="${n}" data-d="-1" aria-label="Menos ${label.toLowerCase()}">−</button><output data-out="${n}" aria-live="polite">${v}</output><input type="hidden" name="${n}" value="${v}" data-min="${min}"><button type="button" class="iconbtn" data-action="ctr" data-n="${n}" data-d="1" aria-label="Mais ${label.toLowerCase()}">+</button></div></div>`;
+}
+const ctrTotal = box => $$('input[type=hidden]', box).reduce((s, i) => s + Number(i.value), 0);
+function updCtr(box){ const t = ctrTotal(box); $('.ctotal', box).textContent = `Total: ${plural(t, 'pessoa', 'pessoas')} de ${box.dataset.max}`; }
+function memberRow(){
+  const k = KA();
+  return `<div class="mem fade"><input name="m_name" required minlength="2" maxlength="80" placeholder="Nome completo" autocomplete="off" aria-label="Nome da pessoa"><select name="m_cat" aria-label="Idade"><option value="adulto">Adulto</option><option value="crianca">Criança de ${k.baby + 1} a ${k.child} anos</option><option value="bebe">Criança até ${k.baby} anos</option></select><button type="button" class="iconbtn bad" data-action="mem-del" aria-label="Remover pessoa">${ic('x', 16)}</button></div>`;
+}
+function memberCounts(box){
+  const cats = $$('[name=m_cat]', box).map(s => s.value);
+  return {people: 1 + cats.length, children: cats.filter(c => c === 'crianca').length, babies: cats.filter(c => c === 'bebe').length};
+}
+function updMembers(box){
+  const c = memberCounts(box), el = box.parentElement.querySelector('.ctotal');
+  if (el) el.textContent = `Total: ${plural(c.people, 'pessoa', 'pessoas')} de ${box.dataset.max} · ${breakdown(c)}`;
+}
 function rsvpStep2(g){
   const max = g.max_people || 1, prev = g.status;
+  const c0 = g.people ? Number(g.children || 0) : 0, b0 = g.people ? Number(g.babies || 0) : 0, a0 = g.people ? Math.max(1, g.people - c0 - b0) : max;
   $('#rsvp').innerHTML = `<div class="fade"><p class="eyebrow">Olá,</p><h3>${esc(g.name)}</h3>
     ${prev !== 'pendente' ? `<p class="note">Você já respondeu: <b>${prev === 'confirmado' ? `presença confirmada (${plural(g.people, 'pessoa', 'pessoas')})` : 'não poderá comparecer'}</b>. Se quiser, altere abaixo.</p>` : ''}
     <p class="s">Seu convite é válido para ${plural(max, 'pessoa', 'pessoas')}.</p>
@@ -957,26 +1007,56 @@ function rsvpStep2(g){
         <label class="opt"><input type="radio" name="status" value="recusado" ${prev === 'recusado' ? 'checked' : ''}> Infelizmente não poderei ir</label>
       </div>
       <div id="yes" class="${prev === 'recusado' ? 'hidden' : ''}">
-        ${max > 1 ? `<label>Quantas pessoas irão (incluindo você)?</label><select name="people">${range(1, max).map(n => `<option value="${n}" ${n === (g.people || max) ? 'selected' : ''}>${n}</option>`).join('')}</select>
-        <label>Dessas, quantas são crianças até 10 anos?</label><select name="children">${range(0, max - 1).map(n => `<option value="${n}" ${n === (g.children || 0) ? 'selected' : ''}>${n === 0 ? 'Nenhuma' : n}</option>`).join('')}</select>
-        <label>Nomes dos acompanhantes</label><textarea name="companions" placeholder="Um nome por linha"></textarea>` : '<input type="hidden" name="people" value="1">'}
+        <label>Quem vai?</label>
+        <p class="s" style="margin:0 0 8px">${max > 1 ? `Adicione cada pessoa da família que vai com você, com nome e idade. Seu convite vale para até ${plural(max, 'pessoa', 'pessoas')}. Se vai sozinho(a), é só enviar.` : 'Seu convite é individual.'}</p>
+        <div class="members" data-max="${max}"><div class="mem me"><div class="mem-n"><b>${esc(g.name)}</b><span class="s">Você · adulto</span></div></div></div>
+        ${max > 1 ? `<button type="button" class="btn sm ghost block mt" data-action="mem-add">${ic('plus', 14)} Adicionar pessoa da família</button>` : ''}
+        <p class="s ctotal mt"></p>
         <label>Alguma restrição alimentar? (opcional)</label><input name="diet" maxlength="200" placeholder="Ex.: vegetariano, sem glúten, alergia a camarão">
-        <label>Seu WhatsApp (opcional)</label><input name="phone" inputmode="tel" autocomplete="tel" placeholder="(31) 99999-9999">
+        <label>Seu WhatsApp com DDD</label><input name="phone" required inputmode="tel" autocomplete="tel" placeholder="(31) 99999-9999"><p class="s" style="margin:4px 0 0">Para você receber a confirmação e um lembrete perto do dia.</p>
       </div>
       <label>Mensagem para os noivos (opcional)</label><textarea name="message" maxlength="500"></textarea>
       <button class="btn gold block mt">Enviar resposta</button>
       <button type="button" class="btn ghost block mt" data-action="rsvp-back">Não sou eu</button>
     </form></div>`;
-  $$('#rsvp input[name=status]').forEach(r => r.addEventListener('change', () => $('#yes').classList.toggle('hidden', r.value === 'recusado' && r.checked)));
+  const yes = $('#yes'), mb = $('#rsvp .members');
+  const sync = () => { const off = $('#rsvp input[name=status][value=recusado]').checked; yes.classList.toggle('hidden', off); $$('input, select, textarea', yes).forEach(i => { i.disabled = off; }); };
+  $$('#rsvp input[name=status]').forEach(r => r.addEventListener('change', sync)); sync();
+  mb.addEventListener('change', () => updMembers(mb)); updMembers(mb);
+}
+function rsvpOpenForm(){
+  const box = $('#rsvp');
+  if (!S.rsvpOpen) { box.innerHTML = `<p class="center">As confirmações de presença estão encerradas. ${contactLink()}</p>`; return; }
+  const max = Math.max(1, Math.min(20, Number(S.openMax) || 10)), k = KA();
+  box.innerHTML = `<form data-form="rsvpOpen" class="fade">
+    <label for="on">Seu nome completo</label><input id="on" name="name" required minlength="3" maxlength="120" autocomplete="name" placeholder="Ex.: Maria Aparecida Silva">
+    <div class="choice">
+      <label class="opt"><input type="radio" name="status" value="confirmado" required checked> Sim, estarei presente!</label>
+      <label class="opt"><input type="radio" name="status" value="recusado"> Infelizmente não poderei ir</label>
+    </div>
+    <div id="yes">
+      <label>Quem vai?</label><p class="s" style="margin:0 0 6px">Conte você também. Se for uma família, uma pessoa pode confirmar por todos.</p>
+      <div class="counters" data-max="${max}">${counterHTML('adults', 'Adultos', `acima de ${k.child} anos`, 1, 1)}${counterHTML('children', 'Crianças', `de ${k.baby + 1} a ${k.child} anos`, 0, 0)}${counterHTML('babies', 'Crianças pequenas', `até ${k.baby} anos`, 0, 0)}<p class="s ctotal"></p></div>
+      <label>Nomes de quem vai com você (opcional)</label><textarea name="companions" placeholder="Um nome por linha"></textarea>
+      <label>Alguma restrição alimentar? (opcional)</label><input name="diet" maxlength="200" placeholder="Ex.: vegetariano, sem glúten, alergia a camarão">
+    </div>
+    <label>Seu WhatsApp com DDD</label><input name="phone" required inputmode="tel" autocomplete="tel" placeholder="(31) 99999-9999"><p class="s" style="margin:4px 0 0">Para você receber a confirmação e um lembrete perto do dia.</p>
+    <label>Mensagem para os noivos (opcional)</label><textarea name="message" maxlength="500"></textarea>
+    <button class="btn gold block mt">Enviar resposta</button>
+    <p class="s center mt">Já confirmou e quer mudar algo? É só enviar de novo com o mesmo nome.</p>
+  </form>`;
+  const syncOpen = () => { const off = $('#rsvp input[name=status][value=recusado]').checked; $('#yes').classList.toggle('hidden', off); $('#rsvp input[name=phone]').required = !off; };
+  $$('#rsvp input[name=status]').forEach(r => r.addEventListener('change', syncOpen)); syncOpen();
+  updCtr($('#rsvp .counters'));
 }
 function rsvpDone(r){
   const box = $('#rsvp');
   if (r.status === 'confirmado') {
-    box.innerHTML = `<div class="ticket fade"><div class="ornament">${ic('check')}</div><p class="eyebrow">Presença confirmada</p><h3>${esc(r.name)}</h3><p style="margin:0">${plural(r.people, 'pessoa', 'pessoas')}${r.children ? ` · ${plural(r.children, 'criança', 'crianças')}` : ''}</p>
+    box.innerHTML = `<div class="ticket fade"><div class="ornament">${ic('check')}</div><p class="eyebrow">Presença confirmada</p><h3>${esc(r.name)}</h3><p style="margin:0">${breakdown(r)}</p>
       <div class="ornament"></div><p class="hero-date">${fmtDate(S.date)} · ${fmtTime(S.time)}</p><p>${esc(S.ceremony.name)}<br><span class="s">${esc(S.ceremony.address)}</span></p>
       <p class="s">Código de confirmação</p><p class="code">${esc(r.code || '')}</p></div>
       <div class="grid mt"><button class="btn gold" data-action="ics">${ic('calendar', 16)} Adicionar à agenda</button><a class="btn ghost" href="#/local">Como chegar</a><a class="btn ghost" href="#/presentes">Ver lista de presentes</a></div>
-      <p class="s center mt">Dica: tire um print desta tela como comprovante.</p>`;
+      <p class="s center mt">Logo você recebe uma mensagem nossa no WhatsApp 💛<br>Dica: tire um print desta tela como comprovante.</p>`;
     confetti();
   } else {
     box.innerHTML = `<div class="center fade"><h3>Que pena!</h3><p>Obrigado por avisar, ${esc(String(r.name).split(' ')[0])}. Você vai fazer falta.</p><a class="btn" href="#/mural">Deixar um recado no mural</a></div>`;
@@ -1035,13 +1115,13 @@ let A = {guests: [], gifts: [], contrib: [], msgs: [], photos: []};
 let adminTab = 'resumo', gFilter = 'todos', gSearch = '', rt = null, draft = null;
 let waTpl = 'Olá, {nome}! Estamos muito felizes em convidar você para o nosso casamento no dia {data}. Por favor, confirme sua presença até {prazo} pelo link: {link}';
 const STATUS = {confirmado: ['b-ok', 'Confirmado'], pendente: ['b-warn', 'Pendente'], recusado: ['b-bad', 'Recusou']};
-const TABS = [['resumo', 'Resumo'], ['convidados', 'Convidados'], ['presentes', 'Presentes'], ['pix', 'Pix'], ['mensagens', 'Mensagens'], ['album', 'Álbum'], ['config', 'Configurações']];
+const TABS = [['resumo', 'Resumo'], ['convidados', 'Convidados'], ['whats', 'WhatsApp'], ['presentes', 'Presentes'], ['pix', 'Pix'], ['mensagens', 'Mensagens'], ['album', 'Álbum'], ['config', 'Configurações']];
 const sum = (arr, f) => arr.reduce((s, x) => s + (Number(f(x)) || 0), 0);
 
 async function reloadAdmin(silent = false){
   const [guests, gifts, contrib, msgs, photos] = await Promise.all([DB.listGuests(), DB.listGiftsAdmin(), DB.listContributions(), DB.listMessagesAdmin(), DB.listPhotos()]);
   A = {guests, gifts, contrib, msgs, photos};
-  if (silent && adminTab === 'config') return;
+  if (silent && (adminTab === 'config' || (adminTab === 'whats' && document.activeElement?.tagName === 'TEXTAREA'))) return;
   if (silent && adminTab === 'convidados' && document.activeElement?.id === 'gsearch') { drawGuestChips(); drawGuestList(); return; }
   drawAdmin();
 }
@@ -1122,7 +1202,7 @@ const ADMIN = {
     const uniq = A.gifts.filter(x => x.unique_reserve), reserved = uniq.filter(x => x.reserved_by).length, cotas = sum(A.gifts.filter(x => !x.unique_reserve), x => x.times_given);
     const pixAll = sum(A.contrib, c => c.amount), pixOk = sum(A.contrib.filter(c => c.status === 'confirmado'), c => c.amount);
     const days = Math.max(0, Math.ceil((weddingDate() - Date.now()) / 864e5));
-    const kids = sum(conf, x => x.children), diets = conf.filter(x => x.diet);
+    const kids = sum(conf, x => x.children), babies = sum(conf, x => x.babies), diets = conf.filter(x => x.diet), ka = KA();
     const pct = n => g.length ? (n / g.length * 100) : 0;
     const recent = g.filter(x => x.responded_at).sort((a, b) => String(b.responded_at).localeCompare(String(a.responded_at))).slice(0, 6);
     const kpi = (v, l, s = '') => `<div class="kpi"><b>${v}</b><span>${l}</span>${s ? `<small>${s}</small>` : ''}</div>`;
@@ -1135,10 +1215,12 @@ const ADMIN = {
     <div class="card mt"><p class="eyebrow">Respostas</p>
       <div class="bar"><i style="width:${pct(conf.length)}%;background:var(--ok)"></i><i style="width:${pct(rec.length)}%;background:var(--bad)"></i><i style="width:${pct(pend.length)}%;background:#e9d8b4"></i></div>
       <div class="legend"><span><i style="background:var(--ok)"></i>${conf.length} confirmados</span><span><i style="background:var(--bad)"></i>${rec.length} recusaram</span><span><i style="background:#e9d8b4"></i>${pend.length} pendentes</span></div>
-      <div class="grid g2 mt"><button class="btn sm gold" data-action="reminders">${ic('send', 15)} Enviar lembretes</button><button class="btn sm" data-action="export">${ic('download', 15)} Exportar Excel</button></div>
+      ${(() => { const n = A.guests.filter(x => x.status === 'confirmado' && waNumber(x.phone) && !x.wa_confirm_at).length; return n ? `<button class="btn sm block mt" data-action="atab" data-t="whats">${ic('send', 15)} ${plural(n, 'confirmação para enviar', 'confirmações para enviar')} no WhatsApp</button>` : ''; })()}
+      <div class="grid g2 mt"><button class="btn sm gold" data-action="reminders">${ic('send', 15)} Lembrar pendentes</button><button class="btn sm" data-action="export">${ic('download', 15)} Exportar Excel</button></div>
     </div>
     <div class="card mt"><p class="eyebrow">Para o buffet</p>
-      <div class="kpis" style="margin-top:8px"><div class="kpi"><b>${people - kids}</b><span>Adultos confirmados</span></div><div class="kpi"><b>${kids}</b><span>Crianças até 10</span></div><div class="kpi"><b>${pendPeople}</b><span>Ainda sem resposta</span></div><div class="kpi"><b>${people + pendPeople}</b><span>Máximo possível</span></div></div>
+      <div class="kpis" style="margin-top:8px"><div class="kpi"><b>${people - kids - babies}</b><span>Adultos</span></div><div class="kpi"><b>${kids}</b><span>Crianças de ${ka.baby + 1} a ${ka.child} anos</span></div><div class="kpi"><b>${babies}</b><span>Crianças até ${ka.baby} anos</span></div><div class="kpi"><b>${people}</b><span>Total confirmado</span></div></div>
+      <p class="s mt">Ainda sem resposta: ${plural(pendPeople, 'pessoa', 'pessoas')} · Máximo possível: ${people + pendPeople}</p>
       ${diets.length ? `<p class="eyebrow mt">Restrições alimentares</p>${diets.map(x => `<div class="row"><div class="main"><div class="t">${esc(x.name)}</div><div class="s">${esc(x.diet)}</div></div></div>`).join('')}` : '<p class="s mt">Nenhuma restrição alimentar informada até agora.</p>'}
     </div>
     <div class="card mt"><p class="eyebrow">Últimas respostas</p>${recent.map(x => `<div class="row"><div class="main"><div class="t">${esc(x.name)}</div><div class="s">${fmtDT(x.responded_at)}${x.status === 'confirmado' ? ' · ' + plural(x.people, 'pessoa', 'pessoas') : ''}</div>${x.message ? `<div class="s">“${esc(x.message)}”</div>` : ''}</div><span class="badge ${STATUS[x.status][0]}">${STATUS[x.status][1]}</span></div>`).join('') || '<p class="s">Nenhuma resposta ainda.</p>'}</div>`;
@@ -1148,6 +1230,25 @@ const ADMIN = {
     return `<div class="toolbar"><input id="gsearch" placeholder="Buscar convidado ou grupo" value="${esc(gSearch)}"><button class="btn sm gold" data-action="guest-new">${ic('plus', 14)} Convidado</button></div>
       <div class="toolbar"><button class="btn sm ghost" data-action="import">Importar lista</button><button class="btn sm ghost" data-action="reminders">${ic('send', 14)} Lembretes</button><button class="btn sm ghost" data-action="export">${ic('download', 14)} Excel</button></div>
       <div class="chips" id="gchips"></div><div id="glist"></div>`;
+  },
+
+  whats(){
+    const conf = A.guests.filter(g => g.status === 'confirmado'), withPhone = conf.filter(g => waNumber(g.phone)), noPhone = conf.filter(g => !waNumber(g.phone));
+    const days = Math.ceil((weddingDate() - Date.now()) / 864e5);
+    const order = k => [...withPhone].sort((a, b) => (a[k] ? 1 : 0) - (b[k] ? 1 : 0) || a.name.localeCompare(b.name));
+    const row = (g, kind) => { const k = kind === 'c' ? 'wa_confirm_at' : 'wa_reminder_at', sent = g[k];
+      return `<div class="row"><div class="main"><div class="t">${esc(g.name)} ${sent ? '<span class="badge b-ok">Enviada</span>' : ''}</div><div class="s">${esc(g.phone)} · ${breakdown(g)}${sent ? ` · ${fmtDT(sent)}` : ''}</div></div><button class="btn sm ${sent ? 'ghost' : 'gold'}" data-action="wa-send" data-kind="${kind}" data-id="${g.id}">${ic('send', 14)} ${sent ? 'Reenviar' : 'Enviar'}</button></div>`; };
+    const editor = (k, title) => `<details class="card mt"><summary>${title}</summary><textarea id="tpl-${k}" style="min-height:240px;margin-top:10px">${esc(S[k])}</textarea><p class="s">Pode usar: {nome}, {pessoas}, {data}, {hora}, {local}, {endereco}, {mapa}, {link}, {dias} e {noivos}.</p><button class="btn sm gold" data-action="tpl-save" data-k="${k}">Salvar mensagem</button></details>`;
+    const pc = withPhone.filter(g => !g.wa_confirm_at).length, pr = withPhone.filter(g => !g.wa_reminder_at).length;
+    return `<div class="card"><p class="eyebrow">Como funciona</p><p class="s" style="margin:0">Toque em <b>Enviar</b>: o WhatsApp abre com a mensagem pronta para aquela pessoa, e você só aperta enviar. As mensagens saem do seu número, como uma mensagem pessoal de vocês. O painel marca quem já recebeu.</p></div>
+      <div class="panel-title"><h3>Confirmação</h3><span class="badge ${pc ? 'b-warn' : 'b-ok'}">${pc ? `${pc} para enviar` : 'Tudo enviado'}</span></div>
+      ${editor('waConfirm', 'Ver ou editar a mensagem de confirmação')}
+      ${order('wa_confirm_at').map(g => row(g, 'c')).join('') || '<div class="empty">Ninguém confirmou ainda.</div>'}
+      <div class="panel-title" style="margin-top:30px"><h3>Lembrete antes do casamento</h3><span class="badge ${pr ? 'b-muted' : 'b-ok'}">${pr ? `${pr} para enviar` : 'Tudo enviado'}</span></div>
+      <p class="s">${days > 4 ? `Faltam ${days} dias. O ideal é mandar 3 ou 4 dias antes do casamento.` : days > 0 ? 'Chegou a hora de mandar o lembrete!' : 'O casamento já passou.'}</p>
+      ${editor('waReminder', 'Ver ou editar a mensagem de lembrete')}
+      ${order('wa_reminder_at').map(g => row(g, 'r')).join('') || '<div class="empty">Ninguém confirmou ainda.</div>'}
+      ${noPhone.length ? `<p class="eyebrow mt">Confirmados sem WhatsApp</p><p class="s">${noPhone.map(g => esc(g.name)).join(', ')}</p>` : ''}`;
   },
 
   presentes(){
@@ -1202,7 +1303,8 @@ const ADMIN = {
       <fieldset><legend>Guia do convidado</legend>${F('guide.dress', 'Traje recomendado', 'textarea')}${F('guide.palette', 'Paleta sugerida (cores em hex, separadas por vírgula)', 'colorlist')}${F('guide.kids', 'Crianças', 'textarea')}${F('guide.accessibility', 'Acessibilidade', 'textarea')}
         <label>Programação</label>${listEditor('guide.schedule', [{k: 'time', label: 'Horário', type: 'time'}, {k: 'item', label: 'Atividade'}], 'Adicionar horário')}
         <label>Dúvidas frequentes</label>${listEditor('guide.faq', [{k: 'q', label: 'Pergunta'}, {k: 'a', label: 'Resposta', type: 'textarea'}], 'Adicionar pergunta')}</fieldset>
-      <fieldset><legend>Funcionalidades</legend><div class="grid mt">${F('rsvpOpen', 'Confirmações de presença abertas', 'bool')}${F('albumOpen', 'Álbum aberto para envio de fotos', 'bool')}${F('messagesModeration', 'Aprovar recados antes de aparecerem no mural', 'bool')}</div></fieldset>
+      <fieldset><legend>Idades para o buffet</legend><div class="grid g2"><div>${F('kidsAge.baby', 'Crianças pequenas: até quantos anos', 'int')}</div><div>${F('kidsAge.child', 'Crianças: até quantos anos', 'int')}</div></div><p class="s">Com 4 e 10: crianças até 4 anos, crianças de 5 a 10 e adultos acima de 10.</p></fieldset>
+      <fieldset><legend>Funcionalidades</legend>${F('rsvpMode', 'Confirmação de presença', 'select:aberta=Aberta: qualquer pessoa com o link confirma|lista=Só quem está na lista de convidados')}${F('openMax', 'Máximo de pessoas por convite (quando não informado na lista)', 'int')}<div class="grid mt">${F('rsvpOpen', 'Confirmações de presença abertas', 'bool')}${F('albumOpen', 'Álbum aberto para envio de fotos', 'bool')}${F('messagesModeration', 'Aprovar recados antes de aparecerem no mural', 'bool')}</div></fieldset>
       <fieldset><legend>Prévia do link no WhatsApp</legend><p class="s mt">Quando alguém mandar o link do site, aparece esta imagem. Baixe, renomeie para og.png se precisar e envie para o repositório no GitHub.</p><img id="ogimg" class="tcard" style="aspect-ratio:1200/630;max-width:420px" alt="Imagem de prévia do link"><button type="button" class="btn sm" data-action="og-dl">${ic('download', 15)} Baixar imagem de prévia</button></fieldset>
       <div class="savebar"><button class="btn gold block" data-action="save-settings">Salvar configurações</button></div></div>`;
   }
@@ -1213,6 +1315,7 @@ function fieldHTML(k, label, type = 'text', val){
   if (type.startsWith('select:')) return `<label>${label}</label><select data-k="${k}">${type.slice(7).split('|').map(o => { const [ov, ol] = o.split('='); return `<option value="${ov}" ${v === ov ? 'selected' : ''}>${ol}</option>`; }).join('')}</select>`;
   if (type === 'textarea') return `<label>${label}</label><textarea data-k="${k}">${esc(v)}</textarea>`;
   if (type === 'bool') return `<label class="check"><input type="checkbox" data-k="${k}" data-type="bool" ${v ? 'checked' : ''}> ${label}</label>`;
+  if (type === 'int') return `<label>${label}</label><input type="number" min="0" max="20" inputmode="numeric" data-k="${k}" data-type="int" value="${esc(v)}">`;
   if (type === 'colorlist') return `<label>${label}</label><input data-k="${k}" data-type="colorlist" value="${esc((Array.isArray(v) ? v : []).join(', '))}">`;
   if (type === 'numlist') return `<label>${label}</label><input data-k="${k}" data-type="numlist" inputmode="decimal" value="${esc((Array.isArray(v) ? v : []).join(', '))}">`;
   if (type === 'photo') return `<label>${label}</label><div class="photo-field">${v ? `<img src="${esc(v)}" alt="">` : `<div class="ph-empty">${ic('image', 28)}</div>`}<div class="actions"><button type="button" class="btn sm" data-action="set-photo" data-k="${k}">${v ? 'Trocar' : 'Enviar'} foto</button>${v ? `<button type="button" class="btn sm danger" data-action="clear-photo" data-k="${k}">Remover</button>` : ''}</div></div>`;
@@ -1240,7 +1343,7 @@ function drawGuestList(){
   box.innerHTML = `<p class="s">${plural(list.length, 'convite', 'convites')}${people ? ` · ${plural(people, 'pessoa confirmada', 'pessoas confirmadas')}` : ''}</p>` +
     (list.map(g => `<div class="row"><div class="main"><div class="t">${esc(g.name)} <span class="badge ${STATUS[g.status][0]}">${STATUS[g.status][1]}</span></div>
       <div class="s">${g.group_name ? esc(g.group_name) + ' · ' : ''}${g.status === 'confirmado' ? `${g.people}/${g.max_people} pessoas` : `até ${plural(g.max_people, 'pessoa', 'pessoas')}`}${g.phone ? ' · ' + esc(g.phone) : ''}</div>
-      ${g.children ? `<div class="s">${plural(g.children, 'criança', 'crianças')}</div>` : ''}${g.diet ? `<div class="s">Restrição: ${esc(g.diet)}</div>` : ''}
+      ${g.diet ? `<div class="s">Restrição: ${esc(g.diet)}</div>` : ''}
       ${g.companions ? `<div class="s">Acompanhantes: ${esc(g.companions.replace(/\n/g, ', '))}</div>` : ''}${g.message ? `<div class="s">“${esc(g.message)}”</div>` : ''}</div>
       <div class="actions">${g.phone && g.status === 'pendente' ? `<button class="iconbtn ok" data-action="wa" data-id="${g.id}" title="Enviar lembrete no WhatsApp">${ic('send', 16)}</button>` : ''}<button class="iconbtn" data-action="guest-link" data-id="${g.id}" title="Copiar link do convite" aria-label="Copiar link do convite">${ic('copy', 16)}</button><button class="iconbtn" data-action="guest-edit" data-id="${g.id}" title="Editar">${ic('edit', 16)}</button></div></div>`).join('') || '<div class="empty">Nenhum convidado aqui.</div>');
 }
@@ -1249,14 +1352,22 @@ function guestModal(g = {}){
   openModal(`<h3>${g.id ? 'Editar convidado' : 'Novo convidado'}</h3><form data-form="guest" data-id="${g.id || ''}">
     <label>Nome (como o convidado vai digitar)</label><input name="name" required value="${esc(g.name)}">
     <div class="grid g2"><div><label>Grupo / família</label><input name="group_name" value="${esc(g.group_name)}" placeholder="Ex.: Família do noivo"></div><div><label>WhatsApp</label><input name="phone" inputmode="tel" value="${esc(g.phone)}"></div></div>
-    <div class="grid g2"><div><label>Pessoas autorizadas</label><input type="number" name="max_people" min="1" max="20" required value="${g.max_people || 1}"></div><div><label>Situação</label><select name="status">${Object.entries(STATUS).map(([k, [, l]]) => `<option value="${k}" ${st === k ? 'selected' : ''}>${l}</option>`).join('')}</select></div></div>
-    <div class="grid g2"><div><label>Pessoas confirmadas</label><input type="number" name="people" min="0" max="20" value="${g.people || 0}"></div><div><label>Crianças até 10 anos</label><input type="number" name="children" min="0" max="20" value="${g.children || 0}"></div></div>
+    <div class="grid g2"><div><label>Pessoas autorizadas</label><input type="number" name="max_people" min="1" max="20" required value="${g.max_people || S.openMax || 10}"></div><div><label>Situação</label><select name="status">${Object.entries(STATUS).map(([k, [, l]]) => `<option value="${k}" ${st === k ? 'selected' : ''}>${l}</option>`).join('')}</select></div></div>
+    <div class="grid g3"><div><label>Adultos</label><input type="number" name="adults" min="0" max="20" value="${Math.max(0, (g.people || 0) - (g.children || 0) - (g.babies || 0))}"></div><div><label>Crianças ${KA().baby + 1}–${KA().child}</label><input type="number" name="children" min="0" max="20" value="${g.children || 0}"></div><div><label>Até ${KA().baby} anos</label><input type="number" name="babies" min="0" max="20" value="${g.babies || 0}"></div></div>
+    <p class="s">Preencha só se a pessoa confirmou.</p>
     <label>Restrição alimentar</label><input name="diet" value="${esc(g.diet)}">
     <label>Acompanhantes</label><textarea name="companions">${esc(g.companions)}</textarea>
     <label>Observação / mensagem</label><textarea name="message">${esc(g.message)}</textarea>
     <button class="btn gold block mt">Salvar</button>
     ${g.id ? `<button type="button" class="btn danger block mt" data-action="guest-del" data-id="${g.id}">${ic('trash', 14)} Excluir convidado</button>` : ''}
   </form>`);
+}
+function fillMsg(t, g){
+  const days = Math.max(0, Math.ceil((weddingDate() - Date.now()) / 864e5));
+  const map = {nome: String(g.name).split(' ')[0], pessoas: breakdown(g), data: fmtDate(S.date).toLowerCase(), hora: fmtTime(S.ceremony.time || S.time),
+    local: S.ceremony.name, endereco: S.ceremony.address, mapa: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(S.ceremony.address),
+    link: siteLink(), dias: plural(days, 'dia', 'dias'), noivos: `${S.name1} & ${S.name2}`};
+  return String(t || '').replace(/\{(\w+)\}/g, (m, k) => k in map ? map[k] : m);
 }
 function fillTpl(t, g){
   return t.replace(/\{nome\}/g, String(g.name).split(' ')[0]).replace(/\{data\}/g, fmtShort(S.date)).replace(/\{prazo\}/g, fmtShort(S.rsvpDeadline)).replace(/\{link\}/g, siteLink(g.code ? 'rsvp/' + g.code : 'rsvp'));
@@ -1282,7 +1393,7 @@ async function exportExcel(){
     XLSX.utils.book_append_sheet(wb, ws, name);
   };
   const gname = id => A.gifts.find(g => g.id === id)?.title || '';
-  add('Convidados', A.guests.map(g => ({Nome: g.name, Grupo: g.group_name || '', WhatsApp: g.phone || '', 'Pessoas autorizadas': g.max_people, Situação: STATUS[g.status][1], 'Pessoas confirmadas': g.people || 0, Crianças: g.children || 0, 'Restrição alimentar': g.diet || '', Acompanhantes: (g.companions || '').replace(/\n/g, ', '), Mensagem: g.message || '', 'Respondido em': g.responded_at ? new Date(g.responded_at).toLocaleString('pt-BR') : '', Código: g.code || ''})));
+  add('Convidados', A.guests.map(g => ({Nome: g.name, Grupo: g.group_name || '', WhatsApp: g.phone || '', 'Pessoas autorizadas': g.max_people, Situação: STATUS[g.status][1], 'Pessoas confirmadas': g.people || 0, Adultos: Math.max(0, (g.people || 0) - (g.children || 0) - (g.babies || 0)), [`Crianças ${KA().baby + 1} a ${KA().child} anos`]: g.children || 0, [`Crianças até ${KA().baby} anos`]: g.babies || 0, 'Restrição alimentar': g.diet || '', Acompanhantes: (g.companions || '').replace(/\n/g, ', '), Mensagem: g.message || '', 'Respondido em': g.responded_at ? new Date(g.responded_at).toLocaleString('pt-BR') : '', Código: g.code || ''})));
   add('Presentes', A.gifts.map(g => ({Presente: g.title, Tipo: CAT[g.category], Valor: Number(g.price), Situação: g.unique_reserve ? (g.reserved_by ? 'Escolhido' : 'Disponível') : 'Cota', 'Escolhido por': g.reserved_by || '', Mensagem: g.reserved_message || '', 'Vezes presenteado': g.times_given || 0})));
   add('Pix', A.contrib.map(c => ({Nome: c.name, Valor: Number(c.amount), Presente: gname(c.gift_id), Situação: c.status === 'confirmado' ? 'Confirmado' : 'A conferir', Mensagem: c.message || '', Data: new Date(c.created_at).toLocaleString('pt-BR')})));
   add('Recados', A.msgs.map(m => ({Nome: m.name, Recado: m.text, Visível: m.approved ? 'Sim' : 'Não', Data: new Date(m.created_at).toLocaleString('pt-BR')})));
@@ -1334,6 +1445,18 @@ const ACTIONS = {
   menu(){ $('#menu').classList.toggle('open'); },
   close: closeModal,
   'pick-guest'(el){ const g = rsvpList.find(x => x.id === el.dataset.id); if (g) rsvpStep2(g); },
+  'mem-add'(){
+    const box = $('#rsvp .members'), max = Number(box.dataset.max);
+    if (memberCounts(box).people >= max) return toast(`Seu convite é para até ${plural(max, 'pessoa', 'pessoas')}`);
+    box.insertAdjacentHTML('beforeend', memberRow()); $$('[name=m_name]', box).pop().focus(); updMembers(box);
+  },
+  'mem-del'(el){ const box = el.closest('.members'); el.closest('.mem').remove(); updMembers(box); },
+  ctr(el){
+    const box = el.closest('.counters'), max = Number(box.dataset.max), inp = $(`input[name=${el.dataset.n}]`, box), d = Number(el.dataset.d), v = Number(inp.value) + d;
+    if (v < Number(inp.dataset.min)) return;
+    if (d > 0 && ctrTotal(box) >= max) return toast(`Seu convite é para até ${plural(max, 'pessoa', 'pessoas')}`);
+    inp.value = v; $(`[data-out=${el.dataset.n}]`, box).textContent = v; updCtr(box);
+  },
   'rsvp-back'(){ if (location.hash.split('/').length > 2) location.hash = '#/rsvp'; else rsvpStep1(); },
   ics: downloadIcs,
   gf(el){ giftFilter = el.dataset.v; drawGifts(); },
@@ -1375,10 +1498,21 @@ const ACTIONS = {
   gfilt(el){ gFilter = el.dataset.v; drawGuestChips(); drawGuestList(); },
   'guest-link'(el){ const g = A.guests.find(x => x.id === el.dataset.id); if (g?.code) copyText(siteLink('rsvp/' + g.code)); },
   'guest-new'(){ guestModal(); },
+  async 'wa-send'(el){
+    const g = A.guests.find(x => x.id === el.dataset.id); if (!g) return;
+    const kind = el.dataset.kind, n = waNumber(g.phone); if (!n) return toast('Convidado sem WhatsApp', 'err');
+    window.open(`https://wa.me/${n}?text=${encodeURIComponent(fillMsg(kind === 'c' ? S.waConfirm : S.waReminder, g))}`, '_blank');
+    const patch = {id: g.id, [kind === 'c' ? 'wa_confirm_at' : 'wa_reminder_at']: nowISO()};
+    try { await DB.saveGuest(patch); Object.assign(g, patch); drawAdmin(); } catch (e) { toast(e.message, 'err'); }
+  },
+  async 'tpl-save'(el){
+    const k = el.dataset.k, v = $('#tpl-' + k).value.trim(); if (!v) return toast('A mensagem não pode ficar vazia', 'err');
+    await busy(el, async () => { S[k] = v; await DB.saveSettings(S); draft = null; toast('Mensagem salva'); });
+  },
   'guest-edit'(el){ guestModal(A.guests.find(g => g.id === el.dataset.id)); },
   async 'guest-del'(el){ if (!confirm('Excluir este convidado?')) return; await busy(el, async () => { await DB.deleteGuest(el.dataset.id); closeModal(); toast('Convidado excluído'); await reloadAdmin(); }); },
   import(){
-    openModal(`<h3>Importar lista</h3><p class="s">Um convidado por linha, no formato: <b>Nome; pessoas; WhatsApp; grupo</b>. Só o nome é obrigatório.</p>
+    openModal(`<h3>Importar lista</h3><p class="s">Cole um convidado por linha. Pode ser só o nome. Se quiser, use <b>Nome; pessoas; WhatsApp; grupo</b>. Sem número, cada convite vale para até ${S.openMax || 10} pessoas (dá para mudar em Configurações).</p>
       <form data-form="import"><textarea name="list" style="min-height:200px" placeholder="Maria Silva; 2; 31999999999; Família da noiva&#10;João Santos; 1&#10;Família Souza; 4"></textarea><button class="btn gold block mt">Importar</button></form>`);
   },
   reminders: remindersModal,
@@ -1415,6 +1549,7 @@ const ACTIONS = {
   'li-del'(el){ const arr = getPath(draft, el.dataset.path) || []; arr.splice(Number(el.dataset.i), 1); drawAdmin(); },
   async 'save-settings'(el){
     if (!draft.name1 || !draft.name2 || !draft.date) return toast('Preencha os nomes e a data', 'err');
+    if (Number(draft.kidsAge?.baby) >= Number(draft.kidsAge?.child)) return toast('A idade das crianças pequenas tem que ser menor que a das crianças', 'err');
     await busy(el, async () => { await DB.saveSettings(draft); S = deepMerge(structuredClone(DEFAULTS), structuredClone(draft)); applyBrand(); $$('#menu a').forEach(a => a.classList.toggle('active', a.dataset.r === 'admin')); toast('Configurações salvas!'); });
   }
 };
@@ -1428,9 +1563,22 @@ document.addEventListener('click', e => {
 /* ======================== FORMULÁRIOS (envio) ======================== */
 const FORMS = {
   async rsvp(f, d){
-    const status = d.status, people = status === 'confirmado' ? Number(d.people || 1) : 0;
-    const children = status === 'confirmado' ? Math.min(Number(d.children || 0), people) : 0;
-    await busy(f, async () => { const r = await DB.submitRsvp(f.dataset.id, {status, people, children, diet: d.diet, companions: d.companions, message: d.message, phone: d.phone}); rsvpDone({...r, status, people, children}); });
+    const conf = d.status === 'confirmado', status = d.status;
+    const rows = $$('.mem:not(.me)', f).map(r => ({name: $('[name=m_name]', r).value.trim(), cat: $('[name=m_cat]', r).value}));
+    if (conf && rows.some(r => r.name.length < 2)) return toast('Escreva o nome de cada pessoa da família', 'err');
+    if (conf && String(d.phone || '').replace(/\D/g, '').length < 10) return toast('Informe seu WhatsApp com DDD', 'err');
+    const k = KA(), lbl = {adulto: 'adulto', crianca: `criança ${k.baby + 1} a ${k.child} anos`, bebe: `criança até ${k.baby} anos`};
+    const c = conf ? memberCounts($('.members', f)) : {people: 0, children: 0, babies: 0};
+    const companions = conf ? rows.map(r => `${r.name} (${lbl[r.cat]})`).join('\n') : '';
+    await busy(f, async () => { const r = await DB.submitRsvp(f.dataset.id, {status, ...c, diet: d.diet, companions, message: d.message, phone: d.phone}); rsvpDone({...r, status, ...c}); });
+  },
+  async rsvpOpen(f, d){
+    const conf = d.status === 'confirmado';
+    const adults = Number(d.adults || 1), children = conf ? Number(d.children || 0) : 0, babies = conf ? Number(d.babies || 0) : 0;
+    const people = conf ? adults + children + babies : 0;
+    if (String(d.name || '').trim().length < 3) return toast('Escreva seu nome completo', 'err');
+    if (conf && String(d.phone || '').replace(/\D/g, '').length < 10) return toast('Informe seu WhatsApp com DDD', 'err');
+    await busy(f, async () => { const r = await DB.openRsvp({name: d.name.trim(), status: d.status, people, children, babies, diet: d.diet, companions: d.companions, message: d.message, phone: d.phone}); rsvpDone({...r, status: d.status, people, children, babies}); });
   },
   async gift(f, d){
     const g = GIFTS.find(x => x.id === f.dataset.id);
@@ -1472,9 +1620,12 @@ const FORMS = {
   async guest(f, d){
     const max = Math.max(1, parseInt(d.max_people) || 1);
     const old = A.guests.find(g => g.id === f.dataset.id);
-    let people = parseInt(d.people) || 0;
-    if (d.status === 'confirmado') people = Math.min(max, Math.max(1, people || max)); else people = 0;
-    const g = {name: d.name.trim(), group_name: d.group_name.trim(), phone: d.phone.trim(), max_people: max, status: d.status, people, children: d.status === 'confirmado' ? Math.min(people, Math.max(0, parseInt(d.children) || 0)) : 0, diet: (d.diet || '').trim() || null, companions: d.companions, message: d.message,
+    const conf = d.status === 'confirmado';
+    let adults = Math.max(0, parseInt(d.adults) || 0); const children = Math.max(0, parseInt(d.children) || 0), babies = Math.max(0, parseInt(d.babies) || 0);
+    if (conf && adults + children + babies === 0) adults = max;
+    if (conf && adults + children + babies > max) return toast(`Passa do limite de ${plural(max, 'pessoa', 'pessoas')} do convite`, 'err');
+    const people = conf ? adults + children + babies : 0;
+    const g = {name: d.name.trim(), group_name: d.group_name.trim(), phone: d.phone.trim(), max_people: max, status: d.status, people, children: conf ? children : 0, babies: conf ? babies : 0, diet: (d.diet || '').trim() || null, companions: d.companions, message: d.message,
       responded_at: d.status === 'pendente' ? null : (old?.responded_at || nowISO())};
     if (f.dataset.id) g.id = f.dataset.id;
     await busy(f, async () => { await DB.saveGuest(g); closeModal(); toast('Convidado salvo'); await reloadAdmin(); });
@@ -1482,7 +1633,7 @@ const FORMS = {
   async import(f, d){
     const list = d.list.split('\n').map(l => l.trim()).filter(Boolean).map(l => {
       const [name, max, phone, group] = l.split(/[;\t]/).map(s => (s || '').trim());
-      return {name, max_people: Math.max(1, parseInt(max) || 1), phone: phone || null, group_name: group || null, status: 'pendente', people: 0};
+      return {name, max_people: Math.min(20, Math.max(1, parseInt(max) || Number(S.openMax) || 10)), phone: phone || null, group_name: group || null, status: 'pendente', people: 0};
     }).filter(g => g.name);
     if (!list.length) return toast('Nenhum nome encontrado', 'err');
     await busy(f, async () => { await DB.saveGuests(list); closeModal(); toast(`${plural(list.length, 'convidado importado', 'convidados importados')}`); await reloadAdmin(); });
@@ -1511,6 +1662,7 @@ function onField(e){
   if (!t.dataset.k || !t.closest('#settings') || !draft) return;
   let v = t.value;
   if (t.dataset.type === 'bool') v = t.checked;
+  else if (t.dataset.type === 'int') v = Math.max(0, parseInt(v) || 0);
   else if (t.dataset.type === 'colorlist') v = v.split(/[;,\s]+/).filter(s => /^#[0-9a-f]{3,8}$/i.test(s));
   else if (t.dataset.type === 'numlist') v = v.split(/[;,\s]+/).map(parseMoney).filter(n => n > 0);
   setPath(draft, t.dataset.k, v);
