@@ -1,0 +1,1540 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Luciano & Isabelle · Nosso casamento</title>
+<meta name="description" content="Confirme sua presença, veja a lista de presentes e todos os detalhes do nosso grande dia.">
+<!-- Prévia do link no WhatsApp -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Luciano & Isabelle · Nosso casamento">
+<meta property="og:description" content="Confirme sua presença, veja a lista de presentes e todos os detalhes do nosso grande dia.">
+<meta property="og:image" content="https://lucianosilva43567-tech.github.io/casamento/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#fbf8f2">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#b08d57;--gold-2:#c9a96e;--gold-dark:#8a6a3b;--ivory:#fbf8f2;--paper:#fff;--ink:#3a322a;--muted:#8b8073;--line:#ece3d3;--soft:#f5efe4;--ok:#5f8a5b;--warn:#b98530;--bad:#b45a4f;--shadow:0 10px 30px rgba(80,60,30,.08);--r:16px;--serif:'Cormorant Garamond',Georgia,serif;--script:'Great Vibes',cursive;--sans:'Jost','Montserrat',system-ui,sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--ivory);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:var(--gold-dark)}
+button{font-family:inherit}
+.i{flex:none;vertical-align:middle}
+.demo-banner{background:var(--ink);color:#f3e2c2;text-align:center;font-size:12px;padding:6px 12px}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:8px 12px 8px 16px;padding-top:max(8px,env(safe-area-inset-top));background:rgba(251,248,242,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.mono{font-family:var(--script);font-size:30px;color:var(--gold-dark);text-decoration:none;line-height:1.2}
+.burger{width:44px;height:44px;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+.burger span{display:block;width:22px;height:1.5px;background:var(--ink);margin:3px 0}
+.menu{position:fixed;inset:0;z-index:40;background:var(--ivory);transform:translateY(-102%);transition:transform .45s cubic-bezier(.7,0,.2,1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;overflow:auto;padding:70px 16px 30px}
+.menu.open{transform:none}
+.menu a{font-family:var(--serif);font-size:25px;color:var(--ink);text-decoration:none;padding:5px 12px}
+.menu a.active{color:var(--gold-dark);font-style:italic}
+.menu a.small{font-family:var(--sans);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:18px}
+.menu .x{position:absolute;top:max(10px,env(safe-area-inset-top));right:12px}
+main{min-height:70vh}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+.narrow{max-width:580px}
+.section{padding:44px 0}
+.eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-dark);margin:0 0 6px;font-weight:500}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.15;margin:0 0 10px}
+h2{font-size:36px}h3{font-size:25px}h4{font-size:20px;margin:0}
+.title{text-align:center;margin-bottom:26px}
+.title p.lead{max-width:520px;margin:6px auto 0;color:var(--muted)}
+.ornament{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--gold);margin:12px auto}
+.ornament:before,.ornament:after{content:'';height:1px;width:56px;background:linear-gradient(90deg,transparent,var(--gold))}
+.ornament:after{transform:scaleX(-1)}
+.hero{position:relative;min-height:calc(100svh - 61px);display:flex;align-items:center;justify-content:center;text-align:center;padding:36px 16px;overflow:hidden;background:radial-gradient(ellipse at top,#fff 0%,var(--ivory) 55%,#f1e7d4 100%)}
+.hero .bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.hero .bg:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,22,12,.25),rgba(30,22,12,.6))}
+.hero .inner{position:relative;width:100%;max-width:620px}
+.frame{border:1px solid var(--gold-2);outline:1px solid var(--gold-2);outline-offset:6px;padding:34px 18px;background:rgba(255,255,255,.35)}
+.has-photo{color:#fff}
+.has-photo .frame{background:rgba(0,0,0,.08);border-color:rgba(255,255,255,.6);outline-color:rgba(255,255,255,.6)}
+.has-photo .eyebrow{color:#f3e2c2}
+.names{font-family:var(--script);font-weight:400;font-size:clamp(52px,14vw,96px);color:var(--gold-dark);margin:4px 0;line-height:1.05}
+.has-photo .names{color:#fff}
+.names .amp{display:block;font-size:.5em;color:var(--gold-2)}
+.hero-date{font-family:var(--serif);font-size:21px;margin:8px 0 2px}
+.place-l{margin:0;font-size:13px;letter-spacing:.06em;opacity:.85}
+.countdown{display:flex;justify-content:center;gap:8px;margin:22px 0}
+.countdown div{min-width:62px;padding:10px 4px;border:1px solid var(--gold-2);border-radius:12px;background:rgba(255,255,255,.6)}
+.has-photo .countdown div{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.5)}
+.countdown b{display:block;font-family:var(--serif);font-size:30px;font-weight:500;line-height:1}
+.countdown small{font-size:9px;letter-spacing:.15em;text-transform:uppercase}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:999px;border:1px solid var(--gold);background:transparent;color:var(--gold-dark);font:500 12px var(--sans);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:transform .15s,box-shadow .2s;min-height:44px}
+.btn:active{transform:scale(.98)}
+.btn.gold{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#fff;border-color:transparent;box-shadow:0 8px 20px rgba(176,141,87,.32)}
+.btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+.btn.sm{padding:8px 14px;font-size:11px;min-height:38px}
+.btn.ghost{border-color:var(--line);color:var(--ink);background:#fff}
+.btn.danger{border-color:#e6c3bd;color:var(--bad);background:#fff}
+.btn.block{width:100%}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:14px}
+@media(min-width:640px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}}
+.info{text-align:center}
+.info .i{color:var(--gold)}
+.info p{margin:4px 0 0}
+.welcome{font-family:var(--serif);font-size:23px;font-style:italic;max-width:600px;margin:0 auto;line-height:1.45}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(min-width:640px){.quick{grid-template-columns:repeat(4,1fr)}}
+.quick a{display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px 10px;text-align:center;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:var(--r);font-family:var(--serif);font-size:18px;transition:border-color .2s}
+.quick a:hover{border-color:var(--gold-2)}
+.quick .i{color:var(--gold)}
+label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:16px 0 6px;font-weight:500}
+input,select,textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;font:16px var(--sans);color:var(--ink);transition:border-color .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold-2);box-shadow:0 0 0 3px rgba(201,169,110,.18)}
+textarea{min-height:88px;resize:vertical}
+.choice{display:grid;gap:10px;margin-top:14px}
+label.opt{display:flex;gap:12px;align-items:center;text-transform:none;letter-spacing:0;font-size:15px;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:14px;margin:0;cursor:pointer;background:#fff}
+label.opt:has(input:checked){border-color:var(--gold);background:var(--soft)}
+label.opt input{width:20px;height:20px;accent-color:var(--gold)}
+label.check{display:flex;gap:10px;align-items:center;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);cursor:pointer}
+label.check input{width:20px;height:20px;accent-color:var(--gold)}
+.opt-btn{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;margin-bottom:8px;cursor:pointer;font-size:15px;color:var(--ink)}
+.opt-btn:hover{border-color:var(--gold-2)}
+.note{background:var(--soft);border-radius:12px;padding:12px 14px;font-size:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.chip{padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;font:500 12px var(--sans);cursor:pointer;color:var(--ink);white-space:nowrap}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
+.b-ok{background:#e7f0e4;color:var(--ok)}.b-warn{background:#f8eedb;color:var(--warn)}.b-bad{background:#f5e3e0;color:var(--bad)}.b-muted{background:var(--soft);color:var(--muted)}
+.gifts{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:12px}
+.gift{display:flex;flex-direction:column;overflow:hidden;padding:0}
+.gift .img{aspect-ratio:4/3;background:var(--soft) center/cover no-repeat;display:grid;place-items:center;color:var(--gold-2)}
+.gift .body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.gift .body .btn{margin-top:auto}
+.gift.taken{opacity:.55}
+.price{font-family:var(--serif);font-size:24px;color:var(--gold-dark);line-height:1.1}
+.s{font-size:13px;color:var(--muted);margin:0}
+.amounts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.amounts .chip{padding:10px 4px}
+.qr{display:grid;place-items:center;padding:12px;background:#fff;border-radius:12px;border:1px solid var(--line);width:max-content;margin:14px auto 8px;min-height:226px;min-width:226px}
+.copy{font-family:ui-monospace,monospace;font-size:11px;word-break:break-all;background:var(--soft);padding:10px;border-radius:10px;max-height:84px;overflow:auto}
+.tl{position:relative;padding-left:28px;max-width:620px;margin:0 auto}
+.tl:before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:1px;background:var(--gold-2)}
+.tl-item{position:relative;margin-bottom:30px}
+.tl-item:before{content:'';position:absolute;left:-25px;top:9px;width:11px;height:11px;border-radius:50%;background:var(--ivory);border:2px solid var(--gold)}
+.tl-year{font-family:var(--serif);font-size:20px;color:var(--gold-dark);font-style:italic}
+.tl-item img{border-radius:12px;margin-top:10px;width:100%;max-height:360px;object-fit:cover}
+.map{width:100%;height:220px;border:0;border-radius:12px;margin:12px 0;background:var(--soft)}
+.sched{list-style:none;padding:0;margin:0}
+.sched li{display:flex;gap:16px;padding:10px 0;border-bottom:1px solid var(--line)}
+.sched b{font-family:var(--serif);font-size:20px;font-weight:500;color:var(--gold-dark);min-width:58px}
+details{border-bottom:1px solid var(--line);padding:14px 0}
+summary{cursor:pointer;font-weight:500;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary:after{content:'+';color:var(--gold);font-size:20px;line-height:1}
+details[open] summary:after{content:'–'}
+details p{margin:8px 0 0;color:var(--muted)}
+.msgs{display:grid;gap:12px}
+@media(min-width:640px){.msgs{grid-template-columns:1fr 1fr}}
+.msg p{font-family:var(--serif);font-size:19px;font-style:italic;margin:0 0 8px;line-height:1.4;white-space:pre-line}
+.msg .who{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark)}
+.album{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+@media(min-width:640px){.album{grid-template-columns:repeat(4,1fr)}}
+.album .cell{position:relative}
+.album .ph{aspect-ratio:1;object-fit:cover;width:100%;border-radius:6px;cursor:pointer;background:var(--soft);display:block}
+.album .del{position:absolute;top:4px;right:4px;width:30px;height:30px;border-radius:8px;border:0;background:rgba(255,255,255,.9);color:var(--bad);display:grid;place-items:center;cursor:pointer}
+.album .vid:after{content:'▶';position:absolute;bottom:6px;left:8px;color:#fff;font-size:12px;text-shadow:0 1px 3px #000}
+.ticket{text-align:center;border:1px solid var(--gold-2);outline:1px solid var(--gold-2);outline-offset:5px;padding:24px 16px;background:#fff;margin:6px}
+.ticket .code{font-family:ui-monospace,monospace;letter-spacing:.3em;font-size:20px;color:var(--gold-dark);margin:0}
+.modal{position:fixed;inset:0;z-index:60;background:rgba(40,30,20,.45);display:flex;align-items:flex-end;justify-content:center}
+.modal.hidden{display:none}
+.sheet{background:var(--ivory);width:100%;max-width:560px;max-height:92svh;overflow:auto;border-radius:22px 22px 0 0;padding:14px 18px calc(24px + env(safe-area-inset-bottom));animation:up .25s ease}
+.sheet.dark{background:#111;color:#fff;max-width:900px}
+.sheet.dark img,.sheet.dark video{width:100%;max-height:78svh;object-fit:contain;border-radius:8px}
+@media(min-width:640px){.modal{align-items:center}.sheet{border-radius:22px}}
+@keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.sheet-head{display:flex;justify-content:flex-end;margin:-4px -8px 0}
+.x{border:0;background:none;cursor:pointer;color:var(--muted);width:44px;height:44px;display:grid;place-items:center}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translate(-50%,120px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;z-index:80;transition:transform .3s;max-width:calc(100% - 32px);box-shadow:var(--shadow)}
+.toast.show{transform:translate(-50%,0)}
+.toast.err{background:var(--bad)}
+.admin-head{display:flex;justify-content:space-between;align-items:center;padding-top:24px}
+.admin-tabs{flex-wrap:nowrap;overflow-x:auto;padding:12px 0;margin:0;position:sticky;top:61px;background:var(--ivory);z-index:10;scrollbar-width:none}
+.admin-tabs::-webkit-scrollbar{display:none}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(min-width:640px){.kpis{grid-template-columns:repeat(4,1fr)}}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.kpi b{font-family:var(--serif);font-size:30px;font-weight:500;display:block;color:var(--gold-dark);line-height:1.1}
+.kpi span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.kpi small{display:block;font-size:12px;color:var(--muted)}
+.bar{height:10px;background:var(--soft);border-radius:99px;overflow:hidden;display:flex;margin:10px 0}
+.bar i{display:block;height:100%}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.row{display:flex;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
+.row .main{flex:1;min-width:0}
+.row .t{font-weight:500;overflow-wrap:anywhere}
+.row .thumb{width:52px;height:52px;border-radius:10px;background:var(--soft) center/cover;flex:none;display:grid;place-items:center;color:var(--gold-2)}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.iconbtn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink);flex:none;text-decoration:none}
+.iconbtn.ok{color:var(--ok)}.iconbtn.bad{color:var(--bad)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.toolbar input{flex:1 1 200px}
+.panel-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0 6px}
+.panel-title h3{margin:0}
+.settings fieldset{border:1px solid var(--line);border-radius:var(--r);padding:6px 16px 18px;margin:0 0 16px;background:#fff}
+.settings legend{font-family:var(--serif);font-size:21px;padding:0 6px}
+.list-item{border:1px dashed var(--line);border-radius:12px;padding:4px 12px 14px;margin-top:12px;position:relative}
+.list-item>.x{position:absolute;top:2px;right:2px;width:36px;height:36px}
+.photo-field{display:flex;gap:12px;align-items:center}
+.photo-field img,.photo-field .ph-empty{width:84px;height:84px;border-radius:12px;object-fit:cover;background:var(--soft);display:grid;place-items:center;color:var(--gold-2);flex:none}
+.savebar{position:sticky;bottom:0;padding:14px 0 calc(14px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--ivory) 35%)}
+.center{text-align:center}.muted{color:var(--muted)}.mt{margin-top:16px}.hidden{display:none!important}
+.empty{text-align:center;color:var(--muted);padding:34px 10px}
+.spin{width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;display:inline-block;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.fade{animation:fade .6s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+footer{text-align:center;padding:40px 16px calc(50px + env(safe-area-inset-bottom));color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}
+footer .mono{font-size:36px;display:block}
+footer a{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* ================= v2 — convite em papel, arco e folhagem dourada ================= */
+:root{--champ:#efe4cf;--ink:#2f2a24}
+body{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .4 0 0 0 0 .25 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.topbar{top:env(safe-area-inset-top,0px)}
+.mono{letter-spacing:.02em}
+.divider{color:var(--gold);display:flex;justify-content:center;margin:4px 0 14px}
+.sprig{width:190px;height:24px;display:block}
+.title .divider{margin:8px 0 4px}
+h2{text-wrap:balance}
+/* hero */
+.hero2{position:relative;overflow:hidden;padding-block:30px 46px;background:radial-gradient(ellipse 90% 55% at 50% 0%,#fff 0%,rgba(255,255,255,0) 70%)}
+.hero2-in{position:relative;z-index:1;max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:26px;justify-items:center;text-align:center}
+@media(min-width:820px){.hero2-in{grid-template-columns:1fr 1.15fr;align-items:center;gap:40px;padding-top:24px}}
+.arch{width:min(74vw,330px);max-width:100%;aspect-ratio:3/4;border-radius:999px 999px 16px 16px;overflow:hidden;position:relative;background:var(--champ);box-shadow:0 34px 60px -34px rgba(90,65,30,.5);outline:1px solid var(--gold-2);outline-offset:9px}
+.arch img{width:100%;height:100%;object-fit:cover}
+.arch-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--gold-dark);background:linear-gradient(165deg,#fbf6ec 0%,#ecdec3 100%);font-size:10px;letter-spacing:.28em;text-transform:uppercase}
+.arch-ph .i{color:var(--gold)}
+.arch.sm{width:200px;outline-offset:7px}
+.names2{font-family:var(--script);font-weight:400;font-size:clamp(60px,16vw,96px);line-height:.98;margin:4px 0 12px;display:flex;flex-direction:column;align-items:center}
+.names2 span{background:linear-gradient(100deg,#7e5f32 0%,#b08d57 28%,#f1dfb5 44%,#c9a96e 58%,#8a6a3b 100%);background-size:260% 100%;background-position:0 0;-webkit-background-clip:text;background-clip:text;color:transparent;animation:foil 3.6s ease-out .4s both;padding:0 .12em}
+@keyframes foil{from{background-position:100% 0}to{background-position:0 0}}
+.names2 em{font-family:var(--serif);font-style:italic;font-size:.36em;color:var(--gold);line-height:1.3}
+.dateline{display:flex;align-items:center;justify-content:center;gap:12px;font-family:var(--serif);font-size:14px;text-transform:uppercase;letter-spacing:.2em;margin:6px 0 4px;color:var(--ink)}
+.dateline b{font-weight:500;font-size:24px;letter-spacing:.06em;padding:2px 14px;border-left:1px solid var(--gold-2);border-right:1px solid var(--gold-2);font-variant-numeric:lining-nums}
+.countdown{gap:0;margin:22px auto 24px}
+.countdown div{border:0!important;border-radius:0;background:none!important;min-width:66px;padding:0 6px;position:relative}
+.countdown div+div:before{content:'';position:absolute;left:0;top:16%;bottom:16%;width:1px;background:var(--gold-2)}
+.countdown b{font-size:38px;color:var(--ink);font-variant-numeric:tabular-nums}
+.countdown small{color:var(--muted)}
+.br{position:absolute;width:150px;height:200px;color:var(--gold-2);opacity:.75;pointer-events:none;z-index:0}
+.br-tl{top:-14px;left:-30px}
+.br-br{bottom:-14px;right:-30px;transform:rotate(180deg)}
+@media(min-width:820px){.br{width:240px;height:320px}}
+.br path{stroke-dasharray:420;stroke-dashoffset:420;animation:draw 2.4s ease forwards .2s}
+.br .leaf{opacity:0;animation:leafin .7s ease forwards;animation-delay:calc(var(--d) + 400ms)}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes leafin{to{opacity:1}}
+.sig{font-family:var(--script);font-size:36px;color:var(--gold-dark);margin:14px 0 0}
+/* save the date */
+.std{display:grid;gap:18px}
+@media(min-width:760px){.std{grid-template-columns:330px 1fr;align-items:center;gap:36px}}
+.cal{padding:22px 18px}
+.cal h3{margin:0 0 14px;text-align:center;font-size:27px}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-variant-numeric:tabular-nums;font-size:14px}
+.cal-g span{aspect-ratio:1;display:grid;place-items:center;color:var(--ink)}
+.cal-g .w{aspect-ratio:auto;font-size:10px;letter-spacing:.12em;color:var(--muted);padding-bottom:6px}
+.cal-g i{font-style:normal}
+.cal-g .on i{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#fff;box-shadow:0 0 0 3px var(--paper),0 0 0 4px var(--gold-2);font-weight:500}
+.std-info{display:flex;flex-direction:column;min-width:0}
+.info-row{display:flex;gap:14px;align-items:flex-start;padding:16px 2px;border-bottom:1px solid var(--line)}
+.info-row:first-child{border-top:1px solid var(--line)}
+.info-row .i{color:var(--gold);margin-top:3px}
+.info-row p{margin:0}
+.info-row .eyebrow{margin-bottom:2px}
+.std-info .btn{align-self:flex-start;margin-top:18px}
+/* programação */
+.day{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));row-gap:26px}
+.day li{position:relative;padding:30px 10px 0;text-align:center}
+.day li:before{content:'';position:absolute;top:9px;left:0;right:0;height:1px;background:var(--gold-2)}
+.day li:after{content:'';position:absolute;top:3px;left:50%;width:13px;height:13px;margin-left:-7px;border-radius:50%;background:var(--ivory);border:1.5px solid var(--gold)}
+.day b{display:block;font-family:var(--serif);font-size:30px;font-weight:500;color:var(--gold-dark);line-height:1.1}
+.day span{font-size:13px;color:var(--muted)}
+/* história (prévia) */
+.story-t{display:grid;gap:30px;align-items:center;justify-items:center;text-align:center;padding-block:24px 50px}
+.story-t p{max-width:46ch;margin:0 auto 18px}
+@media(min-width:760px){.story-t{grid-template-columns:auto 1fr;text-align:left;justify-items:start;gap:48px}.story-t p{margin-left:0}}
+/* hashtag */
+.tagband{text-align:center;padding-block:48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));margin-top:30px;background:var(--ink);color:#f3e6c8;position:relative;overflow:hidden}
+.tagband .eyebrow{color:var(--gold-2)}
+.tagband .tag{font-family:var(--serif);font-style:italic;font-size:clamp(30px,8vw,52px);margin:4px 0 6px;color:#fff;overflow-wrap:anywhere}
+.tagband .s{color:#cbbda4}
+.tagband .divider{color:var(--gold)}
+.tag-inline{font-family:var(--serif);font-style:italic;font-size:24px;color:var(--gold-dark);margin:-10px 0 20px}
+footer{margin-top:0}
+/* presentes */
+.gift{transition:transform .25s,box-shadow .25s}
+.gift:hover{transform:translateY(-3px);box-shadow:0 20px 40px -20px rgba(80,60,30,.4)}
+.gift .img{background-image:linear-gradient(160deg,#fbf6ec,#ebdcc0);position:relative}
+.gift .img .cat{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.88);padding:3px 10px;border-radius:99px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);font-weight:500}
+.gift .img .i{color:var(--gold)}
+/* guia */
+.swatches{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+.swatches span{width:54px;height:54px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06),0 6px 14px -6px rgba(0,0,0,.25)}
+/* QR de exemplo */
+.qr-wrap{position:relative;width:max-content;margin:0 auto}
+.qr-wrap .wm{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.qr-wrap .wm b{background:rgba(255,255,255,.92);color:var(--bad);border:1px solid currentColor;padding:4px 12px;border-radius:8px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;transform:rotate(-12deg)}
+/* confirmação */
+.ticket{background:linear-gradient(180deg,#fff,#fbf5ea)}
+.confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:90}
+/* convite de abertura */
+.intro{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:hidden}
+.intro .flap,.intro .pocket{position:absolute;left:0;right:0;transition:transform 1.05s cubic-bezier(.7,0,.2,1)}
+.intro .pocket{bottom:0;height:64%;background:linear-gradient(180deg,#efe3cb,#e6d6b8)}
+.intro .flap{top:0;height:60%;z-index:2;background:linear-gradient(180deg,#fbf6ec,#f1e6d0);clip-path:polygon(0 0,100% 0,100% 60%,50% 100%,0 60%)}
+.intro-c{position:relative;z-index:3;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:8vh;padding:0 16px;transition:opacity .5s,transform .7s}
+.intro-c .eyebrow{margin:0}
+.seal{width:108px;height:108px;border-radius:50%;border:0;cursor:pointer;background:radial-gradient(circle at 35% 30%,#dcbf86,#a9834c 55%,#7a5b2f);box-shadow:0 12px 26px rgba(90,60,20,.35),inset 0 0 0 7px rgba(255,255,255,.12),inset 0 0 0 9px rgba(0,0,0,.08);color:#fff8e6;font-family:var(--script);font-size:38px;display:grid;place-items:center;animation:pulse 2.4s ease-in-out infinite}
+.seal:focus-visible{outline:2px solid var(--gold-dark);outline-offset:5px}
+@keyframes pulse{50%{transform:scale(1.05)}}
+.intro .to{font-family:var(--serif);font-style:italic;font-size:26px;margin:0;color:var(--ink)}
+.intro .s{margin:0}
+.intro.open .flap{transform:translateY(-105%)}
+.intro.open .pocket{transform:translateY(105%)}
+.intro.open .intro-c{opacity:0;transform:scale(1.25)}
+/* barra de atalhos (celular) */
+.tabbar{display:none}
+.toast{transform:translate(-50%,220px)}
+@media(max-width:759px){
+  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:35;background:rgba(255,253,249,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:4px max(6px,env(safe-area-inset-right,0px)) calc(4px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px))}
+  .tabbar a,.tabbar button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:500 10px var(--sans);letter-spacing:.04em;color:var(--muted);text-decoration:none;background:none;border:0;min-height:52px;cursor:pointer;padding:0}
+  .tabbar .on{color:var(--gold-dark)}
+  .tabbar .on .i{stroke-width:2}
+  body:not([data-route=admin]) footer{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  body:not([data-route=admin]) .toast{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
+  body[data-route=admin] .tabbar{display:none}
+}
+.tagband .btn{margin-top:20px}
+.tcard{width:100%;max-width:300px;display:block;margin:14px auto;border-radius:6px;box-shadow:0 14px 34px -14px rgba(80,60,30,.45);background:var(--soft);aspect-ratio:2/3}
+.album-note{max-width:520px;margin:-6px auto 22px;text-align:center}
+@media (prefers-reduced-motion:reduce){.br path{stroke-dashoffset:0}.br .leaf{opacity:1}.names2 span{background-position:0 0}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a href="#/" class="mono" id="mono">&amp;</a>
+  <button class="burger" data-action="menu" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+</header>
+<nav class="menu" id="menu" aria-label="Menu"></nav>
+<nav class="tabbar" id="tabbar" aria-label="Atalhos"></nav>
+<main id="app"></main>
+<footer id="footer"></footer>
+<div class="modal hidden" id="modal"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+'use strict';
+/* =====================================================================
+   CONFIGURAÇÃO — cole aqui os dados do seu projeto Supabase
+   (Project Settings → API). Deixe vazio para usar o modo demonstração.
+   ===================================================================== */
+const CONFIG = {
+  SUPABASE_URL: 'https://vaqnqecrsrcpwxkhmryg.supabase.co',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhcW5xZWNyc3JjcHd4a2htcnlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxMDY4MDUsImV4cCI6MjEwODY4MjgwNX0.mQKwtRgt-lX5HewvAeh675_79W6keCAldgPlDbbKkJ0'
+};
+const PREVIEW = !!window.__PREVIEW__;
+const DEMO = !CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY || !window.supabase;
+
+/* ============================ UTILITÁRIOS ============================ */
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const brl = v => Number(v || 0).toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+const brlShort = v => brl(v).replace(',00', '');
+const norm = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
+const mkCode = () => Math.random().toString(36).slice(2, 8).toUpperCase();
+const nowISO = () => new Date().toISOString();
+const range = (a, b) => Array.from({length: b - a + 1}, (_, i) => a + i);
+const plural = (n, s, p) => `${n} ${n === 1 ? s : p}`;
+const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+const cap = s => s ? s[0].toUpperCase() + s.slice(1) : '';
+function getPath(o, p){ return p.split('.').reduce((a, k) => a == null ? undefined : a[k], o); }
+function setPath(o, p, v){ const ks = p.split('.'); let a = o; ks.slice(0, -1).forEach(k => { if (typeof a[k] !== 'object' || a[k] === null) a[k] = {}; a = a[k]; }); a[ks[ks.length - 1]] = v; }
+function deepMerge(a, b){
+  if (b === undefined) return a;
+  if (Array.isArray(b)) return b;
+  if (b && typeof b === 'object' && a && typeof a === 'object' && !Array.isArray(a)) {
+    const o = {...a}; for (const k in b) o[k] = deepMerge(a[k], b[k]); return o;
+  }
+  return b;
+}
+function parseMoney(v){ v = String(v ?? '').replace(/[^\d,.]/g, ''); if (v.includes(',')) v = v.replace(/\./g, '').replace(',', '.'); const n = parseFloat(v); return isFinite(n) ? Math.round(n * 100) / 100 : 0; }
+function fmtDate(d){ if (!d) return ''; return cap(new Date(d + 'T12:00:00').toLocaleDateString('pt-BR', {weekday:'long', day:'numeric', month:'long', year:'numeric'})); }
+function fmtShort(d){ if (!d) return ''; return new Date(d + 'T12:00:00').toLocaleDateString('pt-BR'); }
+function fmtTime(t){ if (!t) return ''; const [h, m] = t.split(':'); return `${Number(h)}h${m && m !== '00' ? m : ''}`; }
+function fmtDT(iso){ return iso ? new Date(iso).toLocaleString('pt-BR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}) : ''; }
+const siteLink = r => location.href.split('#')[0] + '#/' + (r || '');
+function waNumber(p){ let d = String(p || '').replace(/\D/g, ''); if (!d) return ''; if (d.length <= 11) d = '55' + d.replace(/^0+/, ''); return d; }
+function toast(msg, type = ''){ const t = $('#toast'); t.textContent = msg; t.className = 'toast show ' + type; clearTimeout(toast._t); toast._t = setTimeout(() => t.className = 'toast', 3200); }
+function loadScript(src){ return new Promise((res, rej) => { if ([...document.scripts].some(s => s.src === src)) return res(); const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => rej(new Error('Falha ao carregar biblioteca. Verifique a internet.')); document.head.appendChild(s); }); }
+function downloadBlob(blob, name){ const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }
+function pickFile(accept, multiple = false){ return new Promise(res => { const i = document.createElement('input'); i.type = 'file'; i.accept = accept; i.multiple = multiple; i.onchange = () => res(multiple ? [...i.files] : i.files[0]); i.click(); }); }
+function compressToBlob(file, max = 1600, q = .82){
+  return new Promise((res, rej) => {
+    const img = new Image(); const url = URL.createObjectURL(file);
+    img.onload = () => {
+      let w = img.naturalWidth, h = img.naturalHeight; const s = Math.min(1, max / Math.max(w, h));
+      w = Math.round(w * s); h = Math.round(h * s);
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h); URL.revokeObjectURL(url);
+      c.toBlob(b => b ? res(b) : rej(new Error('Falha ao processar a imagem')), 'image/jpeg', q);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('Formato de imagem não suportado')); };
+    img.src = url;
+  });
+}
+const blobToDataURL = b => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b); });
+async function copyText(t){
+  try { await navigator.clipboard.writeText(t); }
+  catch { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+  toast('Copiado!');
+}
+async function busy(target, fn){
+  const btn = target && target.tagName === 'FORM' ? target.querySelector('button:not([type=button])') : target;
+  const old = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Aguarde…'; }
+  try { return await fn(); }
+  catch (e) { console.error(e); toast(e.message || 'Algo deu errado. Tente novamente.', 'err'); }
+  finally { if (btn && btn.isConnected) { btn.disabled = false; btn.innerHTML = old; } }
+}
+
+/* =============================== ÍCONES =============================== */
+const ICONS = {
+  gift:'<rect x="3.5" y="8.5" width="17" height="12" rx="1"/><path d="M2.5 8.5h19M12 8.5v12M12 8.5C10 4 6.5 3.5 6.5 6s3 2.5 5.5 2.5zm0 0c2-4.5 5.5-5 5.5-2.5S14.5 8.5 12 8.5z"/>',
+  pix:'<path d="M12 2.8l9.2 9.2-9.2 9.2L2.8 12z"/><path d="M8.5 12L12 8.5l3.5 3.5-3.5 3.5z"/>',
+  map:'<path d="M12 21s-7-6-7-11.3a7 7 0 0114 0C19 15 12 21 12 21z"/><circle cx="12" cy="9.7" r="2.4"/>',
+  heart:'<path d="M12 20s-7.8-4.7-7.8-10.4A4.3 4.3 0 0112 7.4a4.3 4.3 0 017.8 2.2C19.8 15.3 12 20 12 20z"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.6v.4"/>',
+  chat:'<path d="M4 4.5h16v11.5H9.5L4 20z"/>',
+  camera:'<path d="M3.5 8h3.5l2-3h6l2 3h3.5v11.5h-17z"/><circle cx="12" cy="13.3" r="3.6"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  edit:'<path d="M4 20h4L19.5 8.5l-4-4L4 16z"/>',
+  trash:'<path d="M4.5 7h15M9.5 7V4h5v3M6.5 7l1 13h9l1-13"/>',
+  send:'<path d="M3.5 11L20.5 3.5 13 20.5l-2-7.5z"/>',
+  download:'<path d="M12 4v11m-5-5l5 5 5-5M5 20h14"/>',
+  calendar:'<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  unlock:'<rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 017.6-1.7"/>',
+  eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
+  eyeoff:'<path d="M3 3l18 18M10.6 6c.5-.1.9-.1 1.4-.1C18 5.9 21.5 12 21.5 12a17 17 0 01-3.1 3.9M6.4 6.9C3.9 8.6 2.5 12 2.5 12S6 18.5 12 18.5c1.6 0 3-.4 4.2-1"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5M16 4.8a3.5 3.5 0 010 6.4M18 14.8c2 .7 3.2 2.4 3.5 5.2"/>',
+  logout:'<path d="M14 4.5H5.5v15H14M10 12h10.5M17 8.5l3.5 3.5-3.5 3.5"/>',
+  copy:'<rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2"/><path d="M15.5 8.5V5a1 1 0 00-1-1H5a1 1 0 00-1 1v9.5a1 1 0 001 1h3.5"/>',
+  image:'<rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="M20.5 16l-5-5-9 8.5"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  home:'<path d="M4 11l8-7 8 7v9h-5.5v-6h-5v6H4z"/>',
+  menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',
+  rings:'<circle cx="9" cy="14.5" r="5.5"/><circle cx="15" cy="14.5" r="5.5"/><path d="M15 3.5l2 2.3-2 2.3-2-2.3z"/>',
+  glass:'<path d="M7.5 3h9l-.6 6.2a3.9 3.9 0 01-7.8 0zM12 13.2V20M8.5 20.5h7"/>',
+  dress:'<path d="M9 3h6l-1 4 4.5 13.5h-13L10 7z"/>'
+};
+const ic = (n, s = 22) => `<svg class="i" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n] || ''}</svg>`;
+
+const SPRIG = (() => {
+  let leaves = '';
+  for (let i = 0; i < 5; i++) { const x = 22 + i * 14, up = i % 2 === 0, y = up ? 8.5 : 15.5; leaves += `<ellipse cx="${x}" cy="${y}" rx="5.2" ry="2.1" transform="rotate(${up ? -28 : 28} ${x} ${y})"/>`; }
+  const half = `<path d="M10 12H90" fill="none" stroke="currentColor" stroke-width=".8"/><g fill="currentColor">${leaves}</g>`;
+  return `<svg class="sprig" viewBox="0 0 200 24" aria-hidden="true">${half}<g transform="translate(200 0) scale(-1 1)">${half}</g><path d="M100 6.5l4.2 5.5-4.2 5.5-4.2-5.5z" fill="currentColor"/></svg>`;
+})();
+const divider = () => `<div class="divider">${SPRIG}</div>`;
+function branchSVG(cls){
+  const P = [[14, 236], [38, 96], [150, 12]];
+  const q = t => [0, 1].map(k => (1 - t) ** 2 * P[0][k] + 2 * (1 - t) * t * P[1][k] + t * t * P[2][k]);
+  let leaves = '';
+  for (let i = 1; i <= 10; i++) {
+    const t = i / 11, [x, y] = q(t), [x2, y2] = q(t + .01), ang = Math.atan2(y2 - y, x2 - x) * 180 / Math.PI, side = i % 2 ? 1 : -1, len = 17 - i * .9;
+    leaves += `<ellipse class="leaf" style="--d:${i * 110}ms" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${len.toFixed(1)}" ry="${(len * .36).toFixed(1)}" transform="rotate(${(ang + side * 48).toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}) translate(${len.toFixed(1)} 0)"/>`;
+    if (i % 3 === 0) { const [bx, by] = q(t + .03); leaves += `<circle class="leaf" style="--d:${i * 110 + 60}ms" cx="${(bx - side * 9).toFixed(1)}" cy="${(by + 6).toFixed(1)}" r="2.2"/>`; }
+  }
+  return `<svg class="${cls}" viewBox="0 0 180 250" aria-hidden="true"><path d="M14 236Q38 96 150 12" fill="none" stroke="currentColor" stroke-width="1.1"/><g fill="currentColor">${leaves}</g></svg>`;
+}
+function calendarHTML(d){
+  const y = d.getFullYear(), m = d.getMonth(), first = new Date(y, m, 1).getDay(), days = new Date(y, m + 1, 0).getDate();
+  const cells = [...Array(first).fill(''), ...range(1, days)];
+  return `<p class="eyebrow center">Reserve a data</p><h3>${cap(d.toLocaleDateString('pt-BR', {month: 'long'}))} de ${y}</h3>
+    <div class="cal-g">${['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map(w => `<span class="w">${w}</span>`).join('')}${cells.map(c => `<span class="${c === d.getDate() ? 'on' : ''}"><i>${c}</i></span>`).join('')}</div>`;
+}
+function confetti(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c = document.createElement('canvas'); c.className = 'confetti'; document.body.appendChild(c);
+  const W = innerWidth, H = innerHeight, dpr = devicePixelRatio || 1; c.width = W * dpr; c.height = H * dpr;
+  const x = c.getContext('2d'); x.scale(dpr, dpr);
+  const cols = ['#b08d57', '#c9a96e', '#e8d5a8', '#f3e6c8', '#8a6a3b'];
+  const ps = Array.from({length: 140}, () => ({x: W / 2 + (Math.random() - .5) * 60, y: H * .42, vx: (Math.random() - .5) * 13, vy: -Math.random() * 13 - 4, r: Math.random() * 360, vr: (Math.random() - .5) * 14, w: 5 + Math.random() * 7, h: 3 + Math.random() * 4, c: cols[Math.random() * cols.length | 0]}));
+  let t = 0;
+  (function f(){
+    t++; x.clearRect(0, 0, W, H);
+    ps.forEach(p => { p.vy += .26; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.r += p.vr; x.save(); x.translate(p.x, p.y); x.rotate(p.r * Math.PI / 180); x.globalAlpha = Math.max(0, 1 - t / 150); x.fillStyle = p.c; x.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); x.restore(); });
+    if (t < 150) requestAnimationFrame(f); else c.remove();
+  })();
+}
+
+/* ======================= CONFIGURAÇÕES PADRÃO ======================== */
+const DEFAULTS = {
+  name1: 'Luciano', name2: 'Isabelle', hashtag: '#LucianoEIsabelle',
+  date: '2027-05-15', time: '16:00', rsvpDeadline: '2027-04-15',
+  heroEyebrow: 'Save the date · vamos nos casar',
+  heroPhoto: '',
+  welcome: 'Será uma alegria imensa ter você ao nosso lado neste dia tão especial. Preparamos este espaço com carinho para você acompanhar cada detalhe.',
+  giftsIntro: 'Sua presença é o nosso maior presente! Mas, se quiser nos presentear, escolha um item abaixo.',
+  ceremony: {name: 'Local da cerimônia', address: 'Praça Exemplo, 100 - Centro, Ouro Branco - MG', time: '16:00'},
+  party: {name: 'Espaço de eventos', address: 'Rua Exemplo, 200 - Ouro Branco - MG', time: '18:00', same: false},
+  parking: 'Estacionamento gratuito no local da festa.',
+  contactPhone: '',
+  pix: {keyType: 'aleatoria', key: PREVIEW ? '00000000-0000-0000-0000-000000000000' : '', name: 'LUCIANO E ISABELLE', city: 'OURO BRANCO', suggested: [50, 100, 200, 500], message: 'Se preferir, contribua com qualquer valor para a nossa nova vida juntos.'},
+  story: {
+    intro: 'Cada história de amor é única, e a nossa começou assim…',
+    timeline: [
+      {year: '2019', title: 'Nos conhecemos', text: 'Conte aqui como vocês se conheceram.', photo: ''},
+      {year: '2021', title: 'Começamos a namorar', text: 'O primeiro encontro, a primeira viagem…', photo: ''},
+      {year: '2025', title: 'O pedido', text: 'Como foi o pedido de casamento.', photo: ''},
+      {year: '2027', title: 'O grande dia', text: 'E agora queremos celebrar com você!', photo: ''}
+    ],
+    message: 'Obrigado por fazer parte da nossa história. Mal podemos esperar para celebrar com você!'
+  },
+  guide: {
+    dress: 'Esporte fino. Evite branco, que é a cor da noiva.',
+    palette: ['#c9b8a8', '#a3b18a', '#d4a5a5', '#7d8fa8', '#e3cfa0'],
+    kids: 'Crianças são muito bem-vindas! Teremos um espaço kids na festa.',
+    accessibility: 'Os locais têm acesso para cadeira de rodas e vagas preferenciais. Se precisar de algo, fale com a gente.',
+    schedule: [{time: '16:00', item: 'Cerimônia'}, {time: '17:30', item: 'Fotos com os noivos'}, {time: '18:00', item: 'Recepção e jantar'}, {time: '20:00', item: 'Abertura da pista de dança'}],
+    faq: [
+      {q: 'Até quando devo confirmar presença?', a: 'Pedimos que confirme até a data indicada na página de confirmação.'},
+      {q: 'Posso levar acompanhante?', a: 'O número de pessoas está definido no seu convite. Ao confirmar, aparece quantas pessoas estão autorizadas.'},
+      {q: 'Como funciona a lista de presentes?', a: 'Escolha um presente e pague via Pix com o valor indicado. O item fica reservado no seu nome.'}
+    ]
+  },
+  rsvpOpen: true, albumOpen: false, messagesModeration: false
+};
+
+/* =================== BANCO LOCAL (MODO DEMONSTRAÇÃO) ================== */
+const LS_KEY = 'casamento_demo_v2';
+function seed(){
+  const G = (name, max, status = 'pendente', people = 0, group = '', phone = '') => ({id: uid(), name, max_people: max, status, people, group_name: group, phone, companions: '', message: '', responded_at: status === 'pendente' ? null : nowISO(), code: mkCode(), created_at: nowISO()});
+  const P = (title, category, price, description = '', unique = true) => ({id: uid(), title, category, price, description, image_url: '', link: '', unique_reserve: unique, reserved_by: null, reserved_message: '', reserved_at: null, times_given: 0, sort: 0, created_at: nowISO()});
+  const gifts = [
+    P('Jogo de panelas', 'fisico', 450, 'Jogo antiaderente com 5 peças'),
+    P('Air fryer', 'fisico', 600, 'Para os jantares práticos do dia a dia'),
+    P('Jogo de cama queen', 'fisico', 300, 'Algodão 300 fios'),
+    P('Jantar romântico', 'experiencia', 250, 'Um jantar especial na lua de mel'),
+    P('Passeio de barco', 'experiencia', 400, 'Passeio durante a lua de mel'),
+    P('Cota lua de mel', 'cota', 100, 'Ajude a realizar nossa viagem', false),
+    P('Cota passagem aérea', 'cota', 200, 'Um pedacinho da passagem', false),
+    P('Cota hospedagem', 'cota', 150, 'Uma diária no hotel', false)
+  ];
+  gifts[1].reserved_by = 'João Pedro Santos'; gifts[1].reserved_at = nowISO(); gifts[1].times_given = 1;
+  gifts[5].times_given = 2;
+  return {
+    settings: {},
+    guests: [
+      G('Maria Aparecida Silva', 2, 'confirmado', 2, 'Família da noiva', '31999990001'),
+      G('João Pedro Santos', 1, 'confirmado', 1, 'Amigos'),
+      G('Carlos e Fernanda Oliveira', 2, 'pendente', 0, 'Amigos', '31999990002'),
+      G('Ana Beatriz Costa', 3, 'pendente', 0, 'Família do noivo', '31999990003'),
+      G('Roberto Almeida', 1, 'recusado', 0, 'Trabalho'),
+      G('Juliana Ferreira', 2, 'pendente', 0, 'Amigos'),
+      Object.assign(G('Família Souza', 4, 'confirmado', 3, 'Família do noivo'), {children: 1, diet: 'Uma pessoa vegetariana'}),
+      G('Pedro Henrique Lima', 1, 'pendente', 0, 'Trabalho', '31999990004')
+    ],
+    gifts,
+    contributions: [
+      {id: uid(), name: 'Tia Rosa', amount: 100, message: 'Felicidades ao casal!', gift_id: gifts[5].id, status: 'confirmado', created_at: nowISO()},
+      {id: uid(), name: 'Marcos', amount: 150, message: '', gift_id: null, status: 'informado', created_at: nowISO()}
+    ],
+    messages: [
+      {id: uid(), name: 'Maria Aparecida', text: 'Que Deus abençoe essa união! Estamos muito felizes por vocês.', approved: true, created_at: nowISO()},
+      {id: uid(), name: 'João Pedro', text: 'Contando os dias para essa festa!', approved: true, created_at: nowISO()}
+    ],
+    photos: []
+  };
+}
+let store = null;
+try { store = JSON.parse(localStorage.getItem(LS_KEY)); } catch {}
+if (!store || !store.guests) store = seed();
+function persist(){ try { localStorage.setItem(LS_KEY, JSON.stringify(store)); } catch { toast('Espaço do navegador cheio. No modo demonstração as fotos ocupam bastante espaço.', 'err'); } }
+let demoAdmin = false;
+try { demoAdmin = sessionStorage.getItem('demoAdmin') === '1'; } catch {}
+const byDate = (a, b) => String(b.created_at).localeCompare(String(a.created_at));
+
+const LocalDB = {
+  async getSettings(){ return deepMerge(structuredClone(DEFAULTS), store.settings || {}); },
+  async saveSettings(s){ store.settings = s; persist(); },
+  async findGuests(q){ const n = norm(q); if (n.length < 3) return []; return store.guests.filter(g => norm(g.name).includes(n)).slice(0, 5).map(({id, name, max_people, status, people, children}) => ({id, name, max_people, status, people, children})); },
+  async guestByCode(c){ const g = store.guests.find(x => String(x.code).toUpperCase() === String(c).toUpperCase()); return g ? {id: g.id, name: g.name, max_people: g.max_people, status: g.status, people: g.people, children: g.children || 0} : null; },
+  async submitRsvp(id, d){
+    const g = store.guests.find(x => x.id === id); if (!g) throw new Error('Convidado não encontrado');
+    if (d.status === 'confirmado' && (d.people < 1 || d.people > g.max_people)) throw new Error(`Quantidade acima do permitido (máx. ${g.max_people})`);
+    Object.assign(g, {status: d.status, people: d.status === 'confirmado' ? d.people : 0, children: d.status === 'confirmado' ? Math.min(d.children || 0, d.people) : 0, diet: d.diet || '', companions: d.companions || '', message: d.message || '', phone: d.phone || g.phone, responded_at: nowISO()});
+    persist(); return {ok: true, code: g.code, name: g.name};
+  },
+  async listGifts(){ return store.gifts.map(g => ({...g, reserved: !!g.reserved_by})).sort((a, b) => (a.sort || 0) - (b.sort || 0)); },
+  async reserveGift(id, name, message){
+    const g = store.gifts.find(x => x.id === id); if (!g) throw new Error('Presente não encontrado');
+    if (String(name || '').trim().length < 2) throw new Error('Informe seu nome');
+    if (g.unique_reserve) { if (g.reserved_by) throw new Error('Este presente já foi escolhido por outro convidado'); g.reserved_by = name.trim(); g.reserved_message = message || ''; g.reserved_at = nowISO(); }
+    g.times_given = (g.times_given || 0) + 1; persist(); return {ok: true, title: g.title, price: g.price};
+  },
+  async addContribution(c){ store.contributions.unshift({id: uid(), status: 'informado', created_at: nowISO(), gift_id: null, message: '', ...c}); persist(); },
+  async listMessages(){ return store.messages.filter(m => m.approved).sort(byDate); },
+  async addMessage(name, text){ const approved = !store.settings?.messagesModeration; store.messages.unshift({id: uid(), name: name.trim(), text: text.trim(), approved, created_at: nowISO()}); persist(); return {approved}; },
+  async listPhotos(){ return store.photos.map(p => ({...p, url: p.data})).sort(byDate); },
+  async uploadPhoto(file, name){
+    if (!S.albumOpen) throw new Error('O álbum ainda não está aberto');
+    if (!file.type.startsWith('image/')) throw new Error('No modo demonstração só é possível enviar fotos (vídeos funcionam com o Supabase).');
+    const data = await blobToDataURL(await compressToBlob(file, 1000, .7));
+    store.photos.unshift({id: uid(), name: name || '', data, type: 'image', created_at: nowISO()}); persist();
+  },
+  async session(){ return demoAdmin; },
+  async login(email, pw){ if (pw !== 'demo') throw new Error('No modo demonstração a senha é "demo"'); demoAdmin = true; try { sessionStorage.setItem('demoAdmin', '1'); } catch {} },
+  async logout(){ demoAdmin = false; try { sessionStorage.removeItem('demoAdmin'); } catch {} },
+  async listGuests(){ return store.guests.map(g => ({...g})).sort((a, b) => a.name.localeCompare(b.name)); },
+  async saveGuest(g){ if (g.id) Object.assign(store.guests.find(x => x.id === g.id), g); else store.guests.push({...g, id: uid(), code: mkCode(), created_at: nowISO()}); persist(); },
+  async saveGuests(list){ list.forEach(g => store.guests.push({status: 'pendente', people: 0, ...g, id: uid(), code: mkCode(), created_at: nowISO()})); persist(); },
+  async deleteGuest(id){ store.guests = store.guests.filter(g => g.id !== id); persist(); },
+  async listGiftsAdmin(){ return store.gifts.map(g => ({...g})).sort((a, b) => (a.sort || 0) - (b.sort || 0)); },
+  async saveGift(g){ if (g.id) Object.assign(store.gifts.find(x => x.id === g.id), g); else store.gifts.push({reserved_by: null, times_given: 0, ...g, id: uid(), created_at: nowISO()}); persist(); },
+  async deleteGift(id){ store.gifts = store.gifts.filter(g => g.id !== id); persist(); },
+  async unreserveGift(id){ const g = store.gifts.find(x => x.id === id); Object.assign(g, {reserved_by: null, reserved_message: '', reserved_at: null, times_given: Math.max(0, (g.times_given || 1) - 1)}); persist(); },
+  async listContributions(){ return store.contributions.map(c => ({...c})).sort(byDate); },
+  async saveContribution(c){ if (c.id) Object.assign(store.contributions.find(x => x.id === c.id), c); else store.contributions.unshift({...c, id: uid(), created_at: nowISO()}); persist(); },
+  async deleteContribution(id){ store.contributions = store.contributions.filter(c => c.id !== id); persist(); },
+  async listMessagesAdmin(){ return store.messages.map(m => ({...m})).sort(byDate); },
+  async updateMessage(id, patch){ Object.assign(store.messages.find(m => m.id === id), patch); persist(); },
+  async deleteMessage(id){ store.messages = store.messages.filter(m => m.id !== id); persist(); },
+  async deletePhoto(p){ store.photos = store.photos.filter(x => x.id !== p.id); persist(); },
+  async uploadSiteImage(file){ return blobToDataURL(await compressToBlob(file, 1200, .78)); }
+};
+
+/* ============================ SUPABASE =============================== */
+const sb = DEMO ? null : window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+const must = ({data, error}) => { if (error) throw new Error(error.message || 'Erro no servidor'); return data; };
+const SupaDB = {
+  async getSettings(){ const d = must(await sb.from('settings').select('data').eq('id', 1).maybeSingle()); return deepMerge(structuredClone(DEFAULTS), d?.data || {}); },
+  async saveSettings(s){ must(await sb.from('settings').upsert({id: 1, data: s, updated_at: nowISO()})); },
+  async findGuests(q){ return must(await sb.rpc('find_guest', {q})) || []; },
+  async guestByCode(c){ const r = must(await sb.rpc('guest_by_code', {p_code: c})); return (r || [])[0] || null; },
+  async submitRsvp(id, d){ return must(await sb.rpc('submit_rsvp', {p_id: id, p_status: d.status, p_people: d.people, p_children: d.children || 0, p_companions: d.companions || '', p_message: d.message || '', p_phone: d.phone || '', p_diet: d.diet || ''})); },
+  async listGifts(){ return must(await sb.rpc('list_gifts')) || []; },
+  async reserveGift(id, name, message){ return must(await sb.rpc('reserve_gift', {p_id: id, p_name: name, p_message: message || ''})); },
+  async addContribution(c){ must(await sb.from('contributions').insert({name: c.name, amount: c.amount, message: c.message || null, gift_id: c.gift_id || null})); },
+  async listMessages(){ return must(await sb.from('messages').select('id,name,text,created_at').eq('approved', true).order('created_at', {ascending: false}).limit(300)); },
+  async addMessage(name, text){ return must(await sb.rpc('add_message', {p_name: name, p_text: text})); },
+  async listPhotos(){ const rows = must(await sb.from('photos').select('*').order('created_at', {ascending: false}).limit(1000)); return rows.map(p => ({...p, url: sb.storage.from('album').getPublicUrl(p.path).data.publicUrl})); },
+  async uploadPhoto(file, name){
+    const isVideo = file.type.startsWith('video/');
+    if (isVideo && file.size > 50 * 1024 * 1024) throw new Error(`O vídeo "${file.name}" passa de 50 MB`);
+    let blob = file, type = file.type || (isVideo ? 'video/mp4' : 'image/jpeg'), ext = (file.name.split('.').pop() || (isVideo ? 'mp4' : 'jpg')).toLowerCase();
+    if (!isVideo) {
+      try { blob = await compressToBlob(file, 2000, .85); type = 'image/jpeg'; ext = 'jpg'; }
+      catch { if (file.size > 25 * 1024 * 1024) throw new Error(`A foto "${file.name}" passa de 25 MB`); }
+    }
+    const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext.replace(/[^a-z0-9]/g, '') || 'bin'}`;
+    must(await sb.storage.from('album').upload(path, blob, {contentType: type}));
+    must(await sb.from('photos').insert({name: name || null, path, type: isVideo ? 'video' : 'image'}));
+  },
+  async session(){ const {data} = await sb.auth.getSession(); if (!data.session) return null; return must(await sb.rpc('is_admin')) ? data.session : null; },
+  async login(email, password){
+    const {error} = await sb.auth.signInWithPassword({email, password});
+    if (error) throw new Error('E-mail ou senha incorretos');
+    if (!must(await sb.rpc('is_admin'))) { await sb.auth.signOut(); throw new Error('Este e-mail não tem acesso ao painel'); }
+  },
+  async logout(){ await sb.auth.signOut(); },
+  async listGuests(){ return must(await sb.from('guests').select('*').order('name')); },
+  async saveGuest(g){ const {id, ...row} = g; delete row.code; delete row.created_at; if (id) must(await sb.from('guests').update(row).eq('id', id)); else must(await sb.from('guests').insert(row)); },
+  async saveGuests(list){ must(await sb.from('guests').insert(list)); },
+  async deleteGuest(id){ must(await sb.from('guests').delete().eq('id', id)); },
+  async listGiftsAdmin(){ return must(await sb.from('gifts').select('*').order('sort').order('created_at')); },
+  async saveGift(g){ const {id, ...row} = g; delete row.created_at; if (id) must(await sb.from('gifts').update(row).eq('id', id)); else must(await sb.from('gifts').insert(row)); },
+  async deleteGift(id){ must(await sb.from('gifts').delete().eq('id', id)); },
+  async unreserveGift(id){ const g = A.gifts.find(x => x.id === id); must(await sb.from('gifts').update({reserved_by: null, reserved_message: null, reserved_at: null, times_given: Math.max(0, (g?.times_given || 1) - 1)}).eq('id', id)); },
+  async listContributions(){ return must(await sb.from('contributions').select('*').order('created_at', {ascending: false})); },
+  async saveContribution(c){ const {id, ...row} = c; delete row.created_at; if (id) must(await sb.from('contributions').update(row).eq('id', id)); else must(await sb.from('contributions').insert(row)); },
+  async deleteContribution(id){ must(await sb.from('contributions').delete().eq('id', id)); },
+  async listMessagesAdmin(){ return must(await sb.from('messages').select('*').order('created_at', {ascending: false})); },
+  async updateMessage(id, patch){ must(await sb.from('messages').update(patch).eq('id', id)); },
+  async deleteMessage(id){ must(await sb.from('messages').delete().eq('id', id)); },
+  async deletePhoto(p){ await sb.storage.from('album').remove([p.path]); must(await sb.from('photos').delete().eq('id', p.id)); },
+  async uploadSiteImage(file){ const blob = await compressToBlob(file, 1800, .85); const path = `site-${Date.now()}.jpg`; must(await sb.storage.from('site').upload(path, blob, {contentType: 'image/jpeg'})); return sb.storage.from('site').getPublicUrl(path).data.publicUrl; }
+};
+const DB = DEMO ? LocalDB : SupaDB;
+
+/* ============================== PIX ================================== */
+function emv(id, val){ const v = String(val); return id + String(v.length).padStart(2, '0') + v; }
+function crc16(str){ let crc = 0xFFFF; for (let i = 0; i < str.length; i++) { crc ^= str.charCodeAt(i) << 8; for (let j = 0; j < 8; j++) { crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) : (crc << 1); crc &= 0xFFFF; } } return crc.toString(16).toUpperCase().padStart(4, '0'); }
+function pixPayload({key, name, city, amount}){
+  const clean = s => norm(s).toUpperCase().replace(/[^A-Z0-9 ]/g, '').trim();
+  const gui = emv('00', 'br.gov.bcb.pix') + emv('01', String(key).trim());
+  let p = emv('00', '01') + emv('26', gui) + emv('52', '0000') + emv('53', '986') +
+    (amount > 0 ? emv('54', Number(amount).toFixed(2)) : '') + emv('58', 'BR') +
+    emv('59', clean(name).slice(0, 25) || 'NOIVOS') + emv('60', clean(city).slice(0, 15) || 'BRASIL') + emv('62', emv('05', '***'));
+  p += '6304'; return p + crc16(p);
+}
+function pixKey(cfg = S){
+  const k = String(cfg.pix.key || '').trim(), t = cfg.pix.keyType;
+  if (t === 'celular') { let d = k.replace(/\D/g, ''); if (!(d.startsWith('55') && d.length > 11)) d = '55' + d; return '+' + d; }
+  if (t === 'cpf') return k.replace(/\D/g, '');
+  if (t === 'email' || t === 'aleatoria') return k.toLowerCase();
+  return k;
+}
+function pixBlock(amount, cfg = S){
+  if (!cfg.pix.key) return '<p class="note mt">A chave Pix ainda não foi cadastrada pelos noivos.</p>';
+  const code = pixPayload({...cfg.pix, key: pixKey(cfg), amount});
+  return `<div class="pix"><div class="qr-wrap"><div class="qr" data-qr="${esc(code)}"></div>${PREVIEW ? '<span class="wm"><b>Exemplo</b></span>' : ''}</div>
+    <p class="s center">${amount > 0 ? 'Valor: <b>' + brl(amount) + '</b> · ' : ''}Favorecido: ${esc(cfg.pix.name)}</p>
+    <label>Pix copia e cola</label><div class="copy">${esc(code)}</div>
+    <div class="grid g2 mt"><button type="button" class="btn sm" data-action="copy" data-text="${esc(code)}">${ic('copy', 16)} Copiar código</button><button type="button" class="btn sm ghost" data-action="copy" data-text="${esc(pixKey(cfg))}">Copiar chave</button></div></div>`;
+}
+function hydrateQR(root = document){
+  $$('[data-qr]', root).forEach(el => {
+    if (el.dataset.done) return; el.dataset.done = '1'; el.innerHTML = '';
+    if (window.QRCode) new QRCode(el, {text: el.dataset.qr, width: 200, height: 200, correctLevel: QRCode.CorrectLevel.M});
+    else el.innerHTML = '<p class="s">QR Code indisponível — use o copia e cola.</p>';
+  });
+}
+
+/* ============================ ESTRUTURA ============================== */
+let S = structuredClone(DEFAULTS);
+let timers = [];
+const NAV = [['', 'Início'], ['rsvp', 'Confirmar presença'], ['presentes', 'Lista de presentes'], ['pix', 'Presente via Pix'], ['local', 'Local e roteiro'], ['historia', 'Nossa história'], ['guia', 'Guia do convidado'], ['mural', 'Mural de mensagens'], ['album', 'Álbum dos convidados']];
+const route = () => location.hash.replace(/^#\/?/, '').split(/[?/]/)[0] || 'home';
+const titleBlock = (t, lead, eyebrow = '') => `<div class="title fade">${eyebrow ? `<p class="eyebrow">${esc(eyebrow)}</p>` : ''}<h2>${esc(t)}</h2>${divider()}${lead ? `<p class="lead">${esc(lead)}</p>` : ''}</div>`;
+const weddingDate = () => new Date(`${S.date}T${S.time || '00:00'}:00-03:00`);
+const contactLink = (txt = 'Fale com os noivos') => S.contactPhone ? `<a href="https://wa.me/${waNumber(S.contactPhone)}" target="_blank" rel="noopener">${txt}</a>` : '';
+const initials = () => `${(S.name1 || ' ')[0]} & ${(S.name2 || ' ')[0]}`;
+
+function applyBrand(){
+  document.title = `${S.name1} & ${S.name2} · Nosso casamento`;
+  $('#mono').textContent = initials();
+  $('#menu').innerHTML = `<button class="x" data-action="menu" aria-label="Fechar menu">${ic('x', 26)}</button>` +
+    NAV.map(([r, l]) => `<a href="#/${r}" data-r="${r || 'home'}">${l}</a>`).join('') + '<a href="#/admin" class="small" data-r="admin">Área dos noivos</a>';
+  $('#tabbar').innerHTML = [['home', '#/', 'home', 'Início'], ['rsvp', '#/rsvp', 'check', 'Presença'], ['presentes', '#/presentes', 'gift', 'Presentes'], ['pix', '#/pix', 'pix', 'Pix']].map(([r, h, i, l]) => `<a href="${h}" data-r="${r}">${ic(i, 22)}${l}</a>`).join('') + `<button data-action="menu">${ic('menu', 22)}Mais</button>`;
+  $('#footer').innerHTML = `<span class="mono">${esc(initials())}</span><p>${esc(S.name1)} & ${esc(S.name2)} · ${fmtShort(S.date)}</p>${S.hashtag ? `<p>${esc(S.hashtag)}</p>` : ''}<p><a href="#/admin">Área dos noivos</a></p>`;
+}
+function closeMenu(){ $('#menu').classList.remove('open'); }
+
+async function render(){
+  timers.forEach(clearInterval); timers = []; closeMenu(); closeModal();
+  const r = route();
+  document.body.dataset.route = r;
+  $$('#tabbar [data-r]').forEach(a => a.classList.toggle('on', a.dataset.r === r));
+  if (rt && r !== 'admin') { sb.removeChannel(rt); rt = null; }
+  $$('#menu a').forEach(a => a.classList.toggle('active', a.dataset.r === r));
+  const app = $('#app');
+  app.innerHTML = '<div class="empty"><span class="spin"></span></div>';
+  try { await (PAGES[r] || PAGES.home)(app); }
+  catch (e) { console.error(e); app.innerHTML = `<div class="wrap section empty">Não foi possível carregar esta página.<br><small>${esc(e.message)}</small></div>`; }
+  window.scrollTo(0, 0);
+}
+
+/* ============================== MODAL ================================ */
+function openModal(html, cls = ''){
+  const sh = $('#sheet'); sh.className = 'sheet ' + cls;
+  sh.innerHTML = `<div class="sheet-head"><button class="x" data-action="close" aria-label="Fechar">${ic('x')}</button></div>` + html;
+  $('#modal').classList.remove('hidden'); document.body.style.overflow = 'hidden'; hydrateQR(sh);
+}
+function closeModal(){ $('#modal').classList.add('hidden'); document.body.style.overflow = ''; $('#sheet').innerHTML = ''; }
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+
+/* ======================= PÁGINAS DOS CONVIDADOS ====================== */
+let rsvpList = [], GIFTS = [], giftFilter = 'todos', giftPending = null;
+const CAT = {fisico: 'Presente', experiencia: 'Experiência', cota: 'Cota'};
+
+function startCountdown(el){
+  const tick = () => {
+    const ms = weddingDate() - Date.now();
+    if (ms <= 0) {
+      if (!el.dataset.done) { el.dataset.done = '1'; Object.assign(el.style, {flexDirection: 'column', alignItems: 'center', gap: '12px'});
+        el.innerHTML = ms > -864e5 ? '<p class="hero-date">Chegou o grande dia!</p>' : '<p class="hero-date">Obrigado por celebrar com a gente!</p><a class="btn" href="#/album">Ver o álbum</a>'; }
+      return;
+    }
+    const v = [[Math.floor(ms / 864e5), 'dias'], [Math.floor(ms / 36e5) % 24, 'horas'], [Math.floor(ms / 6e4) % 60, 'min'], [Math.floor(ms / 1e3) % 60, 'seg']];
+    el.innerHTML = v.map(([n, l]) => `<div><b>${String(n).padStart(2, '0')}</b><small>${l}</small></div>`).join('');
+  };
+  tick(); timers.push(setInterval(tick, 1000));
+}
+
+const PAGES = {
+  async home(app){
+    const photo = S.heroPhoto, d = new Date(S.date + 'T12:00:00');
+    const sched = (S.guide.schedule || []).slice(0, 4), first = (S.story.timeline || []).find(t => t.photo) || {};
+    const dd = n => String(n).padStart(2, '0');
+    app.innerHTML = `
+    <section class="hero2">
+      ${branchSVG('br br-tl')}${branchSVG('br br-br')}
+      <div class="hero2-in">
+        <div class="arch fade">${photo ? `<img src="${esc(photo)}" alt="${esc(S.name1)} e ${esc(S.name2)}">` : `<div class="arch-ph">${ic('rings', 56)}<span>Foto do casal</span></div>`}</div>
+        <div>
+          <p class="eyebrow">${esc(S.heroEyebrow)}</p>
+          <h1 class="names2"><span>${esc(S.name1)}</span><em>&amp;</em><span>${esc(S.name2)}</span></h1>
+          <p class="dateline"><span>${d.toLocaleDateString('pt-BR', {weekday: 'short'}).replace('.', '')}</span><b>${dd(d.getDate())} · ${dd(d.getMonth() + 1)} · ${d.getFullYear()}</b><span>${fmtTime(S.time)}</span></p>
+          <p class="place-l">${esc(S.ceremony.name)}</p>
+          <div class="countdown" id="cd"></div>
+          <a class="btn gold" href="#/rsvp">${ic('check', 16)} Confirmar presença</a>
+          ${S.rsvpDeadline ? `<p class="s mt">Confirme até ${fmtShort(S.rsvpDeadline)}</p>` : ''}
+        </div>
+      </div>
+    </section>
+    <section class="section wrap center">${divider()}<p class="welcome">${esc(S.welcome)}</p><p class="sig">${esc(S.name1)} & ${esc(S.name2)}</p></section>
+    <section class="wrap"><div class="std">
+      <div class="card cal">${calendarHTML(d)}</div>
+      <div class="std-info">
+        <div class="info-row">${ic('rings', 24)}<div><p class="eyebrow">Cerimônia · ${fmtTime(S.ceremony.time || S.time)}</p><p>${esc(S.ceremony.name)}</p><p class="s">${esc(S.ceremony.address)}</p></div></div>
+        ${S.party.same ? '' : `<div class="info-row">${ic('glass', 24)}<div><p class="eyebrow">Festa · ${fmtTime(S.party.time)}</p><p>${esc(S.party.name)}</p><p class="s">${esc(S.party.address)}</p></div></div>`}
+        ${S.guide.dress ? `<div class="info-row">${ic('dress', 24)}<div><p class="eyebrow">Traje</p><p>${esc(S.guide.dress)}</p></div></div>` : ''}
+        <a class="btn" href="#/local">${ic('map', 16)} Como chegar</a>
+      </div>
+    </div></section>
+    ${sched.length ? `<section class="section wrap"><div class="title"><p class="eyebrow">O grande dia</p><h2>Programação</h2>${divider()}</div><ol class="day">${sched.map(s => `<li><b>${fmtTime(s.time)}</b><span>${esc(s.item)}</span></li>`).join('')}</ol></section>` : ''}
+    <section class="wrap story-t">
+      <div class="arch sm">${first.photo ? `<img src="${esc(first.photo)}" alt="">` : `<div class="arch-ph">${ic('heart', 40)}<span>Nossa foto</span></div>`}</div>
+      <div><p class="eyebrow">Nossa história</p><h2>Como tudo começou</h2><p>${esc(S.story.intro)}</p><a class="btn" href="#/historia">Ler nossa história</a></div>
+    </section>
+    <section class="wrap"><div class="title"><p class="eyebrow">Para você</p><h2>Tudo sobre o casamento</h2>${divider()}</div><div class="quick">
+      <a href="#/presentes">${ic('gift', 28)}Lista de presentes</a>
+      <a href="#/pix">${ic('pix', 28)}Presente via Pix</a>
+      <a href="#/guia">${ic('info', 28)}Guia do convidado</a>
+      <a href="#/local">${ic('map', 28)}Local e roteiro</a>
+      <a href="#/historia">${ic('heart', 28)}Nossa história</a>
+      <a href="#/mural">${ic('chat', 28)}Mural de recados</a>
+      <a href="#/album">${ic('camera', 28)}Álbum</a>
+      <a href="#/rsvp">${ic('check', 28)}Confirmar presença</a>
+    </div></section>
+    ${S.hashtag ? `<section class="tagband">${divider()}<p class="eyebrow">Compartilhe com a gente</p><p class="tag">${esc(S.hashtag)}</p><p class="s">Use no Instagram e envie suas fotos também para o nosso álbum, assim elas chegam até nós.</p><a class="btn gold" href="#/album">${ic('camera', 16)} Enviar fotos para o álbum</a></section>` : ''}`;
+    startCountdown($('#cd'));
+  },
+
+  async rsvp(app){
+    app.innerHTML = `<section class="section wrap narrow">${titleBlock('Confirmação de presença', S.rsvpDeadline ? 'Por favor, confirme até ' + fmtShort(S.rsvpDeadline) : '')}<div id="rsvp" class="card"></div></section>`;
+    const code = location.hash.replace(/^#\/?/, '').split('/')[1];
+    if (code && S.rsvpOpen) { const g = await DB.guestByCode(decodeURIComponent(code)).catch(() => null); if (g) return rsvpStep2(g); }
+    rsvpStep1();
+  },
+
+  async presentes(app){
+    app.innerHTML = `<section class="section wrap">${titleBlock('Lista de presentes', S.giftsIntro)}<div class="chips" id="gf"></div><div id="gl" class="gifts"></div><p class="center mt"><a href="#/pix">Prefere dar um valor livre via Pix?</a></p></section>`;
+    GIFTS = await DB.listGifts(); giftFilter = 'todos'; drawGifts();
+  },
+
+  async pix(app){
+    app.innerHTML = `<section class="section wrap narrow">${titleBlock('Presente via Pix', S.pix.message)}<div class="card" id="pixcard">
+      <form data-form="pix">
+        <label>Escolha um valor</label>
+        <div class="amounts">${(S.pix.suggested || []).map(v => `<button type="button" class="chip" data-action="amt" data-v="${v}">${brlShort(v)}</button>`).join('')}</div>
+        <label for="amt">Ou digite outro valor</label><input name="amount" id="amt" inputmode="decimal" placeholder="R$ 0,00" required>
+        <div id="pixbox"></div>
+        <label>Seu nome</label><input name="name" required minlength="2" autocomplete="name">
+        <label>Mensagem de carinho (opcional)</label><textarea name="message" maxlength="500" placeholder="Deixe um recado para os noivos"></textarea>
+        <button class="btn gold block mt">Já fiz o Pix — avisar os noivos</button>
+        <p class="s center mt">Faça o Pix pelo app do seu banco e depois toque no botão acima para que os noivos saibam.</p>
+      </form></div></section>`;
+    updatePixBox();
+    $('#amt').addEventListener('input', debounce(updatePixBox, 450));
+  },
+
+  async local(app){
+    const place = (p, label) => `<div class="card fade"><p class="eyebrow">${label}</p><h3>${esc(p.name)}</h3>
+      <p class="s">${ic('clock', 15)} ${fmtTime(p.time)} &nbsp; ${ic('map', 15)} ${esc(p.address)}</p>
+      <iframe class="map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa ${esc(p.name)}" src="https://www.google.com/maps?q=${encodeURIComponent(p.address)}&output=embed"></iframe>
+      <div class="grid g2"><a class="btn gold sm" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.address)}">Abrir no Google Maps</a><a class="btn sm" target="_blank" rel="noopener" href="https://waze.com/ul?q=${encodeURIComponent(p.address)}&navigate=yes">Abrir no Waze</a></div></div>`;
+    const sched = S.guide.schedule || [];
+    app.innerHTML = `<section class="section wrap">${titleBlock('Local e roteiro', 'Tudo o que você precisa para chegar com tranquilidade.')}
+      <div class="grid ${S.party.same ? '' : 'g2'}">${place(S.ceremony, S.party.same ? 'Cerimônia e festa' : 'Cerimônia')}${S.party.same ? '' : place(S.party, 'Festa')}</div>
+      <div class="grid g2 mt">
+        ${S.parking ? `<div class="card"><p class="eyebrow">Estacionamento</p><p style="margin:0">${esc(S.parking)}</p></div>` : ''}
+        ${sched.length ? `<div class="card"><p class="eyebrow">Programação</p><ul class="sched">${sched.map(s => `<li><b>${fmtTime(s.time)}</b><span>${esc(s.item)}</span></li>`).join('')}</ul></div>` : ''}
+      </div></section>`;
+  },
+
+  async historia(app){
+    const st = S.story;
+    app.innerHTML = `<section class="section wrap">${titleBlock('Nossa história', st.intro)}
+      <div class="tl">${(st.timeline || []).map(t => `<div class="tl-item fade"><div class="tl-year">${esc(t.year)}</div><h3>${esc(t.title)}</h3><p style="margin:0">${esc(t.text)}</p>${t.photo ? `<img src="${esc(t.photo)}" alt="${esc(t.title)}" loading="lazy">` : ''}</div>`).join('')}</div>
+      ${st.message ? `<div class="center section"><div class="ornament">${ic('heart', 18)}</div><p class="welcome">${esc(st.message)}</p><p class="mono" style="font-size:34px;margin-top:10px">${esc(S.name1)} & ${esc(S.name2)}</p></div>` : ''}
+    </section>`;
+  },
+
+  async guia(app){
+    const g = S.guide;
+    const box = (t, ico, txt) => txt ? `<div class="card"><p class="eyebrow">${ic(ico, 16)} ${t}</p><p style="margin:0">${esc(txt)}</p></div>` : '';
+    app.innerHTML = `<section class="section wrap">${titleBlock('Guia do convidado', 'Informações para você aproveitar cada momento.')}
+      <div class="grid g2">${box('Traje', 'heart', g.dress)}${box('Crianças', 'users', g.kids)}${box('Acessibilidade', 'info', g.accessibility)}
+      <div class="card"><p class="eyebrow">${ic('calendar', 16)} Confirmação</p><p style="margin:0">Confirme sua presença até <b>${fmtShort(S.rsvpDeadline)}</b>.</p><a class="btn gold sm mt" href="#/rsvp">Confirmar agora</a></div></div>
+      ${(g.palette || []).length ? `<div class="card mt"><p class="eyebrow">Paleta sugerida para os convidados</p><div class="swatches">${g.palette.filter(c => /^#[0-9a-f]{3,8}$/i.test(c)).map(c => `<span style="background:${c}" title="${c}"></span>`).join('')}</div><p class="s mt">Tons suaves combinam com a nossa decoração. Evite branco e off-white.</p></div>` : ''}
+      ${(g.schedule || []).length ? `<div class="card mt"><p class="eyebrow">Programação</p><ul class="sched">${g.schedule.map(s => `<li><b>${fmtTime(s.time)}</b><span>${esc(s.item)}</span></li>`).join('')}</ul></div>` : ''}
+      ${(g.faq || []).length ? `<div class="card mt"><p class="eyebrow">Dúvidas frequentes</p>${g.faq.map(f => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('')}</div>` : ''}
+      ${S.contactPhone ? `<p class="center mt">Outra dúvida? ${contactLink('Chame os noivos no WhatsApp')}</p>` : ''}
+    </section>`;
+  },
+
+  async mural(app){
+    app.innerHTML = `<section class="section wrap">${titleBlock('Mural de mensagens', 'Deixe um recado para os noivos lerem antes ou depois do grande dia.')}
+      <div class="card narrow" style="margin:0 auto 24px"><form data-form="msg">
+        <label>Seu nome</label><input name="name" required minlength="2" maxlength="80" autocomplete="name">
+        <label>Sua mensagem</label><textarea name="text" required minlength="2" maxlength="1000"></textarea>
+        <button class="btn gold block mt">Enviar recado</button>
+        ${S.messagesModeration ? '<p class="s center mt">Os recados aparecem no mural depois da aprovação dos noivos.</p>' : ''}
+      </form></div><div class="msgs" id="msgs"><div class="empty"><span class="spin"></span></div></div></section>`;
+    drawMessages();
+  },
+
+  async album(app){
+    if (!S.albumOpen) {
+      app.innerHTML = `<section class="section wrap narrow">${titleBlock('Álbum dos convidados')}<div class="card center">${ic('camera', 36)}<p>O álbum será aberto no dia do casamento, <b>${fmtShort(S.date)}</b>.</p><p class="s">Depois da festa, volte aqui para enviar suas fotos e vídeos e ver os registros de todos os convidados.</p>${S.hashtag ? `<p class="tag-inline" style="margin:14px 0 4px">${esc(S.hashtag)}</p><p class="s">No dia, use a hashtag no Instagram e envie as fotos aqui também.</p>` : ''}</div></section>`;
+      return;
+    }
+    app.innerHTML = `<section class="section wrap">${titleBlock('Álbum dos convidados', 'Compartilhe suas fotos e vídeos do nosso dia!')}${S.hashtag ? `<p class="s album-note">Postou no Instagram com <b>${esc(S.hashtag)}</b>? Envie aqui também para as fotos chegarem até os noivos.</p>` : ''}
+      <div class="card narrow" style="margin:0 auto 24px"><form data-form="photos">
+        <label>Seu nome (opcional)</label><input name="name" maxlength="80" autocomplete="name">
+        <label>Fotos e vídeos</label><input type="file" name="files" accept="image/*,video/*" multiple required>
+        <button class="btn gold block mt">${ic('camera', 16)} Enviar para o álbum</button><p class="s center mt" id="upmsg">Vídeos de até 50 MB.</p>
+      </form></div><div class="album" id="alb"></div></section>`;
+    drawAlbum();
+  },
+
+  async admin(app){
+    const s = await DB.session();
+    if (!s) {
+      app.innerHTML = `<section class="section wrap narrow">${titleBlock('Área dos noivos', 'Acesso restrito ao painel de controle.')}<div class="card"><form data-form="login">
+        <label>E-mail</label><input type="email" name="email" required autocomplete="username" ${DEMO ? 'value="noivos@demo.com"' : ''}>
+        <label>Senha</label><input type="password" name="password" required autocomplete="current-password">
+        <button class="btn gold block mt">${ic('unlock', 16)} Entrar</button>
+        ${DEMO ? '<p class="note mt">Modo demonstração: use a senha <b>demo</b>.</p>' : ''}
+      </form></div></section>`;
+      return;
+    }
+    app.innerHTML = `<section class="wrap"><div class="admin-head"><div><p class="eyebrow">Painel dos noivos</p><h2 style="margin:0">${esc(S.name1)} & ${esc(S.name2)}</h2></div><button class="iconbtn" data-action="logout" title="Sair" aria-label="Sair">${ic('logout', 18)}</button></div>
+      <div class="chips admin-tabs" id="atabs"></div><div id="apanel"><div class="empty"><span class="spin"></span></div></div></section>`;
+    draft = null;
+    await reloadAdmin(); subscribeRealtime();
+  }
+};
+
+/* ---- confirmação de presença ---- */
+function rsvpStep1(){
+  const box = $('#rsvp');
+  if (!S.rsvpOpen) { box.innerHTML = `<p class="center">As confirmações de presença estão encerradas. ${contactLink()}</p>`; return; }
+  box.innerHTML = `<label for="q">Digite seu nome como está no convite</label><input id="q" autocomplete="name" placeholder="Ex.: Maria Silva"><div id="matches" class="mt"></div>`;
+  const q = $('#q'), out = $('#matches');
+  q.addEventListener('input', debounce(async () => {
+    const v = q.value.trim();
+    if (v.length < 3) { out.innerHTML = v ? '<p class="s">Digite pelo menos 3 letras.</p>' : ''; return; }
+    out.innerHTML = '<p class="s"><span class="spin"></span> Procurando…</p>';
+    try {
+      rsvpList = await DB.findGuests(v);
+      out.innerHTML = rsvpList.length
+        ? '<p class="s">Toque no seu nome:</p>' + rsvpList.map(g => `<button class="opt-btn" data-action="pick-guest" data-id="${g.id}"><span>${esc(g.name)}</span>${g.status !== 'pendente' ? `<span class="badge ${g.status === 'confirmado' ? 'b-ok' : 'b-bad'}">${g.status === 'confirmado' ? 'Confirmado' : 'Não vai'}</span>` : ''}</button>`).join('')
+        : `<p class="note">Não encontramos esse nome. Tente só o primeiro nome ou o sobrenome. ${contactLink('Ainda não achou? Fale com os noivos.')}</p>`;
+    } catch (e) { out.innerHTML = `<p class="note">${esc(e.message)}</p>`; }
+  }, 400));
+  q.focus();
+}
+function rsvpStep2(g){
+  const max = g.max_people || 1, prev = g.status;
+  $('#rsvp').innerHTML = `<div class="fade"><p class="eyebrow">Olá,</p><h3>${esc(g.name)}</h3>
+    ${prev !== 'pendente' ? `<p class="note">Você já respondeu: <b>${prev === 'confirmado' ? `presença confirmada (${plural(g.people, 'pessoa', 'pessoas')})` : 'não poderá comparecer'}</b>. Se quiser, altere abaixo.</p>` : ''}
+    <p class="s">Seu convite é válido para ${plural(max, 'pessoa', 'pessoas')}.</p>
+    <form data-form="rsvp" data-id="${g.id}">
+      <div class="choice">
+        <label class="opt"><input type="radio" name="status" value="confirmado" required ${prev !== 'recusado' ? 'checked' : ''}> Sim, estarei presente!</label>
+        <label class="opt"><input type="radio" name="status" value="recusado" ${prev === 'recusado' ? 'checked' : ''}> Infelizmente não poderei ir</label>
+      </div>
+      <div id="yes" class="${prev === 'recusado' ? 'hidden' : ''}">
+        ${max > 1 ? `<label>Quantas pessoas irão (incluindo você)?</label><select name="people">${range(1, max).map(n => `<option value="${n}" ${n === (g.people || max) ? 'selected' : ''}>${n}</option>`).join('')}</select>
+        <label>Dessas, quantas são crianças até 10 anos?</label><select name="children">${range(0, max - 1).map(n => `<option value="${n}" ${n === (g.children || 0) ? 'selected' : ''}>${n === 0 ? 'Nenhuma' : n}</option>`).join('')}</select>
+        <label>Nomes dos acompanhantes</label><textarea name="companions" placeholder="Um nome por linha"></textarea>` : '<input type="hidden" name="people" value="1">'}
+        <label>Alguma restrição alimentar? (opcional)</label><input name="diet" maxlength="200" placeholder="Ex.: vegetariano, sem glúten, alergia a camarão">
+        <label>Seu WhatsApp (opcional)</label><input name="phone" inputmode="tel" autocomplete="tel" placeholder="(31) 99999-9999">
+      </div>
+      <label>Mensagem para os noivos (opcional)</label><textarea name="message" maxlength="500"></textarea>
+      <button class="btn gold block mt">Enviar resposta</button>
+      <button type="button" class="btn ghost block mt" data-action="rsvp-back">Não sou eu</button>
+    </form></div>`;
+  $$('#rsvp input[name=status]').forEach(r => r.addEventListener('change', () => $('#yes').classList.toggle('hidden', r.value === 'recusado' && r.checked)));
+}
+function rsvpDone(r){
+  const box = $('#rsvp');
+  if (r.status === 'confirmado') {
+    box.innerHTML = `<div class="ticket fade"><div class="ornament">${ic('check')}</div><p class="eyebrow">Presença confirmada</p><h3>${esc(r.name)}</h3><p style="margin:0">${plural(r.people, 'pessoa', 'pessoas')}${r.children ? ` · ${plural(r.children, 'criança', 'crianças')}` : ''}</p>
+      <div class="ornament"></div><p class="hero-date">${fmtDate(S.date)} · ${fmtTime(S.time)}</p><p>${esc(S.ceremony.name)}<br><span class="s">${esc(S.ceremony.address)}</span></p>
+      <p class="s">Código de confirmação</p><p class="code">${esc(r.code || '')}</p></div>
+      <div class="grid mt"><button class="btn gold" data-action="ics">${ic('calendar', 16)} Adicionar à agenda</button><a class="btn ghost" href="#/local">Como chegar</a><a class="btn ghost" href="#/presentes">Ver lista de presentes</a></div>
+      <p class="s center mt">Dica: tire um print desta tela como comprovante.</p>`;
+    confetti();
+  } else {
+    box.innerHTML = `<div class="center fade"><h3>Que pena!</h3><p>Obrigado por avisar, ${esc(String(r.name).split(' ')[0])}. Você vai fazer falta.</p><a class="btn" href="#/mural">Deixar um recado no mural</a></div>`;
+  }
+}
+function downloadIcs(){
+  if (PREVIEW) return toast('No site publicado, este botão salva o casamento na agenda do celular.');
+  const start = weddingDate(), end = new Date(start.getTime() + 6 * 36e5);
+  const f = d => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const escI = s => String(s).replace(/[,;\\]/g, m => '\\' + m);
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Casamento//PT-BR', 'BEGIN:VEVENT', `UID:${Date.now()}@casamento`, `DTSTAMP:${f(new Date())}`, `DTSTART:${f(start)}`, `DTEND:${f(end)}`, `SUMMARY:${escI(`Casamento ${S.name1} & ${S.name2}`)}`, `LOCATION:${escI(S.ceremony.name + ' - ' + S.ceremony.address)}`, `URL:${siteLink()}`, 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  downloadBlob(new Blob([ics], {type: 'text/calendar'}), 'casamento.ics');
+}
+
+/* ---- presentes ---- */
+function drawGifts(){
+  const cats = [['todos', 'Todos'], ['fisico', 'Presentes'], ['experiencia', 'Experiências'], ['cota', 'Cotas']].filter(([k]) => k === 'todos' || GIFTS.some(g => g.category === k));
+  $('#gf').innerHTML = cats.length > 2 ? cats.map(([k, l]) => `<button class="chip ${giftFilter === k ? 'on' : ''}" data-action="gf" data-v="${k}">${l}</button>`).join('') : '';
+  const list = GIFTS.filter(g => giftFilter === 'todos' || g.category === giftFilter);
+  $('#gl').innerHTML = list.map(g => {
+    const taken = g.unique_reserve && g.reserved;
+    return `<article class="card gift ${taken ? 'taken' : ''}"><div class="img" ${g.image_url ? `style="background-image:url('${esc(g.image_url)}')"` : ''}>${g.image_url ? '' : ic(g.category === 'experiencia' ? 'heart' : g.category === 'cota' ? 'pix' : 'gift', 44)}<span class="cat">${CAT[g.category] || ''}</span></div>
+      <div class="body"><h4>${esc(g.title)}</h4>${g.description ? `<p class="s">${esc(g.description)}</p>` : ''}<div class="price">${brl(g.price)}</div>
+      ${!g.unique_reserve && g.times_given ? `<p class="s">${g.times_given}× presenteado</p>` : ''}
+      <button class="btn ${taken ? 'ghost' : 'gold'} sm block" data-action="gift" data-id="${g.id}" ${taken ? 'disabled' : ''}>${taken ? 'Já escolhido' : 'Presentear'}</button></div></article>`;
+  }).join('') || '<div class="empty" style="grid-column:1/-1">Nenhum presente cadastrado ainda.</div>';
+}
+function updatePixBox(){
+  const a = parseMoney($('#amt').value);
+  $('#pixbox').innerHTML = pixBlock(a); hydrateQR($('#pixbox'));
+  $$('[data-action=amt]').forEach(b => b.classList.toggle('on', Number(b.dataset.v) === a));
+}
+
+/* ---- mural e álbum ---- */
+async function drawMessages(){
+  const box = $('#msgs'); if (!box) return;
+  try {
+    const list = await DB.listMessages();
+    box.innerHTML = list.map(m => `<div class="card msg fade"><p>“${esc(m.text)}”</p><span class="who">${esc(m.name)}</span></div>`).join('') || '<div class="empty" style="grid-column:1/-1">Seja o primeiro a deixar um recado!</div>';
+  } catch (e) { box.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+async function drawAlbum(){
+  const box = $('#alb'); if (!box) return;
+  const list = await DB.listPhotos();
+  box.innerHTML = list.map(photoCell).join('') || '<div class="empty" style="grid-column:1/-1">Ainda não há fotos. Envie as suas!</div>';
+}
+function photoCell(p, admin = false){
+  const media = p.type === 'video'
+    ? `<video class="ph" src="${esc(p.url)}#t=0.5" preload="metadata" muted playsinline data-action="view" data-src="${esc(p.url)}" data-type="video"></video>`
+    : `<img class="ph" src="${esc(p.url)}" loading="lazy" alt="${esc(p.name ? 'Foto de ' + p.name : 'Foto do álbum')}" data-action="view" data-src="${esc(p.url)}" data-type="image">`;
+  return `<div class="cell ${p.type === 'video' ? 'vid' : ''}">${media}${admin ? `<button class="del" data-action="photo-del" data-id="${p.id}" aria-label="Excluir">${ic('trash', 16)}</button>` : ''}</div>`;
+}
+
+/* ========================= PAINEL DOS NOIVOS ========================= */
+let A = {guests: [], gifts: [], contrib: [], msgs: [], photos: []};
+let adminTab = 'resumo', gFilter = 'todos', gSearch = '', rt = null, draft = null;
+let waTpl = 'Olá, {nome}! Estamos muito felizes em convidar você para o nosso casamento no dia {data}. Por favor, confirme sua presença até {prazo} pelo link: {link}';
+const STATUS = {confirmado: ['b-ok', 'Confirmado'], pendente: ['b-warn', 'Pendente'], recusado: ['b-bad', 'Recusou']};
+const TABS = [['resumo', 'Resumo'], ['convidados', 'Convidados'], ['presentes', 'Presentes'], ['pix', 'Pix'], ['mensagens', 'Mensagens'], ['album', 'Álbum'], ['config', 'Configurações']];
+const sum = (arr, f) => arr.reduce((s, x) => s + (Number(f(x)) || 0), 0);
+
+async function reloadAdmin(silent = false){
+  const [guests, gifts, contrib, msgs, photos] = await Promise.all([DB.listGuests(), DB.listGiftsAdmin(), DB.listContributions(), DB.listMessagesAdmin(), DB.listPhotos()]);
+  A = {guests, gifts, contrib, msgs, photos};
+  if (silent && adminTab === 'config') return;
+  if (silent && adminTab === 'convidados' && document.activeElement?.id === 'gsearch') { drawGuestChips(); drawGuestList(); return; }
+  drawAdmin();
+}
+function drawAdmin(){
+  if (!$('#apanel')) return;
+  $('#atabs').innerHTML = TABS.map(([k, l]) => `<button class="chip ${adminTab === k ? 'on' : ''}" data-action="atab" data-t="${k}">${l}</button>`).join('');
+  $('#apanel').innerHTML = `<div class="fade">${ADMIN[adminTab]()}</div>`;
+  if (adminTab === 'convidados') { drawGuestChips(); drawGuestList(); }
+  if (adminTab === 'config') ogCanvas().then(c => { const i = $('#ogimg'); if (i) i.src = c.toDataURL('image/png'); }).catch(e => console.error(e));
+  if (adminTab === 'album') tableCardCanvas().then(c => { const i = $('#tcard'); if (i) i.src = c.toDataURL('image/png'); }).catch(e => console.error(e));
+}
+async function ogCanvas(){
+  try { await Promise.all(['130px "Great Vibes"', '500 40px "Cormorant Garamond"', '500 26px "Jost"'].map(f => document.fonts.load(f))); } catch {}
+  const W = 1200, H = 630, c = document.createElement('canvas'); c.width = W; c.height = H;
+  const x = c.getContext('2d'), serif = '"Cormorant Garamond", Georgia, serif', sans = 'Jost, Montserrat, sans-serif', spacing = v => { if ('letterSpacing' in x) x.letterSpacing = v; };
+  x.fillStyle = '#fbf8f2'; x.fillRect(0, 0, W, H);
+  const g = x.createRadialGradient(W / 2, 0, 40, W / 2, 0, 700); g.addColorStop(0, '#ffffff'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  x.strokeStyle = '#c9a96e'; x.lineWidth = 2.5; x.strokeRect(34, 34, W - 68, H - 68); x.lineWidth = 1.2; x.strokeRect(50, 50, W - 100, H - 100);
+  x.textAlign = 'center'; spacing('9px'); x.fillStyle = '#8a6a3b'; x.font = `500 24px ${sans}`; x.fillText('VAMOS NOS CASAR', W / 2, 150); spacing('0px');
+  const names = `${S.name1} & ${S.name2}`; let s = 140; do { x.font = `${s}px "Great Vibes", cursive`; s -= 4; } while (x.measureText(names).width > W - 200 && s > 40);
+  const gr = x.createLinearGradient(200, 0, W - 200, 0); gr.addColorStop(0, '#7e5f32'); gr.addColorStop(.45, '#c9a96e'); gr.addColorStop(1, '#8a6a3b');
+  x.fillStyle = gr; x.fillText(names, W / 2, 320);
+  x.strokeStyle = '#b08d57'; x.lineWidth = 1.2; x.beginPath(); x.moveTo(430, 382); x.lineTo(585, 382); x.moveTo(615, 382); x.lineTo(770, 382); x.stroke();
+  x.fillStyle = '#b08d57'; x.beginPath(); x.moveTo(600, 373); x.lineTo(609, 382); x.lineTo(600, 391); x.lineTo(591, 382); x.fill();
+  const d = new Date(S.date + 'T12:00:00'), dd = n => String(n).padStart(2, '0');
+  x.fillStyle = '#2f2a24'; x.font = `500 46px ${serif}`; x.fillText(`${dd(d.getDate())} · ${dd(d.getMonth() + 1)} · ${d.getFullYear()}`, W / 2, 458);
+  x.fillStyle = '#8b8073'; x.font = `26px ${sans}`; x.fillText('Confirme sua presença e veja todos os detalhes', W / 2, 520);
+  return c;
+}
+async function tableCardCanvas(){
+  if (!window.QRCode) throw new Error('Não foi possível gerar o QR Code. Verifique a internet.');
+  const url = PREVIEW ? 'https://seu-usuario.github.io/casamento/#/album' : siteLink('album');
+  try { await Promise.all(['110px "Great Vibes"', '500 64px "Cormorant Garamond"', 'italic 40px "Cormorant Garamond"', '500 30px "Jost"'].map(f => document.fonts.load(f))); } catch {}
+  const W = 1200, H = 1800, c = document.createElement('canvas'); c.width = W; c.height = H;
+  const x = c.getContext('2d'), gold = '#b08d57', dark = '#8a6a3b', ink = '#2f2a24';
+  const serif = '"Cormorant Garamond", Georgia, serif', sans = 'Jost, Montserrat, sans-serif';
+  const fit = (txt, font, size, max) => { let s = size; do { x.font = font.replace('#', s); s -= 2; } while (x.measureText(txt).width > max && s > 20); };
+  x.fillStyle = '#fbf8f2'; x.fillRect(0, 0, W, H);
+  const g = x.createRadialGradient(W / 2, 0, 50, W / 2, 0, 900); g.addColorStop(0, '#ffffff'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  x.strokeStyle = '#c9a96e'; x.lineWidth = 3; x.strokeRect(56, 56, W - 112, H - 112); x.lineWidth = 1.5; x.strokeRect(78, 78, W - 156, H - 156);
+  x.textAlign = 'center'; x.textBaseline = 'alphabetic';
+  if ('letterSpacing' in x) x.letterSpacing = '8px';
+  x.fillStyle = dark; x.font = `500 28px ${sans}`; x.fillText('COMPARTILHE O NOSSO DIA', W / 2, 220);
+  if ('letterSpacing' in x) x.letterSpacing = '0px';
+  x.fillStyle = ink; x.font = `500 70px ${serif}`; x.fillText('Mande suas fotos', W / 2, 318); x.fillText('para os noivos', W / 2, 400);
+  const div = document.createElement('div');
+  new QRCode(div, {text: url, width: 600, height: 600, colorDark: ink, colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H});
+  const qc = div.querySelector('canvas');
+  x.fillStyle = '#ffffff'; x.shadowColor = 'rgba(90,65,30,.18)'; x.shadowBlur = 40; x.shadowOffsetY = 14;
+  x.beginPath(); x.roundRect ? x.roundRect(270, 470, 660, 660, 28) : x.rect(270, 470, 660, 660); x.fill();
+  x.shadowColor = 'transparent'; x.drawImage(qc, 300, 500, 600, 600);
+  x.strokeStyle = '#c9a96e'; x.lineWidth = 1.5; x.beginPath(); x.roundRect ? x.roundRect(270, 470, 660, 660, 28) : x.rect(270, 470, 660, 660); x.stroke();
+  x.fillStyle = dark; x.font = `italic 44px ${serif}`; x.fillText('Aponte a câmera do celular', W / 2, 1212);
+  x.fillStyle = '#8b8073'; x.font = `28px ${sans}`; x.fillText('Suas fotos e vídeos vão direto para o nosso álbum', W / 2, 1262);
+  x.strokeStyle = gold; x.lineWidth = 1.5; x.beginPath(); x.moveTo(400, 1340); x.lineTo(580, 1340); x.moveTo(620, 1340); x.lineTo(800, 1340); x.stroke();
+  x.fillStyle = gold; x.beginPath(); x.moveTo(600, 1330); x.lineTo(610, 1340); x.lineTo(600, 1350); x.lineTo(590, 1340); x.fill();
+  x.fillStyle = dark; fit(`${S.name1} & ${S.name2}`, '#px "Great Vibes", cursive', 120, W - 240); x.fillText(`${S.name1} & ${S.name2}`, W / 2, 1490);
+  if (S.hashtag) { x.fillStyle = ink; x.font = `italic 46px ${serif}`; x.fillText(S.hashtag, W / 2, 1580); }
+  const d = new Date(S.date + 'T12:00:00'), dd = n => String(n).padStart(2, '0');
+  if ('letterSpacing' in x) x.letterSpacing = '6px';
+  x.fillStyle = '#8b8073'; x.font = `500 26px ${sans}`; x.fillText(`${dd(d.getDate())} · ${dd(d.getMonth() + 1)} · ${d.getFullYear()}`, W / 2, 1650);
+  if ('letterSpacing' in x) x.letterSpacing = '0px';
+  return c;
+}
+function subscribeRealtime(){
+  if (DEMO || rt) return;
+  const reload = debounce(() => reloadAdmin(true).catch(console.error), 800);
+  rt = sb.channel('painel-noivos');
+  ['guests', 'gifts', 'contributions', 'messages', 'photos'].forEach(t => rt.on('postgres_changes', {event: '*', schema: 'public', table: t}, reload));
+  rt.subscribe();
+}
+
+const ADMIN = {
+  resumo(){
+    const g = A.guests, conf = g.filter(x => x.status === 'confirmado'), pend = g.filter(x => x.status === 'pendente'), rec = g.filter(x => x.status === 'recusado');
+    const people = sum(conf, x => x.people), invited = sum(g, x => x.max_people), pendPeople = sum(pend, x => x.max_people);
+    const answered = conf.length + rec.length, rate = g.length ? Math.round(answered / g.length * 100) : 0;
+    const uniq = A.gifts.filter(x => x.unique_reserve), reserved = uniq.filter(x => x.reserved_by).length, cotas = sum(A.gifts.filter(x => !x.unique_reserve), x => x.times_given);
+    const pixAll = sum(A.contrib, c => c.amount), pixOk = sum(A.contrib.filter(c => c.status === 'confirmado'), c => c.amount);
+    const days = Math.max(0, Math.ceil((weddingDate() - Date.now()) / 864e5));
+    const kids = sum(conf, x => x.children), diets = conf.filter(x => x.diet);
+    const pct = n => g.length ? (n / g.length * 100) : 0;
+    const recent = g.filter(x => x.responded_at).sort((a, b) => String(b.responded_at).localeCompare(String(a.responded_at))).slice(0, 6);
+    const kpi = (v, l, s = '') => `<div class="kpi"><b>${v}</b><span>${l}</span>${s ? `<small>${s}</small>` : ''}</div>`;
+    return `<div class="kpis">
+      ${kpi(people, 'Pessoas confirmadas', `de ${invited} convidadas`)}${kpi(pend.length, 'Convites pendentes', plural(pendPeople, 'pessoa', 'pessoas'))}
+      ${kpi(rec.length, 'Recusaram')}${kpi(rate + '%', 'Taxa de resposta', `${answered} de ${g.length} convites`)}
+      ${kpi(days, 'Dias para o casamento', fmtShort(S.date))}${kpi(`${reserved}/${uniq.length}`, 'Presentes escolhidos', cotas ? `+ ${cotas} cotas` : '')}
+      ${kpi(brlShort(pixOk), 'Pix confirmado', `${brlShort(pixAll - pixOk)} a conferir`)}${kpi(A.msgs.length, 'Recados no mural', `${A.photos.length} fotos no álbum`)}
+    </div>
+    <div class="card mt"><p class="eyebrow">Respostas</p>
+      <div class="bar"><i style="width:${pct(conf.length)}%;background:var(--ok)"></i><i style="width:${pct(rec.length)}%;background:var(--bad)"></i><i style="width:${pct(pend.length)}%;background:#e9d8b4"></i></div>
+      <div class="legend"><span><i style="background:var(--ok)"></i>${conf.length} confirmados</span><span><i style="background:var(--bad)"></i>${rec.length} recusaram</span><span><i style="background:#e9d8b4"></i>${pend.length} pendentes</span></div>
+      <div class="grid g2 mt"><button class="btn sm gold" data-action="reminders">${ic('send', 15)} Enviar lembretes</button><button class="btn sm" data-action="export">${ic('download', 15)} Exportar Excel</button></div>
+    </div>
+    <div class="card mt"><p class="eyebrow">Para o buffet</p>
+      <div class="kpis" style="margin-top:8px"><div class="kpi"><b>${people - kids}</b><span>Adultos confirmados</span></div><div class="kpi"><b>${kids}</b><span>Crianças até 10</span></div><div class="kpi"><b>${pendPeople}</b><span>Ainda sem resposta</span></div><div class="kpi"><b>${people + pendPeople}</b><span>Máximo possível</span></div></div>
+      ${diets.length ? `<p class="eyebrow mt">Restrições alimentares</p>${diets.map(x => `<div class="row"><div class="main"><div class="t">${esc(x.name)}</div><div class="s">${esc(x.diet)}</div></div></div>`).join('')}` : '<p class="s mt">Nenhuma restrição alimentar informada até agora.</p>'}
+    </div>
+    <div class="card mt"><p class="eyebrow">Últimas respostas</p>${recent.map(x => `<div class="row"><div class="main"><div class="t">${esc(x.name)}</div><div class="s">${fmtDT(x.responded_at)}${x.status === 'confirmado' ? ' · ' + plural(x.people, 'pessoa', 'pessoas') : ''}</div>${x.message ? `<div class="s">“${esc(x.message)}”</div>` : ''}</div><span class="badge ${STATUS[x.status][0]}">${STATUS[x.status][1]}</span></div>`).join('') || '<p class="s">Nenhuma resposta ainda.</p>'}</div>`;
+  },
+
+  convidados(){
+    return `<div class="toolbar"><input id="gsearch" placeholder="Buscar convidado ou grupo" value="${esc(gSearch)}"><button class="btn sm gold" data-action="guest-new">${ic('plus', 14)} Convidado</button></div>
+      <div class="toolbar"><button class="btn sm ghost" data-action="import">Importar lista</button><button class="btn sm ghost" data-action="reminders">${ic('send', 14)} Lembretes</button><button class="btn sm ghost" data-action="export">${ic('download', 14)} Excel</button></div>
+      <div class="chips" id="gchips"></div><div id="glist"></div>`;
+  },
+
+  presentes(){
+    const total = sum(A.gifts.filter(g => g.reserved_by), g => g.price);
+    return `<div class="panel-title"><h3>Presentes</h3><button class="btn sm gold" data-action="gift-new">${ic('plus', 14)} Presente</button></div>
+      <p class="s">${A.gifts.length} itens · ${A.gifts.filter(g => g.reserved_by).length} reservados (${brl(total)})</p>
+      ${A.gifts.map(g => {
+        const st = g.unique_reserve ? (g.reserved_by ? `<span class="badge b-ok">Escolhido</span> por ${esc(g.reserved_by)}${g.reserved_message ? ` — “${esc(g.reserved_message)}”` : ''}` : '<span class="badge b-muted">Disponível</span>') : `<span class="badge b-muted">Cota</span> ${g.times_given || 0}× presenteado`;
+        return `<div class="row"><div class="thumb" ${g.image_url ? `style="background-image:url('${esc(g.image_url)}')"` : ''}>${g.image_url ? '' : ic(g.category === 'cota' ? 'pix' : g.category === 'experiencia' ? 'heart' : 'gift')}</div>
+          <div class="main"><div class="t">${esc(g.title)}</div><div class="s">${CAT[g.category]} · ${brl(g.price)}</div><div class="s">${st}</div></div>
+          <div class="actions">${g.unique_reserve && g.reserved_by ? `<button class="iconbtn" data-action="gift-unreserve" data-id="${g.id}" title="Liberar reserva">${ic('unlock', 16)}</button>` : ''}<button class="iconbtn" data-action="gift-edit" data-id="${g.id}" title="Editar">${ic('edit', 16)}</button></div></div>`;
+      }).join('') || '<div class="empty">Cadastre o primeiro presente.</div>'}`;
+  },
+
+  pix(){
+    const all = sum(A.contrib, c => c.amount), ok = sum(A.contrib.filter(c => c.status === 'confirmado'), c => c.amount);
+    const gname = id => A.gifts.find(g => g.id === id)?.title;
+    return `<div class="kpis"><div class="kpi"><b>${brlShort(ok)}</b><span>Confirmado</span></div><div class="kpi"><b>${brlShort(all - ok)}</b><span>A conferir no banco</span></div></div>
+      <div class="panel-title"><h3>Contribuições</h3><button class="btn sm gold" data-action="contrib-new">${ic('plus', 14)} Registrar</button></div>
+      <p class="s">Quando o convidado avisa que fez o Pix, a contribuição aparece como “a conferir”. Confira no extrato do banco e toque em ✓ para confirmar.</p>
+      ${A.contrib.map(c => `<div class="row"><div class="main"><div class="t">${esc(c.name)} · ${brl(c.amount)}</div><div class="s">${fmtDT(c.created_at)}${c.gift_id && gname(c.gift_id) ? ' · ' + esc(gname(c.gift_id)) : ''}</div>${c.message ? `<div class="s">“${esc(c.message)}”</div>` : ''}<span class="badge ${c.status === 'confirmado' ? 'b-ok' : 'b-warn'}">${c.status === 'confirmado' ? 'Confirmado' : 'A conferir'}</span></div>
+        <div class="actions"><button class="iconbtn ${c.status === 'confirmado' ? '' : 'ok'}" data-action="contrib-toggle" data-id="${c.id}" title="${c.status === 'confirmado' ? 'Marcar como a conferir' : 'Confirmar recebimento'}">${ic(c.status === 'confirmado' ? 'x' : 'check', 16)}</button><button class="iconbtn bad" data-action="contrib-del" data-id="${c.id}" title="Excluir">${ic('trash', 16)}</button></div></div>`).join('') || '<div class="empty">Nenhuma contribuição ainda.</div>'}`;
+  },
+
+  mensagens(){
+    return `<div class="panel-title"><h3>Recados</h3></div><p class="s">${S.messagesModeration ? 'Moderação ativa: novos recados ficam ocultos até você aprovar.' : 'Recados aparecem direto no mural. Ative a moderação em Configurações, se preferir aprovar antes.'}</p>
+      ${A.msgs.map(m => `<div class="row"><div class="main"><div class="t">${esc(m.name)} <span class="badge ${m.approved ? 'b-ok' : 'b-warn'}">${m.approved ? 'Visível' : 'Oculto'}</span></div><div class="s">${fmtDT(m.created_at)}</div><div style="white-space:pre-line">${esc(m.text)}</div></div>
+        <div class="actions"><button class="iconbtn" data-action="msg-toggle" data-id="${m.id}" title="${m.approved ? 'Ocultar' : 'Aprovar'}">${ic(m.approved ? 'eyeoff' : 'eye', 16)}</button><button class="iconbtn bad" data-action="msg-del" data-id="${m.id}" title="Excluir">${ic('trash', 16)}</button></div></div>`).join('') || '<div class="empty">Nenhum recado ainda.</div>'}`;
+  },
+
+  album(){
+    return `<div class="card"><label class="check" style="margin:0"><input type="checkbox" data-action="toggle-album" ${S.albumOpen ? 'checked' : ''}> Álbum aberto para os convidados enviarem fotos</label><p class="s mt">${A.photos.length} arquivos no álbum. Toque numa foto para ampliar.</p></div>
+      <div class="card mt"><p class="eyebrow">Cartão de mesa com QR Code</p><p class="s">Imprima e coloque nas mesas da festa. O convidado aponta a câmera do celular e cai direto na página do álbum.</p>
+        <img id="tcard" class="tcard" alt="Cartão de mesa com QR Code do álbum">
+        <div class="grid g2"><button class="btn sm gold" data-action="card-dl">${ic('download', 15)} Baixar cartão</button><button class="btn sm ghost" data-action="copy-album">${ic('copy', 15)} Copiar link do álbum</button></div>
+        <p class="s mt">Tamanho 10 × 15 cm. Fica bonito em papel couché fosco ou fotográfico. Lembre de abrir o álbum no painel no dia da festa.</p></div>
+      <div class="album mt">${A.photos.map(p => photoCell(p, true)).join('') || '<div class="empty" style="grid-column:1/-1">Nenhuma foto ainda.</div>'}</div>`;
+  },
+
+  config(){
+    if (!draft) draft = structuredClone(S);
+    const F = fieldHTML;
+    return `<div id="settings" class="settings">
+      <fieldset><legend>Noivos</legend><div class="grid g2"><div>${F('name1', 'Nome 1')}</div><div>${F('name2', 'Nome 2')}</div></div>${F('heroEyebrow', 'Frase acima dos nomes')}${F('hashtag', 'Hashtag do casamento')}${F('heroPhoto', 'Foto do casal (página inicial)', 'photo')}${F('welcome', 'Frase de boas-vindas', 'textarea')}</fieldset>
+      <fieldset><legend>Data e horário</legend><div class="grid g2"><div>${F('date', 'Data do casamento', 'date')}</div><div>${F('time', 'Horário', 'time')}</div></div>${F('rsvpDeadline', 'Confirmar presença até', 'date')}</fieldset>
+      <fieldset><legend>Cerimônia</legend>${F('ceremony.name', 'Nome do local')}${F('ceremony.address', 'Endereço completo')}${F('ceremony.time', 'Horário', 'time')}</fieldset>
+      <fieldset><legend>Festa</legend><div class="mt">${F('party.same', 'A festa é no mesmo local da cerimônia', 'bool')}</div>${F('party.name', 'Nome do local')}${F('party.address', 'Endereço completo')}${F('party.time', 'Horário', 'time')}${F('parking', 'Estacionamento', 'textarea')}</fieldset>
+      <fieldset><legend>Pix e presentes</legend>${F('pix.keyType', 'Tipo de chave', 'select:celular=Celular|cpf=CPF ou CNPJ|email=E-mail|aleatoria=Chave aleatória')}${F('pix.key', 'Chave Pix')}<p class="s">Pode digitar do jeito que preferir, com ou sem pontos, traços e parênteses. O site ajusta o formato.</p>
+        <div class="grid g2"><div>${F('pix.name', 'Nome do favorecido')}</div><div>${F('pix.city', 'Cidade')}</div></div><button type="button" class="btn sm ghost mt" data-action="pix-test">${ic('pix', 15)} Testar QR Code</button>${F('pix.suggested', 'Valores sugeridos (separe por vírgula)', 'numlist')}${F('pix.message', 'Texto da página Pix', 'textarea')}${F('giftsIntro', 'Texto da lista de presentes', 'textarea')}</fieldset>
+      <fieldset><legend>Contato</legend>${F('contactPhone', 'WhatsApp dos noivos (para dúvidas dos convidados)', 'tel')}</fieldset>
+      <fieldset><legend>Nossa história</legend>${F('story.intro', 'Introdução', 'textarea')}${listEditor('story.timeline', [{k: 'year', label: 'Ano'}, {k: 'title', label: 'Título'}, {k: 'text', label: 'Texto', type: 'textarea'}, {k: 'photo', label: 'Foto', type: 'photo'}], 'Adicionar momento')}${F('story.message', 'Mensagem aos convidados', 'textarea')}</fieldset>
+      <fieldset><legend>Guia do convidado</legend>${F('guide.dress', 'Traje recomendado', 'textarea')}${F('guide.palette', 'Paleta sugerida (cores em hex, separadas por vírgula)', 'colorlist')}${F('guide.kids', 'Crianças', 'textarea')}${F('guide.accessibility', 'Acessibilidade', 'textarea')}
+        <label>Programação</label>${listEditor('guide.schedule', [{k: 'time', label: 'Horário', type: 'time'}, {k: 'item', label: 'Atividade'}], 'Adicionar horário')}
+        <label>Dúvidas frequentes</label>${listEditor('guide.faq', [{k: 'q', label: 'Pergunta'}, {k: 'a', label: 'Resposta', type: 'textarea'}], 'Adicionar pergunta')}</fieldset>
+      <fieldset><legend>Funcionalidades</legend><div class="grid mt">${F('rsvpOpen', 'Confirmações de presença abertas', 'bool')}${F('albumOpen', 'Álbum aberto para envio de fotos', 'bool')}${F('messagesModeration', 'Aprovar recados antes de aparecerem no mural', 'bool')}</div></fieldset>
+      <fieldset><legend>Prévia do link no WhatsApp</legend><p class="s mt">Quando alguém mandar o link do site, aparece esta imagem. Baixe, renomeie para og.png se precisar e envie para o repositório no GitHub.</p><img id="ogimg" class="tcard" style="aspect-ratio:1200/630;max-width:420px" alt="Imagem de prévia do link"><button type="button" class="btn sm" data-action="og-dl">${ic('download', 15)} Baixar imagem de prévia</button></fieldset>
+      <div class="savebar"><button class="btn gold block" data-action="save-settings">Salvar configurações</button></div></div>`;
+  }
+};
+
+function fieldHTML(k, label, type = 'text', val){
+  const v = val !== undefined ? val : (getPath(draft, k) ?? '');
+  if (type.startsWith('select:')) return `<label>${label}</label><select data-k="${k}">${type.slice(7).split('|').map(o => { const [ov, ol] = o.split('='); return `<option value="${ov}" ${v === ov ? 'selected' : ''}>${ol}</option>`; }).join('')}</select>`;
+  if (type === 'textarea') return `<label>${label}</label><textarea data-k="${k}">${esc(v)}</textarea>`;
+  if (type === 'bool') return `<label class="check"><input type="checkbox" data-k="${k}" data-type="bool" ${v ? 'checked' : ''}> ${label}</label>`;
+  if (type === 'colorlist') return `<label>${label}</label><input data-k="${k}" data-type="colorlist" value="${esc((Array.isArray(v) ? v : []).join(', '))}">`;
+  if (type === 'numlist') return `<label>${label}</label><input data-k="${k}" data-type="numlist" inputmode="decimal" value="${esc((Array.isArray(v) ? v : []).join(', '))}">`;
+  if (type === 'photo') return `<label>${label}</label><div class="photo-field">${v ? `<img src="${esc(v)}" alt="">` : `<div class="ph-empty">${ic('image', 28)}</div>`}<div class="actions"><button type="button" class="btn sm" data-action="set-photo" data-k="${k}">${v ? 'Trocar' : 'Enviar'} foto</button>${v ? `<button type="button" class="btn sm danger" data-action="clear-photo" data-k="${k}">Remover</button>` : ''}</div></div>`;
+  return `<label>${label}</label><input type="${type}" data-k="${k}" value="${esc(v)}">`;
+}
+function listEditor(path, fields, addLabel){
+  const arr = getPath(draft, path) || [];
+  const tpl = esc(JSON.stringify(Object.fromEntries(fields.map(f => [f.k, '']))));
+  return `<div>${arr.map((it, i) => `<div class="list-item"><button type="button" class="x" data-action="li-del" data-path="${path}" data-i="${i}" aria-label="Remover">${ic('x', 16)}</button>${fields.map(f => fieldHTML(`${path}.${i}.${f.k}`, f.label, f.type, it[f.k] ?? '')).join('')}</div>`).join('')}
+    <button type="button" class="btn sm ghost mt" data-action="li-add" data-path="${path}" data-tpl="${tpl}">${ic('plus', 14)} ${addLabel}</button></div>`;
+}
+
+/* ---- convidados ---- */
+function drawGuestChips(){
+  const c = {todos: A.guests.length, confirmado: 0, pendente: 0, recusado: 0};
+  A.guests.forEach(g => c[g.status]++);
+  const el = $('#gchips'); if (!el) return;
+  el.innerHTML = [['todos', 'Todos'], ['confirmado', 'Confirmados'], ['pendente', 'Pendentes'], ['recusado', 'Recusaram']].map(([k, l]) => `<button class="chip ${gFilter === k ? 'on' : ''}" data-action="gfilt" data-v="${k}">${l} (${c[k]})</button>`).join('');
+}
+function drawGuestList(){
+  const box = $('#glist'); if (!box) return;
+  const q = norm(gSearch);
+  const list = A.guests.filter(g => (gFilter === 'todos' || g.status === gFilter) && (!q || norm(g.name + ' ' + (g.group_name || '')).includes(q)));
+  const people = sum(list.filter(g => g.status === 'confirmado'), g => g.people);
+  box.innerHTML = `<p class="s">${plural(list.length, 'convite', 'convites')}${people ? ` · ${plural(people, 'pessoa confirmada', 'pessoas confirmadas')}` : ''}</p>` +
+    (list.map(g => `<div class="row"><div class="main"><div class="t">${esc(g.name)} <span class="badge ${STATUS[g.status][0]}">${STATUS[g.status][1]}</span></div>
+      <div class="s">${g.group_name ? esc(g.group_name) + ' · ' : ''}${g.status === 'confirmado' ? `${g.people}/${g.max_people} pessoas` : `até ${plural(g.max_people, 'pessoa', 'pessoas')}`}${g.phone ? ' · ' + esc(g.phone) : ''}</div>
+      ${g.children ? `<div class="s">${plural(g.children, 'criança', 'crianças')}</div>` : ''}${g.diet ? `<div class="s">Restrição: ${esc(g.diet)}</div>` : ''}
+      ${g.companions ? `<div class="s">Acompanhantes: ${esc(g.companions.replace(/\n/g, ', '))}</div>` : ''}${g.message ? `<div class="s">“${esc(g.message)}”</div>` : ''}</div>
+      <div class="actions">${g.phone && g.status === 'pendente' ? `<button class="iconbtn ok" data-action="wa" data-id="${g.id}" title="Enviar lembrete no WhatsApp">${ic('send', 16)}</button>` : ''}<button class="iconbtn" data-action="guest-link" data-id="${g.id}" title="Copiar link do convite" aria-label="Copiar link do convite">${ic('copy', 16)}</button><button class="iconbtn" data-action="guest-edit" data-id="${g.id}" title="Editar">${ic('edit', 16)}</button></div></div>`).join('') || '<div class="empty">Nenhum convidado aqui.</div>');
+}
+function guestModal(g = {}){
+  const st = g.status || 'pendente';
+  openModal(`<h3>${g.id ? 'Editar convidado' : 'Novo convidado'}</h3><form data-form="guest" data-id="${g.id || ''}">
+    <label>Nome (como o convidado vai digitar)</label><input name="name" required value="${esc(g.name)}">
+    <div class="grid g2"><div><label>Grupo / família</label><input name="group_name" value="${esc(g.group_name)}" placeholder="Ex.: Família do noivo"></div><div><label>WhatsApp</label><input name="phone" inputmode="tel" value="${esc(g.phone)}"></div></div>
+    <div class="grid g2"><div><label>Pessoas autorizadas</label><input type="number" name="max_people" min="1" max="20" required value="${g.max_people || 1}"></div><div><label>Situação</label><select name="status">${Object.entries(STATUS).map(([k, [, l]]) => `<option value="${k}" ${st === k ? 'selected' : ''}>${l}</option>`).join('')}</select></div></div>
+    <div class="grid g2"><div><label>Pessoas confirmadas</label><input type="number" name="people" min="0" max="20" value="${g.people || 0}"></div><div><label>Crianças até 10 anos</label><input type="number" name="children" min="0" max="20" value="${g.children || 0}"></div></div>
+    <label>Restrição alimentar</label><input name="diet" value="${esc(g.diet)}">
+    <label>Acompanhantes</label><textarea name="companions">${esc(g.companions)}</textarea>
+    <label>Observação / mensagem</label><textarea name="message">${esc(g.message)}</textarea>
+    <button class="btn gold block mt">Salvar</button>
+    ${g.id ? `<button type="button" class="btn danger block mt" data-action="guest-del" data-id="${g.id}">${ic('trash', 14)} Excluir convidado</button>` : ''}
+  </form>`);
+}
+function fillTpl(t, g){
+  return t.replace(/\{nome\}/g, String(g.name).split(' ')[0]).replace(/\{data\}/g, fmtShort(S.date)).replace(/\{prazo\}/g, fmtShort(S.rsvpDeadline)).replace(/\{link\}/g, siteLink(g.code ? 'rsvp/' + g.code : 'rsvp'));
+}
+function remindersModal(){
+  const pend = A.guests.filter(g => g.status === 'pendente');
+  const withPhone = pend.filter(g => g.phone), noPhone = pend.filter(g => !g.phone);
+  openModal(`<h3>Lembretes de confirmação</h3><p class="s">${plural(pend.length, 'convite pendente', 'convites pendentes')}. Toque em enviar para abrir o WhatsApp com a mensagem pronta.</p>
+    <label>Mensagem</label><textarea id="watpl" style="min-height:120px">${esc(waTpl)}</textarea>
+    <p class="s">Use {nome}, {data}, {prazo} e {link} para preencher automaticamente. O {link} já abre o convite de cada pessoa, sem precisar procurar o nome.</p>
+    ${withPhone.map(g => `<div class="row"><div class="main"><div class="t">${esc(g.name)}</div><div class="s">${esc(g.phone)}</div></div><button class="btn sm gold" data-action="wa" data-id="${g.id}">${ic('send', 14)} Enviar</button></div>`).join('')}
+    ${noPhone.length ? `<p class="eyebrow mt">Sem WhatsApp cadastrado</p><p class="s">${noPhone.map(g => esc(g.name)).join(', ')}</p><button class="btn sm ghost mt" data-action="copy-link">${ic('copy', 14)} Copiar link de confirmação</button>` : ''}
+    ${!pend.length ? '<div class="empty">Todos já responderam!</div>' : ''}`);
+}
+async function exportExcel(){
+  if (PREVIEW) return toast('No site publicado, este botão baixa a planilha do Excel.');
+  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
+  const wb = XLSX.utils.book_new();
+  const add = (name, rows) => {
+    const ws = XLSX.utils.json_to_sheet(rows.length ? rows : [{'(vazio)': ''}]);
+    const keys = Object.keys(rows[0] || {'(vazio)': ''});
+    ws['!cols'] = keys.map(k => ({wch: Math.min(50, Math.max(k.length, ...rows.map(r => String(r[k] ?? '').length)) + 2)}));
+    XLSX.utils.book_append_sheet(wb, ws, name);
+  };
+  const gname = id => A.gifts.find(g => g.id === id)?.title || '';
+  add('Convidados', A.guests.map(g => ({Nome: g.name, Grupo: g.group_name || '', WhatsApp: g.phone || '', 'Pessoas autorizadas': g.max_people, Situação: STATUS[g.status][1], 'Pessoas confirmadas': g.people || 0, Crianças: g.children || 0, 'Restrição alimentar': g.diet || '', Acompanhantes: (g.companions || '').replace(/\n/g, ', '), Mensagem: g.message || '', 'Respondido em': g.responded_at ? new Date(g.responded_at).toLocaleString('pt-BR') : '', Código: g.code || ''})));
+  add('Presentes', A.gifts.map(g => ({Presente: g.title, Tipo: CAT[g.category], Valor: Number(g.price), Situação: g.unique_reserve ? (g.reserved_by ? 'Escolhido' : 'Disponível') : 'Cota', 'Escolhido por': g.reserved_by || '', Mensagem: g.reserved_message || '', 'Vezes presenteado': g.times_given || 0})));
+  add('Pix', A.contrib.map(c => ({Nome: c.name, Valor: Number(c.amount), Presente: gname(c.gift_id), Situação: c.status === 'confirmado' ? 'Confirmado' : 'A conferir', Mensagem: c.message || '', Data: new Date(c.created_at).toLocaleString('pt-BR')})));
+  add('Recados', A.msgs.map(m => ({Nome: m.name, Recado: m.text, Visível: m.approved ? 'Sim' : 'Não', Data: new Date(m.created_at).toLocaleString('pt-BR')})));
+  XLSX.writeFile(wb, `casamento-${new Date().toISOString().slice(0, 10)}.xlsx`);
+}
+
+/* ---- presentes (admin) ---- */
+function giftModal(g = {category: 'fisico', unique_reserve: true}){
+  openModal(`<h3>${g.id ? 'Editar presente' : 'Novo presente'}</h3><form data-form="giftEdit" data-id="${g.id || ''}">
+    <label>Nome do presente</label><input name="title" required value="${esc(g.title)}">
+    <label>Descrição</label><textarea name="description">${esc(g.description)}</textarea>
+    <div class="grid g2"><div><label>Tipo</label><select name="category" id="gcat">${Object.entries({fisico: 'Presente físico', experiencia: 'Experiência', cota: 'Cota (lua de mel, jantar…)'}).map(([k, l]) => `<option value="${k}" ${g.category === k ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+    <div><label>Valor (R$)</label><input name="price" inputmode="decimal" required value="${g.price ? String(g.price).replace('.', ',') : ''}"></div></div>
+    <label>Imagem</label><div class="photo-field" id="gimgprev">${g.image_url ? `<img src="${esc(g.image_url)}" alt="">` : `<div class="ph-empty">${ic('image', 28)}</div>`}<button type="button" class="btn sm" data-action="upload-img">Enviar imagem</button></div>
+    <input type="hidden" name="image_url" value="${esc(g.image_url)}">
+    <label>Link da loja (opcional)</label><input name="link" type="url" value="${esc(g.link)}" placeholder="https://">
+    <label class="check mt"><input type="checkbox" name="unique_reserve" id="guniq" ${g.unique_reserve ? 'checked' : ''}> Só uma pessoa pode escolher (reserva o item)</label>
+    <label>Ordem na lista</label><input type="number" name="sort" value="${g.sort || 0}">
+    <button class="btn gold block mt">Salvar</button>
+    ${g.id ? `<button type="button" class="btn danger block mt" data-action="gift-del" data-id="${g.id}">${ic('trash', 14)} Excluir presente</button>` : ''}
+  </form>`);
+  $('#gcat').addEventListener('change', e => { $('#guniq').checked = e.target.value !== 'cota'; });
+}
+function contribModal(){
+  openModal(`<h3>Registrar contribuição</h3><form data-form="contrib">
+    <label>Nome</label><input name="name" required><label>Valor (R$)</label><input name="amount" inputmode="decimal" required>
+    <label>Presente (opcional)</label><select name="gift_id"><option value="">— Pix livre —</option>${A.gifts.map(g => `<option value="${g.id}">${esc(g.title)}</option>`).join('')}</select>
+    <label>Mensagem</label><textarea name="message"></textarea>
+    <label class="check mt"><input type="checkbox" name="confirmed" checked> Já conferi no banco</label>
+    <button class="btn gold block mt">Salvar</button></form>`);
+}
+
+/* =========================== AÇÕES (cliques) ========================= */
+function showIntro(){
+  let seen = false; try { seen = sessionStorage.getItem('convite') === '1'; } catch {}
+  if (seen || route() === 'admin') return;
+  const el = document.createElement('div'); el.className = 'intro'; el.id = 'intro';
+  el.innerHTML = `<div class="flap"></div><div class="pocket"></div><div class="intro-c"><p class="eyebrow">Você recebeu um convite</p><button class="seal" data-action="open-invite" aria-label="Abrir convite">${esc((S.name1 || ' ')[0] + '&' + (S.name2 || ' ')[0])}</button><p class="to">${esc(S.name1)} &amp; ${esc(S.name2)}</p><p class="s">Toque no selo para abrir</p></div>`;
+  document.body.appendChild(el); document.body.style.overflow = 'hidden';
+  setTimeout(() => ACTIONS['open-invite'](), 4500);
+}
+const ACTIONS = {
+  'open-invite'(){
+    const el = $('#intro'); if (!el || el.classList.contains('open')) return;
+    el.classList.add('open'); document.body.style.overflow = '';
+    try { sessionStorage.setItem('convite', '1'); } catch {}
+    setTimeout(() => el.remove(), 1100);
+  },
+  menu(){ $('#menu').classList.toggle('open'); },
+  close: closeModal,
+  'pick-guest'(el){ const g = rsvpList.find(x => x.id === el.dataset.id); if (g) rsvpStep2(g); },
+  'rsvp-back'(){ if (location.hash.split('/').length > 2) location.hash = '#/rsvp'; else rsvpStep1(); },
+  ics: downloadIcs,
+  gf(el){ giftFilter = el.dataset.v; drawGifts(); },
+  gift(el){
+    const g = GIFTS.find(x => x.id === el.dataset.id); if (!g) return;
+    openModal(`<p class="eyebrow">${CAT[g.category]}</p><h3>${esc(g.title)}</h3><div class="price">${brl(g.price)}</div>${g.description ? `<p class="s">${esc(g.description)}</p>` : ''}
+      <form data-form="gift" data-id="${g.id}"><label>Seu nome</label><input name="name" required minlength="2" autocomplete="name">
+      <label>Mensagem para os noivos (opcional)</label><textarea name="message" maxlength="500"></textarea>
+      ${g.unique_reserve ? '<p class="s">Ao confirmar, este presente fica reservado no seu nome para ninguém escolher o mesmo.</p>' : ''}
+      <button class="btn gold block mt">Confirmar escolha</button></form>`);
+  },
+  async 'pix-done'(el){
+    if (!giftPending) return;
+    await busy(el, async () => {
+      await DB.addContribution({name: giftPending.name, amount: giftPending.gift.price, message: giftPending.message, gift_id: giftPending.gift.id});
+      $('#sheet').innerHTML = `<div class="sheet-head"><button class="x" data-action="close">${ic('x')}</button></div><div class="center fade"><div class="ornament">${ic('heart')}</div><h3>Muito obrigado!</h3><p>Os noivos foram avisados do seu presente. Seu carinho significa muito.</p><button class="btn gold" data-action="close">Fechar</button></div>`;
+      giftPending = null;
+    });
+  },
+  copy(el){ copyText(el.dataset.text); },
+  'copy-link'(){ copyText(siteLink('rsvp')); },
+  'pix-test'(){
+    if (!draft?.pix?.key) return toast('Digite a chave Pix primeiro', 'err');
+    openModal(`<h3>Teste do Pix</h3><p class="s">Leia este QR Code com o app do banco em outro celular e confira se aparece o nome de vocês. Não precisa concluir o pagamento.</p>${pixBlock(1, draft)}`);
+  },
+  async 'og-dl'(el){
+    if (PREVIEW) return toast('No site publicado, este botão baixa a imagem para enviar ao GitHub.');
+    await busy(el, async () => { const c = await ogCanvas(); await new Promise(r => c.toBlob(b => { downloadBlob(b, 'og.png'); r(); }, 'image/png')); });
+  },
+  'copy-album'(){ copyText(PREVIEW ? 'https://seu-usuario.github.io/casamento/#/album' : siteLink('album')); },
+  async 'card-dl'(el){
+    if (PREVIEW) return toast('No site publicado, este botão baixa o cartão em imagem para imprimir.');
+    await busy(el, async () => { const c = await tableCardCanvas(); await new Promise(r => c.toBlob(b => { downloadBlob(b, 'cartao-mesa-album.png'); r(); }, 'image/png')); });
+  },
+  amt(el){ $('#amt').value = Number(el.dataset.v).toFixed(2).replace('.', ','); updatePixBox(); },
+  view(el){ openModal(el.dataset.type === 'video' ? `<video src="${esc(el.dataset.src)}" controls autoplay playsinline></video>` : `<img src="${esc(el.dataset.src)}" alt="">`, 'dark'); },
+  async logout(){ await DB.logout(); location.hash = '#/'; },
+  atab(el){ adminTab = el.dataset.t; if (adminTab === 'config') draft = null; drawAdmin(); window.scrollTo(0, 0); },
+  gfilt(el){ gFilter = el.dataset.v; drawGuestChips(); drawGuestList(); },
+  'guest-link'(el){ const g = A.guests.find(x => x.id === el.dataset.id); if (g?.code) copyText(siteLink('rsvp/' + g.code)); },
+  'guest-new'(){ guestModal(); },
+  'guest-edit'(el){ guestModal(A.guests.find(g => g.id === el.dataset.id)); },
+  async 'guest-del'(el){ if (!confirm('Excluir este convidado?')) return; await busy(el, async () => { await DB.deleteGuest(el.dataset.id); closeModal(); toast('Convidado excluído'); await reloadAdmin(); }); },
+  import(){
+    openModal(`<h3>Importar lista</h3><p class="s">Um convidado por linha, no formato: <b>Nome; pessoas; WhatsApp; grupo</b>. Só o nome é obrigatório.</p>
+      <form data-form="import"><textarea name="list" style="min-height:200px" placeholder="Maria Silva; 2; 31999999999; Família da noiva&#10;João Santos; 1&#10;Família Souza; 4"></textarea><button class="btn gold block mt">Importar</button></form>`);
+  },
+  reminders: remindersModal,
+  wa(el){
+    const g = A.guests.find(x => x.id === el.dataset.id); if (!g) return;
+    const n = waNumber(g.phone); if (!n) return toast('Convidado sem WhatsApp', 'err');
+    window.open(`https://wa.me/${n}?text=${encodeURIComponent(fillTpl(waTpl, g))}`, '_blank');
+  },
+  async export(el){ await busy(el, exportExcel); },
+  'gift-new'(){ giftModal(); },
+  'gift-edit'(el){ giftModal(A.gifts.find(g => g.id === el.dataset.id)); },
+  async 'gift-unreserve'(el){ if (!confirm('Liberar a reserva deste presente? Ele volta a ficar disponível.')) return; await busy(el, async () => { await DB.unreserveGift(el.dataset.id); toast('Reserva liberada'); await reloadAdmin(); }); },
+  async 'gift-del'(el){ if (!confirm('Excluir este presente?')) return; await busy(el, async () => { await DB.deleteGift(el.dataset.id); closeModal(); toast('Presente excluído'); await reloadAdmin(); }); },
+  async 'upload-img'(el){
+    const file = await pickFile('image/*'); if (!file) return;
+    await busy(el, async () => { const url = await DB.uploadSiteImage(file); $('#sheet [name=image_url]').value = url; const p = $('#gimgprev'); p.firstElementChild.outerHTML = `<img src="${esc(url)}" alt="">`; });
+  },
+  'contrib-new': contribModal,
+  async 'contrib-toggle'(el){ const c = A.contrib.find(x => x.id === el.dataset.id); await busy(el, async () => { await DB.saveContribution({id: c.id, status: c.status === 'confirmado' ? 'informado' : 'confirmado'}); await reloadAdmin(); }); },
+  async 'contrib-del'(el){ if (!confirm('Excluir esta contribuição?')) return; await busy(el, async () => { await DB.deleteContribution(el.dataset.id); await reloadAdmin(); }); },
+  async 'msg-toggle'(el){ const m = A.msgs.find(x => x.id === el.dataset.id); await busy(el, async () => { await DB.updateMessage(m.id, {approved: !m.approved}); await reloadAdmin(); }); },
+  async 'msg-del'(el){ if (!confirm('Excluir este recado?')) return; await busy(el, async () => { await DB.deleteMessage(el.dataset.id); await reloadAdmin(); }); },
+  async 'photo-del'(el){ const p = A.photos.find(x => x.id === el.dataset.id); if (!p || !confirm('Excluir este arquivo do álbum?')) return; await busy(el, async () => { await DB.deletePhoto(p); await reloadAdmin(); }); },
+  async 'toggle-album'(el){
+    const val = el.checked;
+    await busy(null, async () => { S.albumOpen = val; await DB.saveSettings(S); draft = null; toast(val ? 'Álbum aberto para os convidados' : 'Álbum fechado'); });
+  },
+  async 'set-photo'(el){
+    const file = await pickFile('image/*'); if (!file) return;
+    await busy(el, async () => { const url = await DB.uploadSiteImage(file); setPath(draft, el.dataset.k, url); drawAdmin(); toast('Foto carregada — lembre de salvar'); });
+  },
+  'clear-photo'(el){ setPath(draft, el.dataset.k, ''); drawAdmin(); },
+  'li-add'(el){ const arr = getPath(draft, el.dataset.path) || []; arr.push(JSON.parse(el.dataset.tpl)); setPath(draft, el.dataset.path, arr); drawAdmin(); },
+  'li-del'(el){ const arr = getPath(draft, el.dataset.path) || []; arr.splice(Number(el.dataset.i), 1); drawAdmin(); },
+  async 'save-settings'(el){
+    if (!draft.name1 || !draft.name2 || !draft.date) return toast('Preencha os nomes e a data', 'err');
+    await busy(el, async () => { await DB.saveSettings(draft); S = deepMerge(structuredClone(DEFAULTS), structuredClone(draft)); applyBrand(); $$('#menu a').forEach(a => a.classList.toggle('active', a.dataset.r === 'admin')); toast('Configurações salvas!'); });
+  }
+};
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-action]'); if (!el) return;
+  const fn = ACTIONS[el.dataset.action]; if (!fn) return;
+  if (el.type !== 'checkbox') e.preventDefault();
+  fn(el, e);
+});
+
+/* ======================== FORMULÁRIOS (envio) ======================== */
+const FORMS = {
+  async rsvp(f, d){
+    const status = d.status, people = status === 'confirmado' ? Number(d.people || 1) : 0;
+    const children = status === 'confirmado' ? Math.min(Number(d.children || 0), people) : 0;
+    await busy(f, async () => { const r = await DB.submitRsvp(f.dataset.id, {status, people, children, diet: d.diet, companions: d.companions, message: d.message, phone: d.phone}); rsvpDone({...r, status, people, children}); });
+  },
+  async gift(f, d){
+    const g = GIFTS.find(x => x.id === f.dataset.id);
+    await busy(f, async () => {
+      await DB.reserveGift(g.id, d.name.trim(), d.message);
+      giftPending = {gift: g, name: d.name.trim(), message: d.message};
+      $('#sheet').innerHTML = `<div class="sheet-head"><button class="x" data-action="close">${ic('x')}</button></div><div class="fade"><p class="eyebrow">${g.unique_reserve ? 'Presente reservado' : 'Obrigado!'}</p><h3>${esc(g.title)}</h3>
+        <p class="s">${g.unique_reserve ? 'Pronto, ele está reservado no seu nome.' : ''} Agora é só fazer o Pix de <b>${brl(g.price)}</b>${g.link ? ' ou comprar na loja' : ''}.</p>
+        ${pixBlock(g.price)}${S.pix.key ? `<button class="btn gold block mt" data-action="pix-done">Já fiz o Pix — avisar os noivos</button>` : ''}
+        ${g.link ? `<a class="btn ghost block mt" href="${esc(g.link)}" target="_blank" rel="noopener">Comprar na loja</a>` : ''}</div>`;
+      hydrateQR($('#sheet'));
+      GIFTS = await DB.listGifts(); if ($('#gl')) drawGifts();
+    });
+  },
+  async pix(f, d){
+    const amount = parseMoney(d.amount); if (amount <= 0) return toast('Informe o valor do Pix', 'err');
+    await busy(f, async () => {
+      await DB.addContribution({name: d.name.trim(), amount, message: d.message});
+      $('#pixcard').innerHTML = `<div class="center fade"><div class="ornament">${ic('heart')}</div><h3>Muito obrigado!</h3><p>Avisamos os noivos da sua contribuição de <b>${brl(amount)}</b>. Seu carinho significa muito.</p><a class="btn" href="#/mural">Deixar um recado no mural</a></div>`;
+    });
+  },
+  async msg(f, d){
+    await busy(f, async () => { const r = await DB.addMessage(d.name, d.text); f.reset(); toast(r && r.approved === false ? 'Recado enviado! Ele aparece após aprovação.' : 'Recado enviado!'); drawMessages(); });
+  },
+  async photos(f){
+    const files = [...f.files.files]; if (!files.length) return;
+    const name = f.name.value.trim(), msg = $('#upmsg');
+    await busy(f, async () => {
+      let ok = 0;
+      for (const [i, file] of files.entries()) {
+        msg.textContent = `Enviando ${i + 1} de ${files.length}…`;
+        try { await DB.uploadPhoto(file, name); ok++; } catch (e) { toast(e.message, 'err'); }
+      }
+      msg.textContent = `${plural(ok, 'arquivo enviado', 'arquivos enviados')}. Obrigado!`;
+      f.files.value = ''; drawAlbum();
+    });
+  },
+  async login(f, d){ await busy(f, async () => { await DB.login(d.email.trim(), d.password); render(); }); },
+  async guest(f, d){
+    const max = Math.max(1, parseInt(d.max_people) || 1);
+    const old = A.guests.find(g => g.id === f.dataset.id);
+    let people = parseInt(d.people) || 0;
+    if (d.status === 'confirmado') people = Math.min(max, Math.max(1, people || max)); else people = 0;
+    const g = {name: d.name.trim(), group_name: d.group_name.trim(), phone: d.phone.trim(), max_people: max, status: d.status, people, children: d.status === 'confirmado' ? Math.min(people, Math.max(0, parseInt(d.children) || 0)) : 0, diet: (d.diet || '').trim() || null, companions: d.companions, message: d.message,
+      responded_at: d.status === 'pendente' ? null : (old?.responded_at || nowISO())};
+    if (f.dataset.id) g.id = f.dataset.id;
+    await busy(f, async () => { await DB.saveGuest(g); closeModal(); toast('Convidado salvo'); await reloadAdmin(); });
+  },
+  async import(f, d){
+    const list = d.list.split('\n').map(l => l.trim()).filter(Boolean).map(l => {
+      const [name, max, phone, group] = l.split(/[;\t]/).map(s => (s || '').trim());
+      return {name, max_people: Math.max(1, parseInt(max) || 1), phone: phone || null, group_name: group || null, status: 'pendente', people: 0};
+    }).filter(g => g.name);
+    if (!list.length) return toast('Nenhum nome encontrado', 'err');
+    await busy(f, async () => { await DB.saveGuests(list); closeModal(); toast(`${plural(list.length, 'convidado importado', 'convidados importados')}`); await reloadAdmin(); });
+  },
+  async giftEdit(f, d){
+    const g = {title: d.title.trim(), description: d.description, category: d.category, price: parseMoney(d.price), image_url: d.image_url || null, link: d.link || null, unique_reserve: !!d.unique_reserve, sort: parseInt(d.sort) || 0};
+    if (f.dataset.id) g.id = f.dataset.id;
+    await busy(f, async () => { await DB.saveGift(g); closeModal(); toast('Presente salvo'); await reloadAdmin(); });
+  },
+  async contrib(f, d){
+    const amount = parseMoney(d.amount); if (amount <= 0) return toast('Informe o valor', 'err');
+    await busy(f, async () => { await DB.saveContribution({name: d.name.trim(), amount, gift_id: d.gift_id || null, message: d.message || null, status: d.confirmed ? 'confirmado' : 'informado'}); closeModal(); toast('Contribuição registrada'); await reloadAdmin(); });
+  }
+};
+document.addEventListener('submit', e => {
+  const f = e.target.closest('form[data-form]'); if (!f) return;
+  e.preventDefault();
+  FORMS[f.dataset.form]?.(f, Object.fromEntries(new FormData(f)));
+});
+
+/* ---- edição ao vivo das configurações e campos do painel ---- */
+function onField(e){
+  const t = e.target;
+  if (t.id === 'watpl') { waTpl = t.value; return; }
+  if (t.id === 'gsearch') { gSearch = t.value; drawGuestList(); return; }
+  if (!t.dataset.k || !t.closest('#settings') || !draft) return;
+  let v = t.value;
+  if (t.dataset.type === 'bool') v = t.checked;
+  else if (t.dataset.type === 'colorlist') v = v.split(/[;,\s]+/).filter(s => /^#[0-9a-f]{3,8}$/i.test(s));
+  else if (t.dataset.type === 'numlist') v = v.split(/[;,\s]+/).map(parseMoney).filter(n => n > 0);
+  setPath(draft, t.dataset.k, v);
+}
+document.addEventListener('input', onField);
+document.addEventListener('change', onField);
+
+/* ---- sincroniza abas no modo demonstração ---- */
+window.addEventListener('storage', e => {
+  if (e.key !== LS_KEY || !DEMO) return;
+  try { store = JSON.parse(e.newValue) || store; } catch {}
+  if (route() === 'admin' && $('#apanel')) reloadAdmin(true);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeMenu(); } });
+
+/* ============================== INÍCIO =============================== */
+(async function boot(){
+  if (DEMO) document.body.insertAdjacentHTML('afterbegin', '<div class="demo-banner">Modo demonstração — os dados ficam só neste aparelho. Configure o Supabase para publicar.</div>');
+  try { S = await DB.getSettings(); } catch (e) { console.error(e); toast('Não foi possível carregar as configurações', 'err'); }
+  applyBrand();
+  window.addEventListener('hashchange', render);
+  await render();
+  showIntro();
+})();
+</script>
+</body>
+</html>
