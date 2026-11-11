@@ -388,7 +388,7 @@ button{cursor:pointer;border:0;background:none}
     <div class="s12"><div class="tiles" id="tiles"></div></div>
     <div class="card s12 hidden" id="ofPanel"></div>
     <div class="card s8">
-      <div class="ch"><h2><span class="ico">🧾</span>Compras na fatura</h2><button class="btn ghost sm" data-add>+ Gasto</button></div>
+      <div class="ch"><h2><span class="ico">🧾</span><span id="pTitle">Compras na fatura</span></h2><button class="btn ghost sm" data-add>+ Gasto</button></div>
       <div class="chips" id="filters" role="group" aria-label="Filtrar por cartão" style="margin-bottom:6px"></div>
       <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Compra</th><th>Cartão</th><th>Data</th><th>Categoria</th><th class="r">Parcela</th><th class="r">Valor</th></tr></thead><tbody id="ptbl"></tbody></table></div>
       <div class="m-only" id="plist"></div>
@@ -705,6 +705,8 @@ function renderCards(){
   const f=[["all","Todos",null]].concat(S.cards.map(c=>[c.id,shortName(c),c.dot]));
   $("#filters").innerHTML=f.map(([id,n,d])=>`<button class="chip-f" data-filter="${id}" aria-pressed="${view.filter===id}">${d?`<i class="dot" style="background:${d}"></i>`:""}${esc(n)}</button>`).join("");
   const list=view.filter==="all"?all:all.filter(e=>e.p.card===view.filter);
+  {const fc=view.filter!=="all"&&card(view.filter);const tot=list.reduce((s,e)=>s+e.amount,0);
+   $("#pTitle").textContent=`Fatura de ${ymLabel(view.ym).toLowerCase()}${fc?` · vence ${String(cardDue(fc,view.ym)).padStart(2,"0")}/${view.ym.slice(5)}`:""} · ${fmt(tot)}`}
   const cr=catRows(list);$("#cats").innerHTML=cr.html;
   $("#catFilterLbl").textContent=view.filter==="all"?"todos":shortName(card(view.filter));
   const emptyHTML=`<div class="empty"><b>Nenhuma compra nesta fatura</b>Use <b>+ Gasto</b> para lançar.</div>`;
@@ -1279,12 +1281,24 @@ function impYM(t,cid){const c=card(cid);
   if(t.fatura&&c)return addMonths(t.fatura,(c.due<=c.close)?1:0);
   if(t.fatura)return t.fatura;
   return invoiceYM({card:cid,date:t.data},(t.parcela||1)-1)}
+/* Parcelas futuras que o banco ainda não lançou (ex.: Santander só lança no fechamento) */
+function ofProject(){
+  const g={};for(const t of OF.imp){if(!t.parcelas||t.parcelas<2||!t.parcela||!t.fatura)continue;
+    const k=[t.conta_id,t.final,t.data,t.parcelas,Math.round(+t.valor)].join("|");(g[k]=g[k]||[]).push(t)}
+  const out=[];
+  for(const k in g){const rows=g[k];if(rows.some(r=>r.ignorada))continue;
+    const last=rows.reduce((a,b)=>b.parcela>a.parcela?b:a);const have=new Set(rows.map(r=>r.parcela));
+    for(let j=last.parcela+1;j<=last.parcelas;j++){if(have.has(j))continue;
+      out.push(Object.assign({},last,{id:"p:"+last.id+":"+j,parcela:j,fatura:addMonths(last.fatura,j-last.parcela),previsto:true,ignorada:false}))}}
+  OF.proj=out;
+}
+const ofAll=()=>OF.imp.concat(OF.proj||[]);
 const _entriesFor=entriesFor;
 entriesFor=function(ym){
-  const out=_entriesFor(ym);if(!OF.imp.length)return out;
+  const out=_entriesFor(ym);if(!OF.imp.length)return out;const all=ofAll();
   const fm=finMap();
-  for(const t of OF.imp){if(t.ignorada&&!OF.showIgn)continue;const f=fm[finKey(t.conta_id,t.final)];if(!f||f.oculto||!f.cartao_app||!card(f.cartao_app))continue;
-    const inf=impInfo(t),k=(t.parcela||1)-1,p={id:"i:"+t.id,desc:inf.nome,cat:inf.cat,card:f.cartao_app,date:t.data,inst:1,amount:+t.valor};
+  for(const t of all){if(t.ignorada&&!OF.showIgn)continue;const f=fm[finKey(t.conta_id,t.final)];if(!f||f.oculto||!f.cartao_app||!card(f.cartao_app))continue;
+    const inf=impInfo(t),k=(t.parcela||1)-1,p={id:"i:"+t.id,desc:inf.nome+(t.previsto?" · prevista":""),cat:inf.cat,card:f.cartao_app,date:t.data,inst:1,amount:+t.valor};
     if(impYM(t,f.cartao_app)===ym&&!t.ignorada){const e={p,k,n:t.parcelas||1,amount:+t.valor,imp:t};if(inf.cls)e.cls=inf.cls;out.push(e)}}
   return out.sort((a,b)=>b.p.date.localeCompare(a.p.date));
 };
@@ -1297,7 +1311,7 @@ async function ofLoad(){
   let all=[],from=0;
   while(true){const{data,error}=await sb.from("mc_importadas").select("id,conta_id,final,data,descricao,valor,parcela,parcelas,categoria,ignorada,fatura").gte("fatura",desde.toISOString().slice(0,7)).order("data",{ascending:false}).range(from,from+999);
     if(error||!data)break;all=all.concat(data);if(data.length<1000)break;from+=1000}
-  OF.imp=all;await ofAutoMap();ofSyncCards();render();
+  OF.imp=all;ofProject();await ofAutoMap();ofSyncCards();render();
 }
 async function ofAutoMap(){
   const pend=OF.finais.filter(f=>!f.cartao_app&&!f.oculto);if(!pend.length)return;
@@ -1330,7 +1344,7 @@ function renderOF(){
   const last=OF.itens.map(i=>i.sincronizado_em).filter(Boolean).sort().pop();
   const when=last?new Date(last).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}):"nunca";
   const ym=view.ym,nIgn=OF.imp.filter(t=>t.ignorada).length;
-  const mesPorFinal={};for(const t of OF.imp){if(t.ignorada)continue;const f=OF.finais.find(x=>x.conta_id===t.conta_id&&x.final===t.final);const cid=f&&f.cartao_app&&card(f.cartao_app)?f.cartao_app:null;
+  const mesPorFinal={};for(const t of ofAll()){if(t.ignorada)continue;const f=OF.finais.find(x=>x.conta_id===t.conta_id&&x.final===t.final);const cid=f&&f.cartao_app&&card(f.cartao_app)?f.cartao_app:null;
     const m=cid?impYM(t,cid):(t.fatura||addMonths(t.data.slice(0,7),(t.parcela||1)-1));if(m===ym){const k=finKey(t.conta_id,t.final);mesPorFinal[k]=(mesPorFinal[k]||0)+(+t.valor)}}
   const opts=f=>`<option value="">— escolher cartão —</option>${S.cards.map(c=>`<option value="${c.id}" ${f.cartao_app===c.id&&!f.oculto?"selected":""}>${esc(c.name)}</option>`).join("")}<option value="__oculto" ${f.oculto?"selected":""}>🚫 Não é meu (ocultar)</option>`;
   el.innerHTML=`<div class="ch"><h2><span class="ico">🔗</span>Open Finance</h2><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="muted">sincronizado ${esc(when)}</span><button class="btn ghost sm" data-ofsync ${OF.syncing?"disabled":""}>${OF.syncing?"Sincronizando…":"↻ Sincronizar"}</button></div></div>
@@ -1343,7 +1357,12 @@ function renderOF(){
     ${OF.showIgn&&nIgn?`<div style="margin-top:8px">${OF.imp.filter(t=>t.ignorada).slice(0,100).map(t=>`<div class="li"><div class="main2"><div class="t">${esc(t.descricao)}</div><div class="s">${dateBR(t.data)} · final ${esc(t.final||"")}${t.parcelas?` · ${t.parcela}/${t.parcelas}`:""}</div></div><div class="amt num">${fmt(+t.valor)}</div><button class="btn plain sm" data-unign="${t.id}" style="margin-left:8px">Voltar</button></div>`).join("")}</div>`:""}`;
 }
 const _renderCards2=renderCards;
-renderCards=function(){_renderCards2();renderOF()};
+function openYM(c){const t=new Date();let cm=ymKey(t.getFullYear(),t.getMonth());if(t.getDate()>c.close)cm=addMonths(cm,1);return addMonths(cm,c.due<=c.close?1:0)}
+function ofBankBadges(){for(const c of S.cards){const cs=ofContasDe(c.id).filter(x=>x.saldo!=null);if(!cs.length||openYM(c)!==view.ym)continue;
+  const btn=document.querySelector(`#tiles [data-editcard="${c.id}"]`);const val=btn&&btn.closest(".cc").querySelector(".val");if(!val)continue;
+  const bank=cs.reduce((a,x)=>a+(+x.saldo),0);const app=entriesFor(view.ym).filter(e=>e.p.card===c.id).reduce((a,e)=>a+e.amount,0);const dif=bank-app;
+  val.insertAdjacentHTML("afterend",`<div class="sub" style="margin-top:2px">No banco: <b>${fmt(bank)}</b>${Math.abs(dif)>=1?` · diferença ${fmt(dif)}`:" ✓"}</div>`)}}
+renderCards=function(){_renderCards2();ofBankBadges();renderOF()};
 const _toast=toast;
 toast=function(m,u){$("#toastUndo").onclick=()=>{$("#toast").classList.remove("show");undo()};_toast(m,u)};
 function toastAct(msg,fn){toast(msg,true);$("#toastUndo").onclick=()=>{$("#toast").classList.remove("show");fn()}}
@@ -1352,6 +1371,7 @@ async function setIgn(id,val){const t=OF.imp.find(x=>x.id===id);if(!t)return;t.i
 document.addEventListener("click",e=>{
   const b=e.target.closest("[data-ignimp],[data-unign],[data-ofsync],[data-showign]");if(!b)return;
   e.stopPropagation();e.preventDefault();const d=b.dataset;
+  if(d.ignimp&&d.ignimp.startsWith("p:")){toast("Parcela prevista: aparece no banco quando a fatura fechar",false);return}
   if(d.ignimp){const id=d.ignimp;setIgn(id,true);toastAct("Compra removida dos seus gastos",()=>setIgn(id,false))}
   else if(d.unign)setIgn(d.unign,false);
   else if(d.ofsync!==undefined)ofSync();
@@ -1388,7 +1408,9 @@ function impSheet(t){
   $("#eIgn").onclick=()=>{closeSheet();setIgn(t.id,true);toastAct("Compra removida dos seus gastos",()=>setIgn(t.id,false))};
 }
 document.addEventListener("click",e=>{const r=e.target.closest("[data-editp^='i:']");if(!r||e.target.closest("[data-ignimp]"))return;e.stopPropagation();
-  const t=OF.imp.find(x=>"i:"+x.id===r.dataset.editp);if(t)impSheet(t);
+  const t=ofAll().find(x=>"i:"+x.id===r.dataset.editp);if(!t)return;
+  if(t.previsto){toast(`Parcela ${t.parcela}/${t.parcelas} prevista — o banco lança quando a fatura fechar`,false);return}
+  impSheet(t);
 },true);
 </script>
 </body>
