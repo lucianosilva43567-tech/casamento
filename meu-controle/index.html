@@ -1274,13 +1274,18 @@ function impInfo(t){const ed=(S.impEdits||{})[grpKey(t)]||{},ru=(S.impRules||{})
   return{nome:ed.nome||ru.nome||t.descricao,cat:ed.cat||ru.cat||ofCat(t.categoria),cls:ed.cls!==undefined?ed.cls:(ru.cls||null),regra:!!S.impRules&&!!S.impRules[t.descricao]}}
 window.ofSetCls=(t,cls)=>{const k=grpKey(t);mutate(`${impInfo(t).nome}: ${cls?CLS[cls].l:"sem classificar"}`,()=>{S.impEdits[k]=Object.assign({},S.impEdits[k],{cls})})};
 function finMap(){const m={};OF.finais.forEach(f=>m[finKey(f.conta_id,f.final)]=f);return m}
+/* mês da fatura (vencimento) de uma compra importada: usa a fatura informada pelo banco */
+function impYM(t,cid){const c=card(cid);
+  if(t.fatura&&c)return addMonths(t.fatura,(c.due<=c.close)?1:0);
+  if(t.fatura)return t.fatura;
+  return invoiceYM({card:cid,date:t.data},(t.parcela||1)-1)}
 const _entriesFor=entriesFor;
 entriesFor=function(ym){
   const out=_entriesFor(ym);if(!OF.imp.length)return out;
   const fm=finMap();
   for(const t of OF.imp){if(t.ignorada&&!OF.showIgn)continue;const f=fm[finKey(t.conta_id,t.final)];if(!f||f.oculto||!f.cartao_app||!card(f.cartao_app))continue;
     const inf=impInfo(t),k=(t.parcela||1)-1,p={id:"i:"+t.id,desc:inf.nome,cat:inf.cat,card:f.cartao_app,date:t.data,inst:1,amount:+t.valor};
-    if(invoiceYM(p,k)===ym&&!t.ignorada){const e={p,k,n:t.parcelas||1,amount:+t.valor,imp:t};if(inf.cls)e.cls=inf.cls;out.push(e)}}
+    if(impYM(t,f.cartao_app)===ym&&!t.ignorada){const e={p,k,n:t.parcelas||1,amount:+t.valor,imp:t};if(inf.cls)e.cls=inf.cls;out.push(e)}}
   return out.sort((a,b)=>b.p.date.localeCompare(a.p.date));
 };
 async function ofLoad(){
@@ -1290,9 +1295,9 @@ async function ofLoad(){
   if(!OF.itens.length){render();return}
   const desde=new Date();desde.setMonth(desde.getMonth()-8);
   let all=[],from=0;
-  while(true){const{data,error}=await sb.from("mc_importadas").select("id,conta_id,final,data,descricao,valor,parcela,parcelas,categoria,ignorada").gte("data",desde.toISOString().slice(0,10)).order("data",{ascending:false}).range(from,from+999);
+  while(true){const{data,error}=await sb.from("mc_importadas").select("id,conta_id,final,data,descricao,valor,parcela,parcelas,categoria,ignorada,fatura").gte("data",desde.toISOString().slice(0,10)).order("data",{ascending:false}).range(from,from+999);
     if(error||!data)break;all=all.concat(data);if(data.length<1000)break;from+=1000}
-  OF.imp=all;await ofAutoMap();render();
+  OF.imp=all;await ofAutoMap();ofSyncCards();render();
 }
 async function ofAutoMap(){
   const pend=OF.finais.filter(f=>!f.cartao_app&&!f.oculto);if(!pend.length)return;
@@ -1301,6 +1306,16 @@ async function ofAutoMap(){
     if(!alvo){const b=Object.values(BANK).find(b=>b.key!=="outro"&&nm.includes(b.label.toLowerCase().split(" ")[0]));if(b)alvo=S.cards.find(x=>x.bank===b.key)}
     if(alvo){f.cartao_app=alvo.id;await sb.from("mc_finais").update({cartao_app:alvo.id}).eq("conta_id",f.conta_id).eq("final",f.final)}}
 }
+/* limite e vencimento vindos do banco */
+function ofContasDe(cid){const ids=new Set(OF.finais.filter(f=>f.cartao_app===cid&&!f.oculto).map(f=>f.conta_id));return OF.contas.filter(c=>ids.has(c.conta_id))}
+function ofSyncCards(){let mudou=false;
+  for(const c of S.cards){const cs=ofContasDe(c.id);if(!cs.length)continue;
+    const lim=cs.reduce((a,x)=>a+(+x.limite||0),0);if(lim&&Math.abs(lim-(c.limit||0))>0.5){c.limit=lim;mudou=true}
+    const v=cs.find(x=>x.vencimento);if(v){const d=+v.vencimento.slice(8,10);if(d&&d!==c.due){c.due=d;mudou=true}}}
+  if(mudou)persist();
+}
+const _limitUsed=limitUsed;
+limitUsed=function(cid){const cs=ofContasDe(cid).filter(x=>x.limite!=null&&x.disponivel!=null);if(cs.length)return cs.reduce((a,x)=>a+(+x.limite-(+x.disponivel)),0);return _limitUsed(cid)};
 async function ofSync(){
   if(OF.syncing)return;OF.syncing=true;renderOF();
   try{const{data,error}=await sb.functions.invoke("pluggy-sync",{body:{}});
@@ -1316,7 +1331,7 @@ function renderOF(){
   const when=last?new Date(last).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}):"nunca";
   const ym=view.ym,nIgn=OF.imp.filter(t=>t.ignorada).length;
   const mesPorFinal={};for(const t of OF.imp){if(t.ignorada)continue;const f=OF.finais.find(x=>x.conta_id===t.conta_id&&x.final===t.final);const cid=f&&f.cartao_app&&card(f.cartao_app)?f.cartao_app:null;
-    const p={card:cid||"_",date:t.data};const m=cid?invoiceYM(p,(t.parcela||1)-1):addMonths(t.data.slice(0,7),(t.parcela||1)-1);if(m===ym){const k=finKey(t.conta_id,t.final);mesPorFinal[k]=(mesPorFinal[k]||0)+(+t.valor)}}
+    const m=cid?impYM(t,cid):(t.fatura||addMonths(t.data.slice(0,7),(t.parcela||1)-1));if(m===ym){const k=finKey(t.conta_id,t.final);mesPorFinal[k]=(mesPorFinal[k]||0)+(+t.valor)}}
   const opts=f=>`<option value="">— escolher cartão —</option>${S.cards.map(c=>`<option value="${c.id}" ${f.cartao_app===c.id&&!f.oculto?"selected":""}>${esc(c.name)}</option>`).join("")}<option value="__oculto" ${f.oculto?"selected":""}>🚫 Não é meu (ocultar)</option>`;
   el.innerHTML=`<div class="ch"><h2><span class="ico">🔗</span>Open Finance</h2><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="muted">sincronizado ${esc(when)}</span><button class="btn ghost sm" data-ofsync ${OF.syncing?"disabled":""}>${OF.syncing?"Sincronizando…":"↻ Sincronizar"}</button></div></div>
     <div class="muted" style="margin-bottom:6px">Cada final de cartão vindo do banco. Escolha a qual cartão do app ele pertence, ou marque <b>Não é meu</b> para ocultar todas as compras dele. Para tirar uma compra só, use o <b>✕</b> ao lado dela.</div>
