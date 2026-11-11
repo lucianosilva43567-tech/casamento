@@ -1295,7 +1295,7 @@ async function ofLoad(){
   if(!OF.itens.length){render();return}
   const desde=new Date();desde.setMonth(desde.getMonth()-8);
   let all=[],from=0;
-  while(true){const{data,error}=await sb.from("mc_importadas").select("id,conta_id,final,data,descricao,valor,parcela,parcelas,categoria,ignorada,fatura").gte("data",desde.toISOString().slice(0,10)).order("data",{ascending:false}).range(from,from+999);
+  while(true){const{data,error}=await sb.from("mc_importadas").select("id,conta_id,final,data,descricao,valor,parcela,parcelas,categoria,ignorada,fatura").gte("fatura",desde.toISOString().slice(0,7)).order("data",{ascending:false}).range(from,from+999);
     if(error||!data)break;all=all.concat(data);if(data.length<1000)break;from+=1000}
   OF.imp=all;await ofAutoMap();ofSyncCards();render();
 }
