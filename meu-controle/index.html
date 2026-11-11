@@ -519,6 +519,8 @@ function normalize(){
   S.impEdits=S.impEdits||{};S.impRules=S.impRules||{};S.recurring=S.recurring||[];S.recPaid=S.recPaid||{};S.paid=S.paid||{};S.purchases=S.purchases||[];S.cards=S.cards||[];
   for(const c of S.cards){if(!c.bank)c.bank=c.id==="mp"?"mercadopago":(c.id==="s1"||c.id==="s2")?"santander-unique":"outro";if(c.bank!=="outro")c.dot=BANK[c.bank]?BANK[c.bank].dot:c.dot}
 }
+/* parcelas já pagas: meses desde o início + a deste mês se o dia de cobrança já passou */
+function loanPaid(r){const t=new Date(),cur=ymKey(t.getFullYear(),t.getMonth());const k=monthsBetween(r.start,cur)+(t.getDate()>=(r.day||1)?1:0);return Math.max(0,Math.min(r.inst,k))}
 function monthsBetween(a,b){const[ya,ma]=ymParts(a),[yb,mb]=ymParts(b);return(yb-ya)*12+(mb-ma)}
 function addMonths(k,n){const[y,m]=ymParts(k);return ymKey(y,m+n)}
 /* Assinatura/empréstimo: índice da cobrança no mês (ou -1) */
@@ -748,12 +750,12 @@ function renderFixas(){
     <div style="text-align:right"><div class="amt num">${fmt(r.amount)}</div>${on?recStatus(r,ym):""}</div></div>`}).join("")
     :`<div class="empty"><b>Nenhuma assinatura</b>Toque numa sugestão acima ou em + Assinatura.</div>`;
   const loans=(S.recurring||[]).filter(r=>r.type==="emprestimo");
-  $("#fLoans").innerHTML=loans.length?loans.map(r=>{const k=monthsBetween(r.start,ym),done=Math.max(0,Math.min(r.inst,k)),cur=recIndex(r,ym),left=Math.max(0,r.inst-Math.max(0,k));
+  $("#fLoans").innerHTML=loans.length?loans.map(r=>{const k=monthsBetween(r.start,ym),done=loanPaid(r),cur=recIndex(r,ym),left=r.inst-done;
     return`<div class="item">
       <div class="top2"><div class="click" data-editrec="${r.id}" role="button" tabindex="0" style="cursor:pointer"><div class="nm">${esc(r.name)}</div><div class="muted" style="margin-top:2px">dia ${String(r.day).padStart(2,"0")} · ${methodLabel(r)}</div></div>
         <div style="text-align:right"><div class="num" style="font-weight:800;font-size:16px">${fmt(r.amount)}<span class="muted">/mês</span></div>${cur>=0?`<span class="pill blue">parcela ${cur+1}/${r.inst}</span>`:k>=r.inst?'<span class="pill ok">✓ Quitado</span>':'<span class="pill gray">ainda não começou</span>'}</div></div>
       <div class="bar" style="margin-top:12px"><span style="width:${done/r.inst*100}%;background:#0EA5E9"></span></div>
-      <div class="muted" style="margin-top:6px">Falta ${fmt(left*r.amount)} · ${left} parcela(s) · termina em ${ymLabel(addMonths(r.start,r.inst-1)).toLowerCase()}</div>
+      <div class="muted" style="margin-top:6px">Pagou ${done} de ${r.inst} (${fmt(done*r.amount)}) · faltam ${left} = <b>${fmt(left*r.amount)}</b></div><div class="muted">${ymLabel(r.start).toLowerCase()} até ${ymLabel(addMonths(r.start,r.inst-1)).toLowerCase()}</div>
       ${cur>=0?`<div class="acts">${recStatus(r,ym)}</div>`:""}
     </div>`}).join(""):`<div class="empty"><b>Nenhum empréstimo</b>Cadastre empréstimos, financiamentos ou consórcios.</div>`;
 }
@@ -951,8 +953,8 @@ function recForm(r,preset){
     <div class="field"><label>Como é pago</label><div class="seg wrap" id="rMethod"><button type="button" data-v="conta" aria-pressed="${method==="conta"}">🧾 Boleto/débito</button>${S.cards.map(c=>`<button type="button" data-v="${c.id}" aria-pressed="${method===c.id}"><i class="dot" style="background:${c.dot}"></i>${esc(shortName(c))}</button>`).join("")}</div>
       <div class="hint">No cartão, o valor entra sozinho na fatura todo mês.</div></div>
     <div id="rLoanBox" class="${type==="emprestimo"?"":"hidden"}"><div class="row2">
-      <div class="field"><label for="rInst">Total de parcelas</label><input class="inp" type="number" min="1" max="600" id="rInst" value="${r.inst||12}"><div class="hint" id="rInst-h"></div></div>
-      <div class="field"><label for="rCur">Parcela deste mês</label><input class="inp" type="number" min="1" max="600" id="rCur" value="${Math.min(curParc,r.inst||curParc)}"><div class="hint" id="rCur-h"></div></div></div></div>
+      <div class="field"><label for="rIni">Começou a pagar em</label><input class="inp" type="month" id="rIni" value="${r.start||cur}"><div class="hint" id="rIni-h"></div></div>
+      <div class="field"><label for="rFim">Termina em</label><input class="inp" type="month" id="rFim" value="${r.start&&r.inst?addMonths(r.start,r.inst-1):addMonths(cur,11)}"><div class="hint" id="rFim-h"></div></div></div></div>
     ${!isNew&&type!=="emprestimo"?`<label class="check"><input type="checkbox" id="rPause" ${r.active===false?"checked":""}> Pausada / cancelada</label>`:""}
     <div class="field"><label>Esse gasto é…</label><div class="seg" id="rCls"><button type="button" data-v="necessario" aria-pressed="${r.cls==="necessario"}">✅ Necessário</button><button type="button" data-v="superfluo" aria-pressed="${r.cls==="superfluo"}">🗑️ Jogado fora</button><button type="button" data-v="" aria-pressed="${!r.cls}">❔ Depois</button></div></div>
     <div class="preview" id="rPrev"></div>
@@ -961,16 +963,18 @@ function recForm(r,preset){
   $("#rCls").onclick=e=>{const b=e.target.closest("button");if(!b)return;rcls=b.dataset.v;$("#rCls").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b))};
   const prev=()=>{const a=parseMoney($("#rAmt").value);$("#rAmtLbl").textContent=isLoan()?"Valor da parcela *":"Valor mensal *";
     if(!(a>0)){$("#rPrev").textContent="Digite o valor para ver o resumo.";return}
-    if(isLoan()){const n=+$("#rInst").value||0,c=+$("#rCur").value||1,left=Math.max(0,n-c+1);
-      $("#rPrev").innerHTML=`Faltam <b>${left}</b> parcela(s) = <b>${fmt(left*a)}</b> · termina em <b>${ymLabel(addMonths(cur,left-1)).toLowerCase()}</b>`}
+    if(isLoan()){const ini=$("#rIni").value,fim=$("#rFim").value;if(!ini||!fim||fim<ini){$("#rPrev").textContent="Escolha o mês de início e o de término.";return}
+      const lr={start:ini,inst:monthsBetween(ini,fim)+1,day:+$("#rDay").value||1},n=lr.inst,pg=loanPaid(lr),left=n-pg;
+      $("#rPrev").innerHTML=`<b>${n}</b> parcelas no total · já pagou <b>${pg}</b> (${fmt(pg*a)}) · faltam <b>${left}</b> = <b>${fmt(left*a)}</b><div class="bar" style="margin-top:8px;height:8px;background:#fff"><span style="width:${pg/n*100}%;background:var(--accent)"></span></div>`}
     else $("#rPrev").innerHTML=`${fmt(a)} por mês = <b>${fmt(a*12)}</b> por ano`};
   const check=bindValidate([["rName",v=>v.trim().length>0,"Dê um nome"],["rAmt",posMoney,"Informe o valor"],["rDay",v=>+v>=1&&+v<=31,"Entre 1 e 31"],
-    ["rInst",v=>!isLoan()||(+v>=1&&+v<=600),"Entre 1 e 600"],["rCur",v=>!isLoan()||(+v>=1&&+v<=(+$("#rInst").value||1)),"Não pode passar do total"]],"#rSave",prev);
+    ["rIni",v=>!isLoan()||/^\d{4}-\d{2}$/.test(v),"Escolha o mês"],["rFim",v=>!isLoan()||(/^\d{4}-\d{2}$/.test(v)&&v>=$("#rIni").value),"Tem que ser depois do início"]],"#rSave",prev);
+  ["rIni","rFim","rDay"].forEach(id=>$("#"+id).addEventListener("change",()=>{$("#"+id).dataset.touched=1;check()}));
   $("#rType").onclick=e=>{const b=e.target.closest("button");if(!b)return;type=b.dataset.v;$("#rType").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#rLoanBox").classList.toggle("hidden",!isLoan());check()};
   $("#rMethod").onclick=e=>{const b=e.target.closest("button");if(!b)return;method=b.dataset.v;$("#rMethod").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b))};
   const save=()=>{if(!check())return;
     const data={type,name:$("#rName").value.trim(),amount:parseMoney($("#rAmt").value),day:+$("#rDay").value,method,cat:isLoan()?"Empréstimos":"Assinaturas",cls:rcls||null};
-    if(isLoan()){data.inst=+$("#rInst").value;data.start=addMonths(cur,-(+$("#rCur").value-1))}else{data.start=isNew?cur:r.start;data.active=!($("#rPause")&&$("#rPause").checked)}
+    if(isLoan()){data.start=$("#rIni").value;data.inst=monthsBetween(data.start,$("#rFim").value)+1}else{data.start=isNew?cur:r.start;data.active=!($("#rPause")&&$("#rPause").checked)}
     closeSheet();
     if(isNew){const nr={id:uid(),...data};mutate(`${data.name} adicionado`,()=>S.recurring.push(nr))}
     else mutate(`${data.name} atualizado`,()=>Object.assign(S.recurring.find(x=>x.id===r.id),data))};
