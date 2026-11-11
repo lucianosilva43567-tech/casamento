@@ -357,6 +357,7 @@ button{cursor:pointer;border:0;background:none}
       <div class="wed-hero">
         <svg class="ring" viewBox="0 0 132 132" id="wRing"></svg>
         <div style="flex:1;min-width:180px">
+          <span class="pill blue hidden" id="wShare" style="margin-bottom:8px"></span>
           <div class="label">Falta juntar</div>
           <div class="big num" id="wFalta"></div>
           <div class="muted" id="wFaltaSub" style="margin-top:4px"></div>
@@ -884,10 +885,12 @@ if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
-/* ===== Supabase: login, nuvem e tempo real ===== */
+/* ===== Supabase: cartões privados + casamento compartilhado ===== */
 const SB_URL="https://vaqnqecrsrcpwxkhmryg.supabase.co";
 const SB_KEY="sb_publishable_3suKEKFC40vtgZXLRSiRPQ_pZ_4B6oE";
-let sb=null,sbUser=null,sbId=null,sbCode="",sbPending=false,sbT=null,sbLastJson="",sbChan=null;
+let sb=null,sbUser=null,sbId=null,sbCode="",sbPending=false,sbT=null,sbChan=null,sbMembers=1;
+let lastPes="",lastWed="";
+const pesOf=()=>({cards:S.cards,purchases:S.purchases,paid:S.paid});
 
 persist=function(){
   try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}
@@ -896,35 +899,47 @@ persist=function(){
   sbT=setTimeout(sbPush,600);
 };
 async function sbPush(){
-  const json=JSON.stringify(S);
-  const{error}=await sb.from("mc_estado").update({dados:S,atualizado_em:new Date().toISOString(),atualizado_por:sbUser.id}).eq("id",sbId);
-  if(error){setSave("local",navigator.onLine?"Erro ao salvar — tentando de novo":"Offline — salvo no aparelho");setTimeout(()=>sbPending&&sbPush(),8000);return}
-  sbLastJson=json;sbPending=false;setSave("","Salvo na nuvem");
+  const p=JSON.stringify(pesOf()),w=JSON.stringify(S.wedding),now=new Date().toISOString();let err=null;
+  if(p!==lastPes){const r=await sb.from("mc_pessoal").upsert({user_id:sbUser.id,dados:pesOf(),atualizado_em:now});if(r.error)err=r.error;else lastPes=p}
+  if(w!==lastWed){const r=await sb.from("mc_estado").update({dados:S.wedding,atualizado_em:now,atualizado_por:sbUser.id}).eq("id",sbId);if(r.error)err=r.error;else lastWed=w}
+  if(err){setSave("local",navigator.onLine?"Erro ao salvar — tentando de novo":"Offline — salvo no aparelho");setTimeout(()=>sbPending&&sbPush(),8000);return}
+  sbPending=false;setSave("","Salvo na nuvem");
 }
 window.addEventListener("online",()=>{if(sbPending)sbPush()});
 
 async function sbLoad(){
   setSave("busy","Sincronizando…");
-  const{data:id,error:e1}=await sb.rpc("mc_criar",{p_dados:S});
+  const{data:id,error:e1}=await sb.rpc("mc_criar",{p_dados:S.wedding});
   if(e1){setSave("local","Salvo neste aparelho");toast("Não consegui conectar à nuvem",false);return}
   sbId=id;
-  const{data,error}=await sb.from("mc_estado").select("dados,codigo_convite").eq("id",sbId).single();
-  if(error){setSave("local","Salvo neste aparelho");return}
-  sbCode=data.codigo_convite;
-  if(data.dados&&data.dados.cards){S=Object.assign(defaultState(),data.dados);try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
-  sbLastJson=JSON.stringify(S);render();setSave("","Salvo na nuvem");
+  const{data:w}=await sb.from("mc_estado").select("dados,codigo_convite").eq("id",sbId).single();
+  if(w){sbCode=w.codigo_convite;if(w.dados&&Array.isArray(w.dados.items))S.wedding=Object.assign({goal:60000,items:[],deposits:[]},w.dados)}
+  const{count}=await sb.from("mc_membros").select("user_id",{count:"exact",head:true}).eq("estado_id",sbId);sbMembers=count||1;
+  const{data:p}=await sb.from("mc_pessoal").select("dados").eq("user_id",sbUser.id).maybeSingle();
+  if(p&&p.dados&&p.dados.cards){S.cards=p.dados.cards;S.purchases=p.dados.purchases||[];S.paid=p.dados.paid||{};lastPes=JSON.stringify(pesOf())}
+  else lastPes="";
+  lastWed=JSON.stringify(S.wedding);
+  try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}
+  render();
+  if(!lastPes){sbPending=true;await sbPush()}else setSave("","Salvo na nuvem");
   if(sbChan)sb.removeChannel(sbChan);
-  sbChan=sb.channel("mc-"+sbId).on("postgres_changes",{event:"UPDATE",schema:"public",table:"mc_estado",filter:"id=eq."+sbId},p=>{
-    const d=p.new&&p.new.dados;if(!d||!d.cards||sbPending)return;
-    const j=JSON.stringify(d);if(j===sbLastJson||j===JSON.stringify(S))return;
-    S=Object.assign(defaultState(),d);sbLastJson=j;try{localStorage.setItem(LS,j)}catch(e){}
-    render();if(p.new.atualizado_por&&p.new.atualizado_por!==sbUser.id)toast("Atualizado por outra pessoa",false);
+  sbChan=sb.channel("mc-"+sbId).on("postgres_changes",{event:"UPDATE",schema:"public",table:"mc_estado",filter:"id=eq."+sbId},ev=>{
+    const d=ev.new&&ev.new.dados;if(!d||!Array.isArray(d.items)||sbPending)return;
+    const j=JSON.stringify(d);if(j===lastWed||j===JSON.stringify(S.wedding))return;
+    S.wedding=Object.assign({goal:60000,items:[],deposits:[]},d);lastWed=j;try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}
+    render();if(ev.new.atualizado_por&&ev.new.atualizado_por!==sbUser.id)toast("Casamento atualizado pela outra pessoa",false);
   }).subscribe();
 }
 
+/* Selo de compartilhado na aba Casamento */
+const _renderWedding=renderWedding;
+renderWedding=function(){_renderWedding();const el=$("#wShare");if(!el)return;
+  el.classList.toggle("hidden",!(sbUser&&sbId));
+  el.textContent=sbMembers>1?`👥 Compartilhado · ${sbMembers} pessoas`:"👥 Compartilhe pelo código em Conta";};
+
 function loginSheet(){
   let mode="in";
-  const draw=()=>{openSheet(`<h3>${mode==="in"?"Entrar":"Criar conta"}</h3><div class="muted">Seus dados ficam salvos na nuvem e sincronizam entre aparelhos.</div>
+  const draw=()=>{openSheet(`<h3>${mode==="in"?"Entrar":"Criar conta"}</h3><div class="muted">Seus cartões ficam só na sua conta. A aba Casamento pode ser compartilhada.</div>
     <div class="field"><label for="lEmail">E-mail</label><input class="inp" id="lEmail" type="email" autocomplete="email" inputmode="email"><div class="hint" id="lEmail-h"></div></div>
     <div class="field"><label for="lPass">Senha</label><input class="inp" id="lPass" type="password" autocomplete="${mode==="in"?"current-password":"new-password"}"><div class="hint" id="lPass-h">${mode==="up"?"Mínimo de 6 caracteres":""}</div></div>
     <div class="hint" id="lMsg"></div>
@@ -945,32 +960,33 @@ function loginSheet(){
 }
 
 function joinSheet(){
-  openSheet(`<h3>Entrar com código</h3><div class="muted">Use o código de convite de outra pessoa para compartilhar o mesmo controle. O controle atual desta conta deixa de aparecer aqui.</div>
+  openSheet(`<h3>Entrar no casamento</h3><div class="muted">Digite o código de convite para compartilhar a aba <b>Casamento</b>. Seus cartões continuam só seus.</div>
     <div class="field"><label for="jCode">Código</label><input class="inp" id="jCode" maxlength="6" style="text-transform:uppercase;letter-spacing:.2em;font-weight:800"><div class="hint" id="jCode-h"></div></div>
     <div class="foot"><button class="btn plain" id="jNo">Cancelar</button><button class="btn primary" id="jGo">Entrar</button></div>`,"#jCode");
   const check=bindValidate([["jCode",v=>v.trim().length===6,"O código tem 6 caracteres"]],"#jGo");
   const go=async()=>{if(!check())return;const{error}=await sb.rpc("mc_entrar",{p_codigo:$("#jCode").value});
     if(error){const h=$("#jCode-h");h.className="hint err";h.textContent="Código inválido";return}
-    closeSheet();await sbLoad();toast("Agora vocês compartilham o mesmo controle",false)};
+    closeSheet();await sbLoad();try{history.replaceState(null,"","#casamento")}catch(x){}view.tab="casamento";render();toast("Agora vocês compartilham a aba Casamento",false)};
   $("#jGo").onclick=go;onKeyEnter=go;$("#jNo").onclick=closeSheet;
 }
 
-/* Conta no menu ⋯ */
+/* Conta no menu */
 const _backupMenu=backupMenu;
 backupMenu=function(){
   _backupMenu();
   const box=document.createElement("div");box.className="card";box.style.cssText="margin-top:16px;box-shadow:none;background:#F7F9FC";
   if(sbUser){
     box.innerHTML=`<div class="label">Conta</div><div style="font-weight:700;margin-top:4px">${esc(sbUser.email)}</div>
-      ${sbCode?`<div class="muted" style="margin-top:10px">Código de convite (para a Isabelle entrar no mesmo controle):</div><div style="font-size:24px;font-weight:800;letter-spacing:.2em" class="num">${esc(sbCode)}</div>`:""}
-      <div class="grid" style="margin-top:12px"><button class="btn ghost sm" id="aJoin">Entrar com código</button><button class="btn plain sm" id="aOut">Sair da conta</button></div>`;
+      <div class="muted" style="margin-top:4px">🔒 Cartões e faturas: só você vê</div>
+      ${sbCode?`<div class="muted" style="margin-top:12px">💍 Código do casamento — quem entrar com ele vê <b>só a aba Casamento</b>:</div><div style="font-size:24px;font-weight:800;letter-spacing:.2em" class="num">${esc(sbCode)}</div><div class="muted">${sbMembers>1?`Compartilhado com ${sbMembers} pessoas`:"Ainda não compartilhado"}</div>`:""}
+      <div class="grid" style="margin-top:12px"><button class="btn ghost sm" id="aJoin">Tenho um código de casamento</button><button class="btn plain sm" id="aOut">Sair da conta</button></div>`;
   }else box.innerHTML=`<div class="label">Conta</div><div class="muted" style="margin-top:4px">Sem conta: dados só neste aparelho.</div><button class="btn primary sm" id="aIn" style="margin-top:10px;width:100%">Entrar / criar conta</button>`;
   $("#sheet").insertBefore(box,$("#sheet .foot"));
   $("#aIn")&&($("#aIn").onclick=loginSheet);
   $("#aJoin")&&($("#aJoin").onclick=joinSheet);
-  $("#aOut")&&($("#aOut").onclick=async()=>{closeSheet();await sb.auth.signOut();toast("Você saiu da conta. Os dados continuam neste aparelho.",false)});
+  $("#aOut")&&($("#aOut").onclick=async()=>{closeSheet();await sb.auth.signOut();
+    S=defaultState();try{localStorage.removeItem(LS)}catch(e){}render();toast("Você saiu da conta",false)});
 };
-$("#menuBtn").onclick=()=>backupMenu();
 
 async function sbInit(){
   if(!window.supabase){setSave("local","Offline — salvo no aparelho");return}
@@ -978,7 +994,7 @@ async function sbInit(){
   sb.auth.onAuthStateChange((ev,session)=>{
     const u=session&&session.user;
     if(u&&(!sbUser||sbUser.id!==u.id)){sbUser=u;setTimeout(sbLoad,0)}
-    else if(!u&&sbUser){sbUser=null;sbId=null;sbCode="";if(sbChan){sb.removeChannel(sbChan);sbChan=null}setSave("local","Salvo neste aparelho")}
+    else if(!u&&sbUser){sbUser=null;sbId=null;sbCode="";sbMembers=1;if(sbChan){sb.removeChannel(sbChan);sbChan=null}setSave("local","Salvo neste aparelho");render()}
   });
   const{data}=await sb.auth.getSession();
   if(!data.session){setSave("local","Salvo neste aparelho");let skip=null;try{skip=localStorage.getItem(LS+".semconta")}catch(e){}if(!skip)loginSheet()}
