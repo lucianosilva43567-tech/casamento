@@ -1,0 +1,2 @@
+Imagens do convite: igreja.jpg e monograma.png.
+Mantenha estes nomes para que o site carregue as imagens.
