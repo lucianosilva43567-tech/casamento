@@ -1737,6 +1737,8 @@ document.addEventListener("click",e=>{const r=e.target.closest("[data-editp^='i:
   if(t.previsto){toast(`Parcela ${t.parcela}/${t.parcelas} prevista — o banco lança quando a fatura fechar`,false);return}
   impSheet(t);
 },true);
+// Render once after Open Finance and category handlers have been initialized.
+render();
 </script>
 </body>
 </html>
