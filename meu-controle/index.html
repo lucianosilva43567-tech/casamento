@@ -358,7 +358,10 @@ body.finance-view .btn.primary{box-shadow:none}
 #v-cartoes .cc .lim{margin-top:20px;height:4px}
 #v-cartoes .cc .limit-row{display:flex;justify-content:space-between;gap:6px 16px;flex-wrap:wrap;margin-top:9px;font-size:12px;color:#DAE1E7}
 #v-cartoes .cc .limit-row>span{white-space:nowrap}
-#v-cartoes #ofPanel{background:none;border:0;box-shadow:none;padding:0;display:flex;justify-content:flex-end;gap:12px;align-items:center;flex-wrap:wrap}
+.topbar .header-sync{display:flex;align-items:center;flex-shrink:0}
+.header-sync .btn{min-height:34px;padding:7px 10px;font-size:12px;background:#EEF2F6;color:#475569;box-shadow:none}
+.header-sync .ui-icon{width:16px;height:16px}
+@media(max-width:480px){.topbar .header-sync{order:2;margin-left:auto}.header-sync .sync-label{display:none}.header-sync .btn{width:34px;padding:8px}}
 #v-cartoes .tbl{table-layout:auto}#v-cartoes .tbl td{overflow-wrap:anywhere}
 #v-cartoes .tbl-wrap{overflow-x:auto}
 .clsbtns{flex-wrap:wrap;justify-content:flex-end;max-width:100%}
@@ -399,6 +402,11 @@ body.finance-view .btn.primary{box-shadow:none}
 <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 16v-4M12 16V8M17 16V5"/></symbol>
   <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></symbol>
   <symbol id="i-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20M6 15h4"/></symbol>
+<symbol id="i-pie" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 15.9A10 10 0 1 1 8.1 2.8"/><path d="M22 12A10 10 0 0 0 12 2v10Z"/></symbol>
+<symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 21h14M3 7h18"/><path d="m6 7-4 7h8L6 7Zm12 0-4 7h8l-4-7Z"/><path d="M2 14a4 4 0 0 0 8 0m4 0a4 4 0 0 0 8 0"/></symbol>
+<symbol id="i-receipt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3v18l4-2 4 2 4-2 4 2V3l-4 2-4-2-4 2-4-2Z"/><path d="M8 9h8M8 13h6"/></symbol>
+<symbol id="i-list-checks" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 2 2 4-4M13 6h8m-18 10 2 2 4-4M13 16h8"/></symbol>
+<symbol id="i-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></symbol>
   <symbol id="i-rep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></symbol>
   <symbol id="i-ring" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="7"/><path d="M9 3h6l-3 4z"/></symbol>
   <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
@@ -410,7 +418,7 @@ body.finance-view .btn.primary{box-shadow:none}
   <nav class="nav">
     <a href="#visao" data-nav="visao"><svg><use href="#i-home"/></svg>Visão geral</a>
     <a href="#cartoes" data-nav="cartoes"><svg><use href="#i-card"/></svg>Cartões e faturas</a>
-    <a href="#fixas" data-nav="fixas"><svg><use href="#i-rep"/></svg>Assinaturas e empréstimos</a>
+    <a href="#fixas" data-nav="fixas"><svg><use href="#i-receipt"/></svg>Assinaturas e empréstimos</a>
   </nav>
   <div class="navlbl">Planejamento</div>
   <nav class="nav">
@@ -437,6 +445,7 @@ body.finance-view .btn.primary{box-shadow:none}
       <button class="iconbtn" id="mNext" aria-label="Próximo mês">›</button>
     </div>
     <button class="btn primary addbtn" id="addTop">+ <span id="addTopLbl">Adicionar gasto</span></button>
+    <div id="ofPanel" class="header-sync hidden"></div>
   </header>
 
   <!-- ===== VISÃO GERAL ===== -->
@@ -462,7 +471,7 @@ body.finance-view .btn.primary{box-shadow:none}
 
 
     <div class="card s12 o3" id="clsCard">
-      <div class="ch"><h2><svg class="ui-icon" aria-hidden="true"><use href="#i-rep"/></svg>Necessário × Dinheiro jogado fora</h2><button class="btn ghost sm" data-classify>Classificar compras</button></div>
+      <div class="ch"><h2><svg class="ui-icon" aria-hidden="true"><use href="#i-scale"/></svg>Necessário × Dinheiro jogado fora</h2><button class="btn ghost sm" data-classify>Classificar compras</button></div>
       <div class="clsgrid">
         <div><div class="label">Gastos do mês</div><div class="bar" id="clsBar" style="height:14px;margin-top:10px"></div><div class="clsbig" id="clsNums"></div><div class="muted" id="clsHint" style="margin-top:10px"></div></div>
         <div><div class="label">Últimos 6 meses</div><div class="clsmonths" id="clsMonths" style="margin-top:10px"></div></div>
@@ -485,7 +494,7 @@ body.finance-view .btn.primary{box-shadow:none}
       <div id="oInst"></div>
     </div>
     <div class="card s4 o7">
-      <div class="ch"><h2><svg class="ui-icon" aria-hidden="true"><use href="#i-rep"/></svg>Assinaturas e empréstimos</h2><a href="#fixas" data-nav="fixas" class="btn ghost sm">Abrir</a></div>
+      <div class="ch"><h2><svg class="ui-icon" aria-hidden="true"><use href="#i-receipt"/></svg>Assinaturas e empréstimos</h2><a href="#fixas" data-nav="fixas" class="btn ghost sm">Abrir</a></div>
       <div class="mid num" id="oFix"></div><div class="muted" id="oFixS" style="margin-bottom:6px"></div>
       <div id="oFixList"></div>
     </div>
@@ -501,7 +510,6 @@ body.finance-view .btn.primary{box-shadow:none}
   <!-- ===== CARTÕES ===== -->
   <section id="v-cartoes" class="grid hidden">
     <div class="s12"><div class="tiles" id="tiles"></div></div>
-    <div class="s12" id="ofPanel"></div>
     <div class="card s8">
       <div class="ch"><h2><svg class="ui-icon" aria-hidden="true"><use href="#i-card"/></svg><span id="pTitle">Compras na fatura</span></h2><button class="btn ghost sm" data-add>+ Gasto</button></div>
       <div class="chips" id="filters" role="group" aria-label="Filtrar por cartão" style="margin-bottom:6px"></div>
@@ -509,7 +517,7 @@ body.finance-view .btn.primary{box-shadow:none}
       <div class="m-only" id="plist"></div>
     </div>
     <div class="card s4">
-      <div class="ch"><h2><svg class="ui-icon" aria-hidden="true"><use href="#i-rep"/></svg>Por categoria</h2><span class="muted" id="catFilterLbl"></span></div>
+      <div class="ch"><h2><svg class="ui-icon" aria-hidden="true"><use href="#i-pie"/></svg>Por categoria</h2><span class="muted" id="catFilterLbl"></span></div>
       <div class="donut" id="cardCategoryDonut" style="margin:8px auto 18px" aria-label="Distribuição por categoria"></div><div id="cats"></div>
     </div>
   </section>
@@ -553,7 +561,7 @@ body.finance-view .btn.primary{box-shadow:none}
       <div class="card kpi"><div class="label">Guardado</div><div class="v num" style="color:var(--gold)" id="kGuard"></div></div>
     </div>
     <div class="card s7">
-      <div class="ch"><h2><svg class="w-icon" aria-hidden="true"><use href="#i-rep"/></svg>Itens do casamento</h2><button class="btn ghost sm" id="addItem">+ Item</button></div>
+      <div class="ch"><h2><svg class="w-icon" aria-hidden="true"><use href="#i-list-checks"/></svg>Itens do casamento</h2><button class="btn ghost sm" id="addItem">+ Item</button></div>
       <div id="quick" class="chips" style="margin-bottom:12px"></div>
       <div id="items"></div>
     </div>
@@ -962,7 +970,8 @@ function renderWedding(){
   $("#kPago").textContent=fmt(k.pago);$("#kFalta").textContent=fmt(k.falta);$("#kGuard").textContent=fmt(k.guard);
   $("#guardBig").textContent=fmt(k.guard);$("#goalLbl").textContent=fmt(W.goal);
   $("#wFalta").textContent=fmt(k.juntar);
-  $("#wFaltaSub").textContent=k.discrepancy?"Revise a origem dos pagamentos antigos":!k.total?"Cadastre os itens (buffet, decoração…) para calcular":k.juntar?`Falta pagar ${fmt(k.falta)} e você tem ${fmt(Math.max(0,k.guard))} guardado`:"Tudo coberto";
+  $("#wFaltaSub").textContent=k.discrepancy>0?"Revise a origem dos pagamentos antigos":"";
+  $("#wFaltaSub").classList.toggle("hidden",!(k.discrepancy>0));
   const months=weddingMonths(W.date);
   $("#wDate").textContent=W.date?dateBR(W.date):"Definir data";
   $("#wMonthly").textContent=k.juntar===0?"Meta coberta":months===null?"Defina a data para calcular a meta mensal":months===0?`Valor necessário agora: ${fmt(k.juntar)}`:`Meta sugerida: ${fmt(Math.ceil(k.juntar*100/months)/100)}/mês`;
@@ -990,11 +999,12 @@ function renderWedding(){
   const hist=[...W.deposits.map(d=>({t:"dep",d})),...W.items.flatMap(i=>(i.payments||[]).filter(p=>p.fromSavings).map(p=>({t:"pay",d:p,i})))].sort((a,b)=>b.d.date.localeCompare(a.d.date));
   $("#deps").innerHTML=hist.length?hist.slice(0,30).map(h=>h.t==="dep"
     ?`<div class="li"><div class="ic" style="background:var(--gold-soft)"><svg class="w-icon" aria-hidden="true"><use href="#i-card"/></svg></div><div class="main2"><div class="t">${esc(h.d.note||"Depósito")}</div><div class="s">${dateBR(h.d.date)}</div></div><div class="amt num" style="color:var(--ok)">+${fmt(h.d.amount)}</div><button class="iconbtn" data-deldep="${h.d.id}" aria-label="Excluir depósito"><svg class="w-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>`
-    :`<div class="li"><div class="ic"><svg class="w-icon" aria-hidden="true"><use href="#i-rep"/></svg></div><div class="main2"><div class="t">${esc(h.i.name)}</div><div class="s">${dateBR(h.d.date)} · pago do guardado</div></div><div class="amt num" style="color:var(--bad)">−${fmt(h.d.amount)}</div></div>`).join("")
+    :`<div class="li"><div class="ic"><svg class="w-icon" aria-hidden="true"><use href="#i-check-circle"/></svg></div><div class="main2"><div class="t">${esc(h.i.name)}</div><div class="s">${dateBR(h.d.date)} · pago do guardado</div></div><div class="amt num" style="color:var(--bad)">−${fmt(h.d.amount)}</div></div>`).join("")
     :`<div class="empty"><b>Nada guardado ainda</b>Registre cada valor que separar para o casamento.</div>`;
 }
 
 function render(){
+  $("#ofPanel").classList.toggle("hidden",view.tab!=="cartoes");
   document.body.classList.toggle("wedding-view",view.tab==="casamento");
   document.body.classList.toggle("finance-view",view.tab!=="casamento");
   normalize();
@@ -1634,7 +1644,8 @@ async function ofSync(){
 }
 function renderOF(){
   const el=$("#ofPanel");if(!el)return;
-  el.innerHTML=`<button class="btn ghost sm" data-ofsync ${OF.syncing?"disabled":""}>${iconSvg("repeat")} ${OF.syncing?"Sincronizando…":"Sincronizar Pluggy"}</button>`;
+  el.classList.toggle("hidden",view.tab!=="cartoes");
+  el.innerHTML=`<button type="button" class="btn ghost sm" data-ofsync aria-label="Sincronizar Pluggy" title="Sincronizar Pluggy" ${OF.syncing?"disabled":""}>${iconSvg("repeat")} <span class="sync-label">${OF.syncing?"Sincronizando…":"Sincronizar Pluggy"}</span></button>`;
 }
 function cardSettings(cardId){
   const c=card(cardId);if(!c)return;
@@ -1742,4 +1753,5 @@ render();
 </script>
 </body>
 </html>
+
 
