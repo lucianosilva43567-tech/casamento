@@ -281,6 +281,49 @@ button{cursor:pointer;border:0;background:none}
   .o8{order:8}.o2{order:2}.o3{order:3}.o4{order:4}.o5{order:5}.o6{order:6}.o7{order:7}.o1{order:1}
 }
 .m-only{display:none}
+
+/* Wedding design tokens are scoped to preserve the personal finance screens. */
+body.wedding-view{--ink-3:#64748B;--accent:#1E3A2F;--accent-soft:#ECF2EE;--gold:#A87929;--gold-soft:#FBF5E8;background:#F8FAFC}
+#v-casamento{--ok:#1E3A2F;--ok-soft:#ECF2EE;min-width:0}
+#v-casamento .card{border:1px solid #E2E8F0;background:#fff;box-shadow:0 1px 3px #0f172a05;min-width:0}
+#v-casamento .w-hero{background:#1E3A2F;color:white;border:0}
+#v-casamento .w-hero .label,#v-casamento .w-hero .muted,#v-casamento .w-hero .legend,#v-casamento .w-hero .legend div{color:#DFE8E2}
+#v-casamento .w-hero .big{color:#fff;font-size:clamp(28px,5vw,42px)}
+#v-casamento .w-hero .ring{display:none}
+#v-casamento .wed-hero{display:block}
+#v-casamento .w-hero .bar{background:#ffffff25;margin:20px 0 8px}
+#v-casamento .w-hero .bar span{background:#D6B775}
+#v-casamento .w-monthly{font-size:18px;font-weight:700;margin-top:20px}
+#v-casamento .w-header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;grid-column:1/-1}
+#v-casamento .w-header h2{font-size:22px;letter-spacing:-.04em}
+#v-casamento .w-tools{display:flex;gap:8px;flex-wrap:wrap;max-width:100%}
+#v-casamento .w-tools .btn{white-space:normal;text-align:left;max-width:100%}
+body.wedding-view .btn.primary,body.wedding-view .bnav .add{box-shadow:0 2px 6px #1e3a2f12}
+#v-casamento .pill{white-space:normal;overflow-wrap:anywhere}
+#v-casamento .pill.warn{color:#854D0E;background:#FBF5E8}
+#v-casamento .pill.blue{background:#F6F1E7;color:#79551D}
+#v-casamento .item{border:1px solid #E2E8F0;box-shadow:none;overflow-wrap:anywhere}
+#v-casamento .item .bar{height:4px}
+#v-casamento .item .bar span{background:#B99350!important}
+#v-casamento .top2{gap:12px;flex-wrap:wrap}
+#v-casamento .top2>div{min-width:0}
+body.wedding-view .bnav a{min-width:0;flex:1}
+body.wedding-view .bnav .add{flex:none;width:48px}
+#v-casamento .chips{padding:4px 4px 12px;scroll-padding-inline:4px}
+#v-casamento .li{flex-wrap:wrap;gap:8px}
+#v-casamento .amt{white-space:normal;overflow-wrap:anywhere}
+#v-casamento .kpi .v{font-size:clamp(19px,3vw,28px);overflow-wrap:anywhere}
+#v-casamento .ch{flex-wrap:wrap;gap:8px}
+.w-icon{width:20px;height:20px;vertical-align:middle;flex-shrink:0}
+.w-origin{border:0;margin-top:16px;display:grid;gap:8px;min-width:0}
+.w-origin legend{font-weight:700;margin-bottom:8px}
+.w-origin label{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid #E2E8F0;border-radius:10px;cursor:pointer}
+.w-origin label:has(input:checked){background:#ECF2EE;border-color:#1E3A2F}
+.w-origin input{margin-top:3px;accent-color:#1E3A2F}
+.w-origin small{display:block;color:#4A5468;margin-top:3px}
+#sheet{width:min(520px,100%);overflow-wrap:anywhere} .foot{flex-wrap:wrap}
+@media(max-width:420px){#v-casamento .w-tools{width:100%}#v-casamento .w-tools .btn{flex:1}#v-casamento .kpi{padding:14px}.topbar>*{min-width:0}.topbar .btn{max-width:100%;white-space:normal}}
+
 </style>
 </head>
 <body>
@@ -375,7 +418,7 @@ button{cursor:pointer;border:0;background:none}
       <div id="oFixList"></div>
     </div>
     <div class="card s4 o8">
-      <div class="ch"><h2><span class="ico">💍</span>Casamento</h2><a href="#casamento" class="btn ghost sm">Abrir</a></div>
+      <div class="ch"><h2><svg class="w-icon" aria-hidden="true"><use href="#i-ring"/></svg>Casamento</h2><a href="#casamento" class="btn ghost sm">Abrir</a></div>
       <div style="display:flex;gap:16px;align-items:center">
         <svg viewBox="0 0 132 132" style="width:110px;height:110px;flex:none" id="oRing"></svg>
         <div style="min-width:0"><div class="label">Falta juntar</div><div class="mid num" id="oWed"></div><div class="muted" id="oWedS" style="margin-top:4px"></div></div>
@@ -418,35 +461,36 @@ button{cursor:pointer;border:0;background:none}
 
   <!-- ===== CASAMENTO ===== -->
   <section id="v-casamento" class="grid hidden">
-    <div class="card hl s6">
+    <header class="w-header"><div><h2>Nosso casamento</h2><span id="wShare" class="muted hidden"></span></div><div class="w-tools"><button class="btn ghost sm" id="wDate">Data do casamento</button><button class="btn primary sm" id="wInvite">Compartilhar código</button></div></header>
+    <div class="card w-hero s6">
       <div class="wed-hero">
         <svg class="ring" viewBox="0 0 132 132" id="wRing"></svg>
         <div style="flex:1;min-width:180px">
-          <span class="pill blue hidden" id="wShare" style="margin-bottom:8px"></span>
+          
           <div class="label">Falta juntar</div>
           <div class="big num" id="wFalta"></div>
           <div class="muted" id="wFaltaSub" style="margin-top:4px"></div>
-          <div class="legend"><div><i class="dot" style="background:var(--ok)"></i> Já pago</div><div><i class="dot" style="background:var(--gold)"></i> Guardado</div><div><i class="dot" style="background:#E3E7EE"></i> Falta</div></div>
+          <div class="bar" role="progressbar" id="wProgress" aria-label="Orçamento coberto" aria-valuemin="0" aria-valuemax="100"><span id="wProgressFill"></span></div><div id="wPercent"></div><div class="w-monthly" id="wMonthly"></div><div class="muted" id="wTimeline"></div><div class="legend"><div><i class="dot" style="background:#AFC7B7"></i> Já pago</div><div><i class="dot" style="background:#D6B775"></i> Guardado</div><div><i class="dot" style="background:#E3E7EE"></i> Falta</div></div>
         </div>
       </div>
     </div>
     <div class="s6 grid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:inherit">
       <div class="card kpi"><div class="label">Custo total</div><div class="v num" id="kTotal"></div><div class="s" id="kMeta"></div></div>
-      <div class="card kpi"><div class="label">Já pago</div><div class="v num" style="color:var(--ok)" id="kPago"></div><div class="s">entradas + parcelas</div></div>
-      <div class="card kpi"><div class="label">Falta pagar</div><div class="v num" id="kFalta"></div><div class="s">aos fornecedores</div></div>
-      <div class="card kpi"><div class="label">Guardado</div><div class="v num" style="color:var(--gold)" id="kGuard"></div><div class="s">dinheiro do casamento</div></div>
+      <div class="card kpi"><div class="label">Já pago</div><div class="v num" style="color:var(--ok)" id="kPago"></div></div>
+      <div class="card kpi"><div class="label">Falta pagar</div><div class="v num" id="kFalta"></div></div>
+      <div class="card kpi"><div class="label">Guardado</div><div class="v num" style="color:var(--gold)" id="kGuard"></div></div>
     </div>
     <div class="card s7">
-      <div class="ch"><h2><span class="ico">📋</span>Itens do casamento</h2><button class="btn ghost sm" id="addItem">+ Item</button></div>
+      <div class="ch"><h2><svg class="w-icon" aria-hidden="true"><use href="#i-rep"/></svg>Itens do casamento</h2><button class="btn ghost sm" id="addItem">+ Item</button></div>
       <div id="quick" class="chips" style="margin-bottom:12px"></div>
       <div id="items"></div>
     </div>
     <div class="card s5">
-      <div class="ch"><h2><span class="ico">💰</span>Dinheiro guardado</h2><button class="btn ghost sm" id="addDep">+ Depósito</button></div>
+      <div class="ch"><h2><svg class="w-icon" aria-hidden="true"><use href="#i-card"/></svg>Dinheiro guardado</h2><button class="btn ghost sm" id="addDep">+ Depósito</button></div>
       <div class="mid num" style="color:var(--gold)" id="guardBig"></div>
-      <div class="muted" style="margin-bottom:6px">Depósitos menos pagamentos feitos com esse dinheiro</div>
+      <div id="wBalanceWarning" class="hint err" role="status"></div>
       <div id="deps"></div>
-      <button class="btn plain sm" id="editGoal" style="margin-top:12px">🎯 Meta: <span id="goalLbl"></span></button>
+      <button class="btn plain sm" id="editGoal" style="margin-top:12px">Orçamento: <span id="goalLbl"></span></button>
     </div>
   </section>
 </div>
@@ -464,7 +508,7 @@ button{cursor:pointer;border:0;background:none}
 
 <script>
 /* ============ ESTADO ============ */
-const CATS=[["Alimentação","🍔"],["Mercado","🛒"],["Combustível","⛽"],["Transporte","🚗"],["Assinaturas","📺"],["Compras","🛍️"],["Casa","🏠"],["Lazer","🎉"],["Saúde","💊"],["Casamento","💍"],["Empréstimos","🏦"],["Outros","📦"]];
+const CATS=[["Alimentação","🍔"],["Mercado","🛒"],["Combustível","⛽"],["Transporte","🚗"],["Assinaturas","📺"],["Compras","🛍️"],["Casa","🏠"],["Lazer","🎉"],["Saúde","💊"],["Casamento",""],["Empréstimos","🏦"],["Outros","📦"]];
 const CATICON=Object.fromEntries(CATS);
 const CATCOLOR={"Alimentação":"#F59E0B","Mercado":"#10B981","Combustível":"#EF4444","Transporte":"#6366F1","Assinaturas":"#8B5CF6","Compras":"#EC4899","Casa":"#2F5BEA","Lazer":"#14B8A6","Saúde":"#F97316","Casamento":"#B8893B","Empréstimos":"#0EA5E9","Outros":"#94A3B8"};
 const WED_SUGG=["Buffet","Decoração","Local / Salão","Fotografia","Filmagem","Vestido","Traje do noivo","Som / DJ","Bolo e doces","Convites","Alianças","Cerimonial","Lua de mel"];
@@ -753,7 +797,7 @@ function renderFixas(){
   $("#fLoans").innerHTML=loans.length?loans.map(r=>{const k=monthsBetween(r.start,ym),done=loanPaid(r),cur=recIndex(r,ym),left=r.inst-done;
     return`<div class="item">
       <div class="top2"><div class="click" data-editrec="${r.id}" role="button" tabindex="0" style="cursor:pointer"><div class="nm">${esc(r.name)}</div><div class="muted" style="margin-top:2px">dia ${String(r.day).padStart(2,"0")} · ${methodLabel(r)}</div></div>
-        <div style="text-align:right"><div class="num" style="font-weight:800;font-size:16px">${fmt(r.amount)}<span class="muted">/mês</span></div>${cur>=0?`<span class="pill blue">parcela ${cur+1}/${r.inst}</span>`:k>=r.inst?'<span class="pill ok">✓ Quitado</span>':'<span class="pill gray">ainda não começou</span>'}</div></div>
+        <div style="text-align:right"><div class="num" style="font-weight:800;font-size:16px">${fmt(r.amount)}<span class="muted">/mês</span></div>${cur>=0?`<span class="pill blue">parcela ${cur+1}/${r.inst}</span>`:k>=r.inst?'<span class="pill ok">Quitado</span>':'<span class="pill gray">ainda não começou</span>'}</div></div>
       <div class="bar" style="margin-top:12px"><span style="width:${done/r.inst*100}%;background:#0EA5E9"></span></div>
       <div class="muted" style="margin-top:6px">Pagou ${done} de ${r.inst} (${fmt(done*r.amount)}) · faltam ${left} = <b>${fmt(left*r.amount)}</b></div><div class="muted">${ymLabel(r.start).toLowerCase()} até ${ymLabel(addMonths(r.start,r.inst-1)).toLowerCase()}</div>
       ${cur>=0?`<div class="acts">${recStatus(r,ym)}</div>`:""}
@@ -803,24 +847,44 @@ function classifySheet(onlyNc){
   };draw();
 }
 
+const cents=v=>Math.round((Number(v)||0)*100);
+function weddingMonths(date,today=isoToday()){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date||""))return null;
+  const end=new Date(date+"T12:00:00"),start=new Date(today+"T12:00:00");
+  if(!Number.isFinite(+end)||date<=today)return 0;
+  let months=(end.getFullYear()-start.getFullYear())*12+end.getMonth()-start.getMonth();
+  if(end.getDate()>start.getDate())months++;
+  return Math.max(1,months);
+}
 function wedCalc(){
-  const W=S.wedding;
-  const total=W.items.filter(i=>!i.gift).reduce((s,i)=>s+(i.total||0),0);
-  const pago=W.items.reduce((s,i)=>s+(i.payments||[]).reduce((a,p)=>a+p.amount,0),0);
-  const fromSav=W.items.reduce((s,i)=>s+(i.payments||[]).filter(p=>p.fromSavings).reduce((a,p)=>a+p.amount,0),0);
-  const dep=W.deposits.reduce((s,d)=>s+d.amount,0);
-  const guard=dep-fromSav,falta=Math.max(0,total-pago),juntar=Math.max(0,falta-Math.max(0,guard));
-  return{total,pago,guard,falta,juntar,dep};
+  const W=S.wedding,items=W.items.filter(i=>!i.gift);
+  const total=items.reduce((s,i)=>s+cents(i.total),0);
+  const payments=items.flatMap(i=>i.payments||[]);
+  const pago=payments.reduce((s,p)=>s+cents(p.amount),0);
+  const fromSav=payments.filter(p=>p.fromSavings).reduce((s,p)=>s+cents(p.amount),0);
+  const dep=W.deposits.reduce((s,d)=>s+cents(d.amount),0);
+  const raw=dep-fromSav,guard=Math.max(0,raw);
+  const falta=items.reduce((s,i)=>s+Math.max(0,cents(i.total)-(i.payments||[]).reduce((a,p)=>a+cents(p.amount),0)),0);
+  const target=Math.max(cents(W.goal),total),juntar=Math.max(0,target-pago-guard);
+  return{total:total/100,pago:pago/100,guard:guard/100,falta:falta/100,juntar:juntar/100,dep:dep/100,target:target/100,discrepancy:Math.max(0,-raw)/100};
 }
 function renderWedding(){
   const W=S.wedding,k=wedCalc();
   $("#kTotal").textContent=fmt(k.total);
-  $("#kMeta").textContent=k.total>W.goal?`⚠︎ ${fmt(k.total-W.goal)} acima da meta`:`meta ${fmt(W.goal)}`;
+  $("#kMeta").textContent=k.total>W.goal?`${fmt(k.total-W.goal)} acima do orçamento`:`meta ${fmt(W.goal)}`;
   $("#kMeta").style.color=k.total>W.goal?"var(--bad)":"";
   $("#kPago").textContent=fmt(k.pago);$("#kFalta").textContent=fmt(k.falta);$("#kGuard").textContent=fmt(k.guard);
   $("#guardBig").textContent=fmt(k.guard);$("#goalLbl").textContent=fmt(W.goal);
   $("#wFalta").textContent=fmt(k.juntar);
-  $("#wFaltaSub").textContent=!k.total?"Cadastre os itens (buffet, decoração…) para calcular":k.juntar?`Falta pagar ${fmt(k.falta)} e você tem ${fmt(Math.max(0,k.guard))} guardado`:"Tudo coberto! 🎉";
+  $("#wFaltaSub").textContent=k.discrepancy?"Revise a origem dos pagamentos antigos":!k.total?"Cadastre os itens (buffet, decoração…) para calcular":k.juntar?`Falta pagar ${fmt(k.falta)} e você tem ${fmt(Math.max(0,k.guard))} guardado`:"Tudo coberto";
+  const months=weddingMonths(W.date);
+  $("#wDate").textContent=W.date?dateBR(W.date):"Definir data";
+  $("#wMonthly").textContent=k.juntar===0?"Meta coberta":months===null?"Defina a data para calcular a meta mensal":months===0?`Valor necessário agora: ${fmt(k.juntar)}`:`Meta sugerida: ${fmt(Math.ceil(k.juntar*100/months)/100)}/mês`;
+  $("#wTimeline").textContent=months>0?`${months} aporte${months===1?"":"s"} até ${dateBR(W.date)}`:months===0?"Data de hoje ou já encerrada":"";
+  const progress=k.target?Math.min(100,(k.pago+k.guard)/k.target*100):0;
+  $("#wProgressFill").style.width=progress+"%";$("#wProgress").setAttribute("aria-valuenow",String(Math.floor(progress)));
+  $("#wPercent").textContent=`${Math.floor(progress)}% do orçamento coberto`;
+  $("#wBalanceWarning").textContent=k.discrepancy?`${fmt(k.discrepancy)} em pagamentos antigos sem depósito correspondente. Revise a origem no histórico abaixo.`:"";
   const pp=k.total?Math.min(1,k.pago/k.total):0,sp=k.total?Math.min(1-pp,Math.max(0,k.guard)/k.total):0;
   $("#wRing").innerHTML=ringSVG(pp,sp);
 
@@ -828,23 +892,24 @@ function renderWedding(){
   $("#quick").innerHTML=WED_SUGG.filter(n=>!have.has(n.toLowerCase())).map(n=>`<button class="chip-f" data-quick="${esc(n)}">+ ${esc(n)}</button>`).join("");
   $("#items").innerHTML=W.items.length?W.items.map(i=>{
     const paid=(i.payments||[]).reduce((a,p)=>a+p.amount,0),pct=i.total?Math.min(100,paid/i.total*100):0,rest=Math.max(0,(i.total||0)-paid);
-    const st=i.gift?`<span class="pill gold">🎁 Presente${i.giver?" · "+esc(i.giver):""}</span>`:rest<=0&&i.total?`<span class="pill ok">✓ Quitado</span>`:paid?`<span class="pill blue">Entrada paga</span>`:`<span class="pill warn">A pagar</span>`;
+    const st=i.gift?`<span class="pill gold">Presente${i.giver?" · "+esc(i.giver):""}</span>`:rest<=0&&i.total?`<span class="pill ok">Quitado</span>`:paid?`<span class="pill blue">Parcial</span>`:`<span class="pill warn">Pendente</span>`;
     return`<div class="item">
       <div class="top2"><div><div class="nm">${esc(i.name)}</div><div style="margin-top:4px">${st}</div></div>
         <div style="text-align:right"><div class="num" style="font-weight:800;font-size:17px">${i.gift?"—":fmt(i.total)}</div>${i.gift?"":`<div class="muted">falta ${fmt(rest)}</div>`}</div></div>
       ${i.gift?"":`<div class="bar" style="margin-top:12px"><span style="width:${pct}%;background:var(--ok)"></span></div>
       <div class="muted" style="margin-top:6px">Pago ${fmt(paid)} de ${fmt(i.total)}${(i.payments||[]).length?` · ${i.payments.length} pagamento(s)`:""}</div>`}
-      ${(i.payments||[]).length?`<div class="pays">${i.payments.slice().sort((a,b)=>a.date.localeCompare(b.date)).map((p,ix)=>`<div class="li"><div class="main2"><div class="t" style="font-size:13px">${p.note?esc(p.note):(ix===0?"Entrada":"Pagamento")}</div><div class="s">${dateBR(p.date)}${p.fromSavings?" · do guardado":""}</div></div><div class="amt num" style="font-size:13.5px">${fmt(p.amount)}</div><button class="iconbtn" data-delpay="${i.id}|${p.id}" aria-label="Excluir pagamento">✕</button></div>`).join("")}</div>`:""}
-      <div class="acts">${i.gift?"":`<button class="btn primary sm" data-addpay="${i.id}">+ Pagamento</button>`}<button class="btn plain sm" data-edititem="${i.id}">Editar</button></div>
+      ${(i.payments||[]).length?`<div class="pays">${i.payments.slice().sort((a,b)=>a.date.localeCompare(b.date)).map((p,ix)=>`<div class="li"><div class="main2"><div class="t" style="font-size:13px">${p.note?esc(p.note):(ix===0?"Entrada":"Pagamento")}</div><div class="s">${dateBR(p.date)}${p.fromSavings?" · saldo guardado":" · pago direto"}</div></div><div class="amt num" style="font-size:13.5px">${fmt(p.amount)}</div><button class="btn plain sm" data-origin="${i.id}|${p.id}">Origem</button><button class="iconbtn" data-delpay="${i.id}|${p.id}" aria-label="Excluir pagamento"><svg class="w-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>`).join("")}</div>`:""}
+      <div class="acts">${i.gift||rest<=0?"":`<button class="btn primary sm" data-addpay="${i.id}">+ Pagamento</button>`}<button class="btn plain sm" data-edititem="${i.id}">Editar</button></div>
     </div>`}).join(""):`<div class="empty"><b>Nenhum item ainda</b>Toque em uma sugestão acima para começar.</div>`;
   const hist=[...W.deposits.map(d=>({t:"dep",d})),...W.items.flatMap(i=>(i.payments||[]).filter(p=>p.fromSavings).map(p=>({t:"pay",d:p,i})))].sort((a,b)=>b.d.date.localeCompare(a.d.date));
   $("#deps").innerHTML=hist.length?hist.slice(0,30).map(h=>h.t==="dep"
-    ?`<div class="li"><div class="ic" style="background:var(--gold-soft)">💰</div><div class="main2"><div class="t">${esc(h.d.note||"Depósito")}</div><div class="s">${dateBR(h.d.date)}</div></div><div class="amt num" style="color:var(--ok)">+${fmt(h.d.amount)}</div><button class="iconbtn" data-deldep="${h.d.id}" aria-label="Excluir depósito">✕</button></div>`
-    :`<div class="li"><div class="ic">↗</div><div class="main2"><div class="t">${esc(h.i.name)}</div><div class="s">${dateBR(h.d.date)} · pago do guardado</div></div><div class="amt num" style="color:var(--bad)">−${fmt(h.d.amount)}</div></div>`).join("")
+    ?`<div class="li"><div class="ic" style="background:var(--gold-soft)"><svg class="w-icon" aria-hidden="true"><use href="#i-card"/></svg></div><div class="main2"><div class="t">${esc(h.d.note||"Depósito")}</div><div class="s">${dateBR(h.d.date)}</div></div><div class="amt num" style="color:var(--ok)">+${fmt(h.d.amount)}</div><button class="iconbtn" data-deldep="${h.d.id}" aria-label="Excluir depósito"><svg class="w-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>`
+    :`<div class="li"><div class="ic"><svg class="w-icon" aria-hidden="true"><use href="#i-rep"/></svg></div><div class="main2"><div class="t">${esc(h.i.name)}</div><div class="s">${dateBR(h.d.date)} · pago do guardado</div></div><div class="amt num" style="color:var(--bad)">−${fmt(h.d.amount)}</div></div>`).join("")
     :`<div class="empty"><b>Nada guardado ainda</b>Registre cada valor que separar para o casamento.</div>`;
 }
 
 function render(){
+  document.body.classList.toggle("wedding-view",view.tab==="casamento");
   normalize();
   ["visao","cartoes","fixas","casamento"].forEach(t=>$("#v-"+t).classList.toggle("hidden",view.tab!==t));
   document.querySelectorAll("[data-nav]").forEach(a=>a.dataset.nav===view.tab?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current"));
@@ -870,7 +935,7 @@ function bindValidate(fields,btn,extra){
   fields.forEach(([id])=>{const el=$("#"+id);el.addEventListener("input",()=>{el.dataset.touched=1;check()});el.addEventListener("blur",()=>{el.dataset.touched=1;check()})});
   check();return check;
 }
-const posMoney=v=>parseMoney(v)>0;
+const posMoney=v=>Number.isFinite(parseMoney(v))&&parseMoney(v)>0;
 
 /* Gasto no cartão */
 function expenseForm(p){
@@ -991,7 +1056,7 @@ function itemForm(it,presetName){
     <label class="check"><input type="checkbox" id="iGift" ${it.gift?"checked":""}> É presente (não entra no custo)</label>
     <div id="iGiftBox" class="field ${it.gift?"":"hidden"}"><label for="iGiver">Presente de quem?</label><input class="inp" id="iGiver" placeholder="Ex.: Sogro" value="${esc(it.giver||"")}"></div>
     <div id="iTotBox">${moneyField("iTot","Valor total contratado *",it.total)}</div>
-    ${isNew?`<div id="iEntBox">${moneyField("iEnt","Entrada já paga (opcional)","")}<label class="check"><input type="checkbox" id="iEntSav" checked> Saiu do dinheiro guardado</label></div>`:""}
+    ${isNew?`<div id="iEntBox">${moneyField("iEnt","Entrada já paga (opcional)","")}${originFields("iOrigin")}</div>`:""}
     <div class="foot">${isNew?`<button class="btn plain" id="iCancel">Cancelar</button>`:`<button class="btn danger" id="iDel">Excluir</button>`}<button class="btn primary" id="iSave">${isNew?"Adicionar":"Salvar"}</button></div>`,presetName?"#iTot":"#iName");
   const gift=()=>$("#iGift").checked;
   const check=bindValidate([["iName",v=>v.trim().length>0,"Dê um nome"],["iTot",v=>gift()||posMoney(v),"Informe o valor total"]],"#iSave",()=>{
@@ -1001,9 +1066,15 @@ function itemForm(it,presetName){
     if(e>0&&t>0&&e>t){h.textContent="A entrada é maior que o valor total";h.className="hint err"}else{h.textContent=e>0&&t>0?`Restam ${fmt(t-e)}`:"";h.className="hint"}})}
   const save=()=>{if(!check())return;
     const data={name:$("#iName").value.trim(),gift:gift(),giver:gift()?$("#iGiver").value.trim():"",total:gift()?0:parseMoney($("#iTot").value)};
+    const entry=isNew&&!gift()?parseMoney($("#iEnt").value)||0:0;
+    if(entry<0||entry>data.total){toast("A entrada deve ficar entre zero e o valor contratado",false);return}
+    const source=isNew?document.querySelector('input[name="iOrigin"]:checked')?.value:null;
+    if(entry>0&&!source){toast("Escolha a origem da entrada",false);return}
+    if(entry>0&&source==="savings"&&cents(entry)>cents(wedCalc().guard)){toast("Saldo guardado insuficiente",false);return}
+    if(!isNew&&(it.payments||[]).length&&(data.gift||cents(data.total)<(it.payments||[]).reduce((n,p)=>n+cents(p.amount),0))){toast("Revise os pagamentos antes de reduzir o contrato ou marcar como presente",false);return}
     closeSheet();
     if(isNew){const ni={id:uid(),...data,payments:[]};const e=!gift()&&parseMoney($("#iEnt").value);
-      if(e>0)ni.payments.push({id:uid(),date:isoToday(),amount:e,note:"Entrada",fromSavings:$("#iEntSav").checked});
+      if(e>0)ni.payments.push({id:uid(),date:isoToday(),amount:e,note:"Entrada",fromSavings:source==="savings"});
       mutate(`${data.name} adicionado`,()=>S.wedding.items.push(ni))}
     else mutate(`${data.name} atualizado`,()=>Object.assign(S.wedding.items.find(x=>x.id===it.id),data))};
   $("#iSave").onclick=save;onKeyEnter=save;
@@ -1011,6 +1082,7 @@ function itemForm(it,presetName){
   $("#iDel")&&($("#iDel").onclick=()=>confirmSheet(`Excluir "${it.name}"?`,(it.payments||[]).length?`Os ${it.payments.length} pagamento(s) registrados também serão removidos. Dá para desfazer logo depois.`:"Dá para desfazer logo depois.",()=>mutate(`${it.name} excluído`,()=>S.wedding.items=S.wedding.items.filter(x=>x.id!==it.id))));
 }
 
+function originFields(name){return `<fieldset class="w-origin"><legend>Origem do recurso</legend><label><input type="radio" name="${name}" value="savings" required><span>Usar saldo guardado do casamento<small>Disponível: ${fmt(wedCalc().guard)}</small></span></label><label><input type="radio" name="${name}" value="direct" required><span>Pago direto do bolso / Cartão / Conta corrente<small>Não desconta do saldo guardado</small></span></label></fieldset>`}
 /* Pagamento a fornecedor */
 function payForm(itemId){
   const W=S.wedding,payable=W.items.filter(i=>!i.gift);
@@ -1022,14 +1094,18 @@ function payForm(itemId){
     ${moneyField("pAmt","Valor pago *","")}
     <div class="row2"><div class="field"><label for="pDate">Data</label><input class="inp" type="date" id="pDate" value="${isoToday()}"></div>
     <div class="field"><label for="pNote">Observação</label><input class="inp" id="pNote" placeholder="Ex.: 2ª parcela"></div></div>
-    <label class="check"><input type="checkbox" id="pSav" checked> Saiu do dinheiro guardado</label>
+    ${originFields("pOrigin")}<div id="pError" class="hint err" role="alert"></div>
     <div class="foot"><button class="btn plain" id="pCancel">Cancelar</button><button class="btn primary" id="pSave">Registrar</button></div>`,"#pAmt");
   const cur=()=>W.items.find(i=>i.id===$("#pItem").value);
   const check=bindValidate([["pAmt",v=>posMoney(v)&&parseMoney(v)<=restOf(cur())+0.001,"Valor deve ser maior que zero e não passar do que falta"]],"#pSave",()=>{
     const h=$("#pAmt-h");if(!h.classList.contains("err"))h.textContent=`Falta pagar ${fmt(restOf(cur()))}`});
   $("#pItem").onchange=check;
-  const save=()=>{if(!check())return;const i=cur(),amt=parseMoney($("#pAmt").value);closeSheet();
-    mutate(`${fmt(amt)} pago em ${i.name}`,()=>{i.payments=i.payments||[];i.payments.push({id:uid(),date:$("#pDate").value||isoToday(),amount:amt,note:$("#pNote").value.trim(),fromSavings:$("#pSav").checked})})};
+  const save=()=>{if(!check())return;const i=cur(),amt=parseMoney($("#pAmt").value);
+    const source=document.querySelector('input[name="pOrigin"]:checked')?.value;
+    if(!source){$("#pError").textContent="Escolha a origem do recurso";return}
+    if(source==="savings"&&cents(amt)>cents(wedCalc().guard)){$("#pError").textContent="Saldo insuficiente. Registre um depósito ou escolha pagamento direto.";return}
+    closeSheet();
+    mutate(`${fmt(amt)} pago em ${i.name}`,()=>{i.payments=i.payments||[];i.payments.push({id:uid(),date:$("#pDate").value||isoToday(),amount:amt,note:$("#pNote").value.trim(),fromSavings:source==="savings"})})};
   $("#pSave").onclick=save;onKeyEnter=save;$("#pCancel").onclick=closeSheet;
 }
 
@@ -1047,19 +1123,19 @@ function depForm(){
 }
 
 function goalForm(){
-  openSheet(`<h3>Meta do casamento</h3><div class="muted">Quanto vocês querem gastar no máximo</div>${moneyField("gAmt","Meta *",S.wedding.goal)}
+  openSheet(`<h3>Meta do casamento</h3><div class="muted">Quanto vocês querem gastar no máximo</div>${moneyField("gAmt","Meta *",S.wedding.goal)}<div class="field"><label for="gDate">Data do casamento</label><input id="gDate" class="inp" type="date" value="${esc(S.wedding.date||"")}"></div>
     <div class="foot"><button class="btn plain" id="gCancel">Cancelar</button><button class="btn primary" id="gSave">Salvar</button></div>`,"#gAmt");
   const check=bindValidate([["gAmt",posMoney,"Informe um valor"]],"#gSave");
-  const save=()=>{if(!check())return;const v=parseMoney($("#gAmt").value);closeSheet();mutate(`Meta: ${fmt(v)}`,()=>S.wedding.goal=v)};
+  const save=()=>{if(!check())return;const v=parseMoney($("#gAmt").value);const date=$("#gDate").value;closeSheet();mutate(`Meta: ${fmt(v)}`,()=>{S.wedding.goal=v;S.wedding.date=date})};
   $("#gSave").onclick=save;onKeyEnter=save;$("#gCancel").onclick=closeSheet;
 }
 
 function wedAddMenu(){
   openSheet(`<h3>O que deseja registrar?</h3>
     <div class="grid" style="margin-top:14px">
-      <button class="btn primary" id="mPay">💸 Pagamento a fornecedor</button>
-      <button class="btn ghost" id="mDep">💰 Dinheiro guardado</button>
-      <button class="btn plain" id="mItem">➕ Novo item</button>
+      <button class="btn primary" id="mPay"> Pagamento a fornecedor</button>
+      <button class="btn ghost" id="mDep"> Dinheiro guardado</button>
+      <button class="btn plain" id="mItem"> Novo item</button>
     </div>`,"#mPay");
   $("#mPay").onclick=()=>payForm();$("#mDep").onclick=depForm;$("#mItem").onclick=()=>itemForm();
 }
@@ -1075,7 +1151,7 @@ function backupMenu(){
   openSheet(`<h3>Backup</h3><div class="muted">Seus dados ficam salvos neste aparelho. Faça backup de vez em quando ou para trocar de celular.</div>
     <div class="grid" style="margin-top:16px">
       <button class="btn primary" id="bExp">⬇︎ Exportar backup (.json)</button>
-      <button class="btn ghost" id="bCopy">📋 Copiar backup</button>
+      <button class="btn ghost" id="bCopy"> Copiar backup</button>
       <label class="btn plain" for="bFile">⬆︎ Restaurar de arquivo</label><input type="file" id="bFile" accept=".json,application/json" class="sr">
     </div><div class="hint" id="bHint"></div>
     <div class="foot"><button class="btn plain" id="bClose">Fechar</button></div>`,"#bExp");
@@ -1114,8 +1190,9 @@ document.addEventListener("click",e=>{
   else if(d.quick)itemForm(null,d.quick);
   else if(d.addpay)payForm(d.addpay);
   else if(d.edititem)itemForm(S.wedding.items.find(i=>i.id===d.edititem));
+  else if(d.origin){const [i,p]=d.origin.split("|");paymentOrigin(i,p)}
   else if(d.delpay){const[iid,pid]=d.delpay.split("|");mutate("Pagamento excluído",()=>{const i=S.wedding.items.find(x=>x.id===iid);i.payments=i.payments.filter(p=>p.id!==pid)})}
-  else if(d.deldep)mutate("Depósito excluído",()=>S.wedding.deposits=S.wedding.deposits.filter(x=>x.id!==d.deldep));
+  else if(d.deldep){const dep=S.wedding.deposits.find(x=>x.id===d.deldep);if(dep&&cents(dep.amount)>cents(wedCalc().guard)){toast("Esse depósito já foi utilizado. Revise a origem dos pagamentos antes de excluir.",false);return}mutate("Depósito excluído",()=>S.wedding.deposits=S.wedding.deposits.filter(x=>x.id!==d.deldep))}
 });
 document.addEventListener("keydown",e=>{
   const open=$("#scrim").classList.contains("open"),typing=/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName);
@@ -1137,6 +1214,23 @@ $("#menuBtn").onclick=()=>backupMenu();
 $("#addItem").onclick=()=>itemForm();
 $("#addDep").onclick=depForm;
 $("#editGoal").onclick=goalForm;
+$("#wDate").onclick=goalForm;
+$("#wInvite").onclick=async()=>{
+  if(!sbUser||!sbCode){loginSheet();return}
+  const message=`Nosso casamento no Meu Controle. Código: ${sbCode}`;
+  if(navigator.share){try{await navigator.share({title:"Nosso casamento",text:message});return}catch(e){if(e.name==="AbortError")return}}
+  try{await navigator.clipboard.writeText(message);toast("Código copiado",false)}catch(e){openSheet(`<h3>Código de convite</h3><p>Compartilhe com seu parceiro ou parceira.</p><input class="inp" readonly value="${esc(sbCode)}" aria-label="Código de convite">`)}
+};
+function paymentOrigin(itemId,paymentId){
+  const item=S.wedding.items.find(i=>i.id===itemId),payment=item?.payments?.find(p=>p.id===paymentId);if(!payment)return;
+  openSheet(`<h3>Origem do pagamento</h3><p>${esc(item.name)} · ${fmt(payment.amount)}</p>${originFields("reviewOrigin")}<div id="originError" class="hint err" role="alert"></div><div class="foot"><button id="originCancel" class="btn plain">Cancelar</button><button id="originSave" class="btn primary">Salvar origem</button></div>`);
+  document.querySelector(`input[name="reviewOrigin"][value="${payment.fromSavings?"savings":"direct"}"]`).checked=true;
+  $("#originCancel").onclick=closeSheet;
+  $("#originSave").onclick=()=>{const savings=document.querySelector('input[name="reviewOrigin"]:checked').value==="savings";
+    if(savings&&!payment.fromSavings&&cents(payment.amount)>cents(wedCalc().guard)){$("#originError").textContent="Saldo guardado insuficiente";return}
+    closeSheet();mutate("Origem atualizada",()=>payment.fromSavings=savings);
+  };
+}
 $("#mPrev").onclick=()=>{const[y,m]=ymParts(view.ym);view.ym=ymKey(y,m-1);render()};
 $("#mNext").onclick=()=>{const[y,m]=ymParts(view.ym);view.ym=ymKey(y,m+1);render()};
 
@@ -1201,7 +1295,7 @@ async function sbLoad(){
 const _renderWedding=renderWedding;
 renderWedding=function(){_renderWedding();const el=$("#wShare");if(!el)return;
   el.classList.toggle("hidden",!(sbUser&&sbId));
-  el.textContent=sbMembers>1?`👥 Compartilhado · ${sbMembers} pessoas`:"👥 Compartilhe pelo código em Conta";};
+  el.textContent=sbMembers>1?`Compartilhado · ${sbMembers} pessoas`:"Planejamento a dois";};
 
 function loginSheet(){
   let mode="in";
@@ -1244,7 +1338,7 @@ backupMenu=function(){
   if(sbUser){
     box.innerHTML=`<div class="label">Conta</div><div style="font-weight:700;margin-top:4px">${esc(sbUser.email)}</div>
       <div class="muted" style="margin-top:4px">🔒 Cartões e faturas: só você vê</div>
-      ${sbCode?`<div class="muted" style="margin-top:12px">💍 Código do casamento — quem entrar com ele vê <b>só a aba Casamento</b>:</div><div style="font-size:24px;font-weight:800;letter-spacing:.2em" class="num">${esc(sbCode)}</div><div class="muted">${sbMembers>1?`Compartilhado com ${sbMembers} pessoas`:"Ainda não compartilhado"}</div>`:""}
+      ${sbCode?`<div class="muted" style="margin-top:12px"> Código do casamento — quem entrar com ele vê <b>só a aba Casamento</b>:</div><div style="font-size:24px;font-weight:800;letter-spacing:.2em" class="num">${esc(sbCode)}</div><div class="muted">${sbMembers>1?`Compartilhado com ${sbMembers} pessoas`:"Ainda não compartilhado"}</div>`:""}
       <div class="grid" style="margin-top:12px"><button class="btn ghost sm" id="aJoin">Tenho um código de casamento</button><button class="btn plain sm" id="aOut">Sair da conta</button></div>`;
   }else box.innerHTML=`<div class="label">Conta</div><div class="muted" style="margin-top:4px">Sem conta: dados só neste aparelho.</div><button class="btn primary sm" id="aIn" style="margin-top:10px;width:100%">Entrar / criar conta</button>`;
   $("#sheet").insertBefore(box,$("#sheet .foot"));
@@ -1419,3 +1513,4 @@ document.addEventListener("click",e=>{const r=e.target.closest("[data-editp^='i:
 </script>
 </body>
 </html>
+
