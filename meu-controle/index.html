@@ -394,6 +394,21 @@ body.finance-view .btn.primary{box-shadow:none}
 @media(max-width:420px){.category-options{grid-template-columns:repeat(2,minmax(0,1fr))}.loan-summary{align-items:flex-start}#oInst .amt{margin-left:44px}}
 
 </style>
+<style>
+/* Local report exports */
+#settingsTop{flex-shrink:0}
+.report-module{margin-top:16px;border:1px solid #E2E8F0;border-radius:14px;padding:16px;background:#fff;min-width:0}
+.report-module-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;min-width:0}
+.report-module-head>div{min-width:0}.report-module h4{margin:0 0 4px;color:#0F172A;font-size:14px;line-height:1.4}.report-module p{margin:0;line-height:1.5}
+.report-module-icon{display:flex;align-items:center;justify-content:center;flex:0 0 38px;height:38px;border-radius:10px;background:#F1F5F9;color:#334155}
+.wedding-report .report-module-icon{background:#EEF3EF;color:#1E3A2F}
+.report-actions{display:flex;gap:8px;flex-wrap:wrap}.report-action{flex:1;justify-content:center;min-width:120px;background:#F8FAFC;color:#0F172A;border:1px solid #E2E8F0}
+.wedding-report .report-action{color:#1E3A2F}.report-actions .btn{display:inline-flex;align-items:center;gap:6px;text-decoration:none;max-width:100%;white-space:normal}
+.report-status{min-height:20px;margin-top:12px;font-size:12px;color:#64748B}.report-status.error{color:#B91C1C}
+.report-ready{margin-top:12px;padding:14px;border-radius:12px;background:#F1F5F9;border:1px solid #E2E8F0}.report-ready-title{font-size:13px;font-weight:700;color:#0F172A}.report-filename{overflow-wrap:anywhere;margin:5px 0 12px}.report-ready [role=status]{margin-top:8px;line-height:1.5}
+[data-report-module]:disabled{opacity:.55;cursor:wait}
+@media(max-width:760px){#settingsTop{display:none}.report-module{padding:14px}.report-actions .btn{font-size:12px}}
+</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute">
@@ -446,6 +461,7 @@ body.finance-view .btn.primary{box-shadow:none}
     </div>
     <button class="btn primary addbtn" id="addTop">+ <span id="addTopLbl">Adicionar gasto</span></button>
     <div id="ofPanel" class="header-sync hidden"></div>
+    <button class="iconbtn" id="settingsTop" aria-label="Configurações" title="Configurações"><svg width="20" height="20" aria-hidden="true"><use href="#i-gear"/></svg></button>
   </header>
 
   <!-- ===== VISÃO GERAL ===== -->
@@ -1751,7 +1767,270 @@ document.addEventListener("click",e=>{const r=e.target.closest("[data-editp^='i:
 // Render once after Open Finance and category handlers have been initialized.
 render();
 </script>
+<script>
+/* Meu Controle reports: read-only snapshots, local PDF/XLSX generation, explicit file sharing. */
+(function () {
+  'use strict';
+  const PDF_MIME = 'application/pdf';
+  const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  const MONEY_FORMAT = '"R$" #,##0.00;[Red]-"R$" #,##0.00';
+  const DEPS = {
+    pdf: ['https://cdn.jsdelivr.net/npm/jspdf@4.2.1/dist/jspdf.umd.min.js', 'sha384-qovJwSBbRDPP5cEjCp8S0UP66wrvnjaa60XMOGzTNanrThcrGfXfnZkvgY8N1KT3'],
+    table: ['https://cdn.jsdelivr.net/npm/jspdf-autotable@5.0.9/dist/jspdf.plugin.autotable.min.js', 'sha384-A77YsHWitrPuAj8E0AuB033EXzymUxIajnWKPzrrzqFoYYSCEpFennDUjMG2R1L3'],
+    xlsx: ['https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js', 'sha384-EnyY0/GSHQGSxSgMwaIPzSESbqoOLSexfnSMN2AP+39Ckmn92stwABZynq1JyzdT']
+  };
+  const loading = new Map();
+  let generating = false, ready = null;
+  const text = value => String(value ?? '');
+  const value = n => { const v = Number(n ?? 0); if (!Number.isFinite(v)) throw new Error('Há um valor inválido nos dados do relatório.'); return Math.round(v * 100) / 100; };
+  const total = rows => rows.reduce((sum, n) => sum + Math.round(value(n) * 100), 0) / 100;
+  const generatedLabel = iso => new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/Sao_Paulo' }).format(new Date(iso));
+  const pdfText = s => text(s).replace(/\u00a0/g, ' ').replace(/[–—]/g, '-').replace(/≈/g, 'aprox.').replace(/\s+/g, ' ').trim();
+  function snapshotMonthly(ym = view.ym) {
+    const entries = entriesFor(ym), fixed = recBills(ym), positive = spendFor(ym);
+    const cards = S.cards.map(c => {
+      const amount = total(entries.filter(e => e.p.card === c.id).map(e => e.amount));
+      const limit = value(c.limit), used = limit ? value(limitUsed(c.id)) : 0;
+      return { name: text(c.name), total: amount, open: S.paid[c.id + '|' + ym] ? 0 : amount,
+        status: S.paid[c.id + '|' + ym] ? 'Paga' : 'Em aberto', limit, free: limit ? Math.max(0, value(limit - used)) : null };
+    });
+    const rows = entries.map(e => ({ date: text(e.p.date), period: ym, name: text(e.p.desc), account: text(card(e.p.card)?.name || 'Cartão'),
+      category: text(e.p.cat || 'Outros'), classification: CLS[clsOf(e)]?.l || 'Sem classificar', installment: e.n > 1 ? `${e.k + 1}/${e.n}` : 'À vista',
+      amount: value(e.amount), origin: e.imp ? 'Pluggy' : e.rec ? 'Conta fixa no cartão' : 'Manual',
+      posting: e.imp?.previsto ? 'Prevista' : 'Registrada', payment: S.paid[e.p.card + '|' + ym] ? 'Fatura paga' : 'Fatura em aberto' }));
+    fixed.forEach(b => rows.push({ date: `${ym}-${String(b.day).padStart(2, '0')}`, period: ym, name: text(b.r.name), account: 'Boleto / débito',
+      category: text(b.r.cat || (b.r.type === 'emprestimo' ? 'Empréstimos' : 'Assinaturas')), classification: CLS[clsOf({ rec: b.r, p: { cat: b.r.cat || (b.r.type === 'emprestimo' ? 'Empréstimos' : 'Assinaturas') } })]?.l || 'Sem classificar',
+      installment: b.r.type === 'emprestimo' ? `${b.k + 1}/${b.r.inst}` : 'Mensal', amount: value(b.v), origin: 'Conta fixa', posting: 'Registrada', payment: b.paid ? 'Paga' : 'Em aberto' }));
+    rows.sort((a, b) => a.date.localeCompare(b.date) || a.name.localeCompare(b.name));
+    const categoriesMap = new Map();
+    positive.forEach(p => categoriesMap.set(p.cat || 'Outros', (categoriesMap.get(p.cat || 'Outros') || 0) + Math.round(value(p.amount) * 100)));
+    const expenses = total(positive.map(p => p.amount));
+    const categories = [...categoriesMap].map(([name, cents]) => ({ name: text(name), amount: cents / 100, percent: expenses > 0 ? (cents / 100) / expenses : 0 })).sort((a, b) => b.amount - a.amount);
+    const classification = Object.entries(clsSum(positive)).map(([key, amount]) => ({ name: CLS[key]?.l || key, amount: value(amount) }));
+    const fixedOpen = total(fixed.filter(b => !b.paid).map(b => b.v));
+    return { module: 'monthly', period: ym, title: 'Fechamento Financeiro Mensal', periodLabel: ymLabel(ym), generatedAt: new Date().toISOString(),
+      cards, rows, categories, classification, totals: {
+        invoices: total(cards.map(c => c.total)), openCards: total(cards.map(c => c.open)), openFixed: fixedOpen,
+        open: total([total(cards.map(c => c.open)), fixedOpen]), free: cards.some(c => c.free !== null) ? total(cards.map(c => c.free ?? 0)) : null,
+        fixed: total(fixed.map(b => b.v)), expenses, net: total(rows.map(r => r.amount)), projected: total(rows.filter(r => r.posting === 'Prevista').map(r => r.amount))
+      }, notes: [
+        'Competência: mês de vencimento da fatura. A data do extrato preserva a data da compra ou cobrança.',
+        'Categorias e classificação consideram despesas positivas e contas fixas, como na Visão Geral. Estornos permanecem com sinal no extrato.',
+        'Parcelas previstas estão identificadas e fazem parte dos totais exibidos pelo aplicativo.',
+        'Limite livre é a posição disponível na data da exportação, mesmo ao consultar um mês anterior.'
+      ] };
+  }
+  function snapshotWedding() {
+    const w = S.wedding, k = wedCalc(), months = weddingMonths(w.date);
+    const monthly = k.juntar === 0 ? 0 : months > 0 ? Math.ceil(k.juntar * 100 / months) / 100 : null;
+    const suppliers = w.items.map(i => {
+      const paid = total((i.payments || []).map(p => p.amount)), cost = i.gift ? 0 : value(i.total), remaining = i.gift ? 0 : Math.max(0, value(cost - paid));
+      return { name: text(i.name), total: cost, paid, remaining, progress: i.gift ? null : cost > 0 ? Math.min(1, paid / cost) : 0,
+        status: i.gift ? 'Presente' : cost > 0 && remaining <= 0 ? 'Quitado' : paid > 0 ? 'Parcial' : 'Pendente', giver: text(i.giver) };
+    });
+    const payments = w.items.flatMap(i => (i.payments || []).map(p => ({ date: text(p.date), supplier: text(i.name), amount: value(p.amount),
+      origin: p.fromSavings ? 'Saldo guardado' : p.source === 'pluggy' ? 'Cartão (Pluggy)' : 'Pagamento direto', note: text(p.note) })));
+    payments.sort((a, b) => a.date.localeCompare(b.date) || a.supplier.localeCompare(b.supplier));
+    return { module: 'wedding', title: 'Planejamento do Casamento', periodLabel: w.date ? `Cerimônia em ${dateBR(w.date)}` : 'Data da cerimônia a definir',
+      generatedAt: new Date().toISOString(), date: w.date || '', goal: value(w.goal), totals: { ...k, monthly, months, needNow: k.juntar > 0 && months === 0 ? k.juntar : null }, suppliers, payments,
+      notes: [ 'Falta juntar considera o maior valor entre o orçamento e os contratos, descontando pagamentos e saldo disponível.',
+        'Pagamentos diretos e por cartão não retiram dinheiro da reserva. Valores vinculados ao Pluggy aparecem uma única vez no histórico.',
+        'Meta mensal arredondada para cima em centavos; cada fração de mês conta como um aporte.' ] };
+  }
+  function loadDependency(key) {
+    if (loading.has(key)) return loading.get(key);
+    const promise = new Promise((resolve, reject) => {
+      const script = document.createElement('script'); let timeout;
+      script.src = DEPS[key][0]; script.integrity = DEPS[key][1]; script.crossOrigin = 'anonymous'; script.async = true;
+      const fail = () => { clearTimeout(timeout); script.remove(); loading.delete(key); reject(new Error('Não foi possível carregar a exportação. Verifique a conexão e tente novamente.')); };
+      script.onload = () => { clearTimeout(timeout); resolve(); }; script.onerror = fail;
+      timeout = setTimeout(fail, 30000); document.head.appendChild(script);
+    });
+    loading.set(key, promise); return promise;
+  }
+  async function ensureDependencies(format) {
+    if (format === 'xlsx') { if (!window.XLSX) await loadDependency('xlsx'); if (!window.XLSX?.utils) throw new Error('Excel indisponível. Tente novamente.'); }
+    else { if (!window.jspdf?.jsPDF) await loadDependency('pdf'); if (!window.jspdf.jsPDF.API.autoTable) await loadDependency('table'); if (!window.jspdf.jsPDF.API.autoTable) throw new Error('PDF indisponível. Tente novamente.'); }
+  }
+  function buildPDF(data) {
+    const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', compress: true, putOnlyUsedFonts: true });
+    const wedding = data.module === 'wedding', color = wedding ? [30, 58, 47] : [15, 23, 42], W = 210, H = 297, M = 14, width = W - M * 2;
+    doc.setProperties({ title: `${data.title} - ${data.periodLabel}`, author: 'Meu Controle', subject: data.title, creator: 'Meu Controle PWA' });
+    doc.setCreationDate(new Date(data.generatedAt));
+    let y = 42;
+    const ensure = h => { if (y + h > H - 18) { doc.addPage(); y = 42; } };
+    const label = (message, fontSize = 8, ink = [100, 116, 139]) => {
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(fontSize); doc.setTextColor(...ink);
+      const lines = doc.splitTextToSize(pdfText(message), width); const h = lines.length * fontSize * 0.39;
+      ensure(h + 3); doc.text(lines, M, y); y += h + 4;
+    };
+    const metrics = items => {
+      for (let start = 0; start < items.length; start += 3) {
+        ensure(26); const group = items.slice(start, start + 3), cw = (width - 10) / 3;
+        group.forEach(([name, number], index) => {
+          const x = M + index * (cw + 5); doc.setFillColor(248, 250, 252); doc.setDrawColor(226, 232, 240); doc.roundedRect(x, y - 4, cw, 23, 2, 2, 'FD');
+          doc.setFont('helvetica', 'normal'); doc.setTextColor(71, 85, 105); doc.setFontSize(7.5); doc.text(pdfText(name), x + 4, y + 2);
+          const out = number === null ? 'A definir' : typeof number === 'number' ? fmt(number) : text(number);
+          doc.setFont('helvetica', 'bold'); doc.setTextColor(...color); let size = 13; doc.setFontSize(size);
+          while (doc.getTextWidth(pdfText(out)) > cw - 8 && size > 8) doc.setFontSize(--size);
+          doc.text(pdfText(out), x + 4, y + 12);
+        }); y += 28;
+      }
+    };
+    const section = (title, headings, body, columns = {}, opts = {}) => {
+      ensure(32); doc.setFont('helvetica', 'bold'); doc.setFontSize(10.5); doc.setTextColor(...color); doc.text(pdfText(title), M, y); y += 5;
+      doc.autoTable({ startY: y, margin: { top: 40, bottom: 18, left: M, right: M }, tableWidth: width, theme: 'plain',
+        head: [headings.map(pdfText)], body: body.length ? body.map(row => row.map(cell => typeof cell === 'object' && cell !== null ? cell : pdfText(cell))) : [{ content: 'Nenhum registro neste período.', colSpan: headings.length }].map(cell => [cell]),
+        styles: { font: 'helvetica', fontSize: 8, cellPadding: 2.5, overflow: 'linebreak', textColor: [51, 65, 85], lineColor: [226, 232, 240], lineWidth: 0.1, valign: 'middle' },
+        headStyles: { fillColor: color, textColor: [255, 255, 255], fontStyle: 'bold' }, alternateRowStyles: { fillColor: [248, 250, 252] },
+        columnStyles: columns, rowPageBreak: 'avoid', ...opts });
+      y = doc.lastAutoTable.finalY + 10;
+    };
+    if (!wedding) {
+      metrics([['Faturas do mês', data.totals.invoices], ['Total em aberto', data.totals.open], ['Limite livre atual', data.totals.free],
+        ['Contas fixas no mês', data.totals.fixed], ['Despesas positivas', data.totals.expenses], ['Parcelas previstas incluídas', data.totals.projected]]);
+      section('Resumo das faturas', ['Cartão', 'Fatura', 'Situação', 'Limite total', 'Livre atual'], data.cards.map(c => [c.name, fmt(c.total), c.status, c.limit ? fmt(c.limit) : 'Não definido', c.free === null ? 'Não definido' : fmt(c.free)]), { 0: { cellWidth: 52 }, 1: { halign: 'right' }, 3: { halign: 'right' }, 4: { halign: 'right' } });
+      label(`Em aberto: ${fmt(data.totals.openCards)} em faturas e ${fmt(data.totals.openFixed)} em contas fixas.`);
+      section('Classificação das despesas', ['Classificação', 'Valor'], data.classification.map(c => [c.name, fmt(c.amount)]), { 1: { halign: 'right' } });
+      section('Categorias de despesas', ['Categoria', 'Valor', 'Participação'], data.categories.map(c => [c.name, fmt(c.amount), (c.percent * 100).toFixed(1).replace('.', ',') + '%']), { 1: { halign: 'right' }, 2: { halign: 'right' } });
+      label(data.notes[1]);
+      section('Extrato detalhado', ['Data', 'Descrição / origem', 'Cartão / conta', 'Parcela', 'Categoria', 'Classe', 'Valor'],
+        data.rows.map(r => [dateBR(r.date), `${r.name}\n${r.origin} - ${r.posting}; ${r.payment}`, r.account, r.installment, r.category, r.classification, fmt(r.amount)]),
+        { 0: { cellWidth: 17 }, 1: { cellWidth: 49 }, 2: { cellWidth: 29 }, 3: { cellWidth: 13 }, 4: { cellWidth: 24 }, 5: { cellWidth: 26 }, 6: { cellWidth: 24, halign: 'right' } });
+      label(`Total líquido dos lançamentos: ${fmt(data.totals.net)}.`);
+    } else {
+      metrics([['Custo contratado', data.totals.total], ['Já pago', data.totals.pago], ['Guardado', data.totals.guard], ['Falta juntar', data.totals.juntar],
+        ['Falta pagar fornecedores', data.totals.falta], ['Meta mensal sugerida', data.totals.monthly]]);
+      label(`Orçamento: ${fmt(data.goal)}. Objetivo considerado: ${fmt(data.totals.target)}.`);
+      if (data.totals.months > 0) label(`${data.totals.months} aporte(s) até a cerimônia.`);
+      else if (data.totals.needNow !== null) label(`Data de hoje ou já encerrada. Valor necessário agora: ${fmt(data.totals.needNow)}.`);
+      else if (!data.date) label('Defina a data do casamento no aplicativo para calcular a meta mensal.');
+      if (data.totals.discrepancy > 0) label(`Origem a revisar: ${fmt(data.totals.discrepancy)} em pagamentos sem depósito correspondente.`, 8.5, [153, 87, 24]);
+      section('Itens e fornecedores', ['Fornecedor', 'Contratado', 'Já pago', 'Falta pagar', 'Progresso', 'Status'],
+        data.suppliers.map(i => [i.name + (i.giver ? `\nPresente de ${i.giver}` : ''), fmt(i.total), fmt(i.paid), fmt(i.remaining), i.progress === null ? '-' : Math.floor(i.progress * 100) + '%', i.status]),
+        { 0: { cellWidth: 45 }, 1: { halign: 'right' }, 2: { halign: 'right' }, 3: { halign: 'right' }, 4: { cellWidth: 23, minCellHeight: 12 }, 5: { cellWidth: 24 } },
+        { didDrawCell: hook => { if (hook.section !== 'body' || hook.column.index !== 4) return; const item = data.suppliers[hook.row.index]; if (!item || item.progress === null) return;
+          const x = hook.cell.x + 2.5, barWidth = hook.cell.width - 5, yy = hook.cell.y + hook.cell.height - 2.5;
+          doc.setFillColor(226, 232, 240); doc.rect(x, yy, barWidth, 0.9, 'F'); if (item.progress > 0) { doc.setFillColor(184, 147, 80); doc.rect(x, yy, barWidth * item.progress, 0.9, 'F'); } } });
+      section('Histórico de pagamentos', ['Data', 'Fornecedor', 'Origem', 'Observação', 'Valor'], data.payments.map(p => [dateBR(p.date), p.supplier, p.origin, p.note, fmt(p.amount)]), { 0: { cellWidth: 20 }, 1: { cellWidth: 42 }, 2: { cellWidth: 35 }, 3: { cellWidth: 57 }, 4: { cellWidth: 28, halign: 'right' } });
+    }
+    ensure(20); label('Critérios do relatório', 9, color); data.notes.forEach(note => label(note, 7.5));
+    const pageCount = doc.getNumberOfPages();
+    for (let page = 1; page <= pageCount; page++) {
+      doc.setPage(page); doc.setFillColor(...color); doc.rect(0, 0, W, 32, 'F');
+      if (wedding) { doc.setFillColor(184, 147, 80); doc.rect(0, 31, W, 1, 'F'); }
+      doc.setTextColor(226, 232, 240); doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.text('MEU CONTROLE', M, 8);
+      doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.text(pdfText(data.title), M, 17);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.text(pdfText(data.periodLabel), M, 25);
+      doc.setDrawColor(226, 232, 240); doc.line(M, H - 13, W - M, H - 13); doc.setTextColor(100, 116, 139); doc.setFontSize(7);
+      doc.text(`Gerado em ${generatedLabel(data.generatedAt)}`, M, H - 8); doc.text(`${page} / ${pageCount}`, W - M, H - 8, { align: 'right' });
+    }
+    return doc.output('arraybuffer');
+  }
+  function excelDate(iso) { const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(text(iso)); return match ? Date.UTC(+match[1], +match[2] - 1, +match[3]) / 86400000 + 25569 : null; }
+  function buildWorkbook(data) {
+    const X = window.XLSX, wb = X.utils.book_new();
+    wb.Props = { Title: data.title, Author: 'Meu Controle', Subject: data.periodLabel, CreatedDate: new Date(data.generatedAt) };
+    const add = (name, rows, widths, opts = {}) => {
+      const ws = X.utils.aoa_to_sheet(rows, { sheetStubs: true });
+      ws['!cols'] = widths.map(wch => ({ wch })); ws['!rows'] = [{ hpt: 28 }, { hpt: 21 }];
+      ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: Math.max(1, widths.length - 1) } }];
+      const range = X.utils.decode_range(ws['!ref']);
+      for (let row = 0; row <= range.e.r; row++) for (let col = 0; col <= range.e.c; col++) {
+        const cell = ws[X.utils.encode_cell({ r: row, c: col })]; if (!cell || cell.t !== 'n') continue;
+        if (row >= (opts.dataStart ?? 4) && (opts.money || []).includes(col)) cell.z = MONEY_FORMAT;
+        if (row >= (opts.dataStart ?? 4) && (opts.percent || []).includes(col)) cell.z = '0.0%';
+        if (row >= (opts.dataStart ?? 4) && (opts.dates || []).includes(col)) cell.z = 'dd/mm/yyyy';
+      }
+      if (opts.filterEnd >= 4) ws['!autofilter'] = { ref: X.utils.encode_range({ s: { r: 3, c: 0 }, e: { r: opts.filterEnd, c: range.e.c } }) };
+      X.utils.book_append_sheet(wb, ws, name); return ws;
+    };
+    const meta = `${data.periodLabel} | Gerado em ${generatedLabel(data.generatedAt)}`;
+    if (data.module === 'monthly') {
+      const summary = [[data.title], [meta], [], ['Indicador', 'Valor'], ['Faturas do mês', data.totals.invoices], ['Em aberto - faturas', data.totals.openCards], ['Em aberto - contas fixas', data.totals.openFixed], ['Total em aberto', data.totals.open], ['Limite livre atual', data.totals.free], ['Contas fixas no mês', data.totals.fixed], ['Despesas positivas', data.totals.expenses], ['Lançamentos previstos incluídos', data.totals.projected], ['Total líquido dos lançamentos', data.totals.net], [], ['Classificação', 'Valor'], ...data.classification.map(c => [c.name, c.amount]), [], ['Cartão', 'Fatura', 'Situação', 'Limite total', 'Livre atual'], ...data.cards.map(c => [c.name, c.total, c.status, c.limit || null, c.free]), [], ['Critérios'], ...data.notes.map(n => [n])];
+      const ws = add('Resumo', summary, [48, 24, 20, 22, 22], { money: [1] });
+      const cardsHeader = summary.findIndex(row => row[0] === 'Cartão');
+      data.cards.forEach((c, index) => [3, 4].forEach(col => { const cell = ws[X.utils.encode_cell({ r: cardsHeader + 1 + index, c: col })]; if (cell?.t === 'n') cell.z = MONEY_FORMAT; }));
+      add('Categorias', [['Categorias de despesas'], [meta], [], ['Categoria', 'Valor', 'Participação'], ...data.categories.map(c => [c.name, c.amount, c.percent]), [], ['Total', data.totals.expenses, data.totals.expenses ? 1 : 0]], [32, 22, 18], { money: [1], percent: [2], filterEnd: 3 + data.categories.length });
+      add('Lançamentos', [['Lançamentos do mês'], [meta], [], ['Data da compra / cobrança', 'Fatura', 'Descrição', 'Cartão / conta', 'Categoria', 'Classificação', 'Parcela', 'Valor', 'Origem', 'Lançamento', 'Pagamento'],
+        ...data.rows.map(r => [excelDate(r.date), r.period, r.name, r.account, r.category, r.classification, r.installment, r.amount, r.origin, r.posting, r.payment])], [25, 12, 54, 28, 22, 20, 12, 20, 23, 16, 23], { dates: [0], money: [7], filterEnd: 3 + data.rows.length });
+    } else {
+      const s = data.totals;
+      const summary = [[data.title], [meta], [], ['Indicador', 'Valor'], ['Orçamento configurado', data.goal], ['Custo contratado', s.total], ['Objetivo considerado', s.target], ['Já pago', s.pago], ['Guardado', s.guard], ['Falta pagar fornecedores', s.falta], ['Falta juntar', s.juntar], ['Meta mensal sugerida', s.monthly], ['Valor necessário agora', s.needNow], ['Depósitos no casamento', s.dep], ['Origem a revisar', s.discrepancy], [], ['Data do casamento', excelDate(data.date)], ['Aportes até a cerimônia', s.months], [], ['Critérios'], ...data.notes.map(n => [n])];
+      const ws = add('Resumo Casamento', summary, [62, 26], { money: [1] });
+      const dateCell = ws.B17; if (dateCell?.t === 'n') dateCell.z = 'dd/mm/yyyy';
+      if (ws.B18?.t === 'n') ws.B18.z = '0';
+      add('Fornecedores', [['Itens e fornecedores'], [meta], [], ['Fornecedor', 'Contratado', 'Já pago', 'Falta pagar', 'Progresso', 'Status', 'Presente de'], ...data.suppliers.map(i => [i.name, i.total, i.paid, i.remaining, i.progress, i.status, i.giver])], [42, 22, 22, 22, 16, 18, 32], { money: [1, 2, 3], percent: [4], filterEnd: 3 + data.suppliers.length });
+      add('Pagamentos', [['Histórico de pagamentos'], [meta], [], ['Data', 'Fornecedor', 'Origem', 'Observação', 'Valor'], ...data.payments.map(p => [excelDate(p.date), p.supplier, p.origin, p.note, p.amount])], [16, 42, 26, 58, 22], { dates: [0], money: [4], filterEnd: 3 + data.payments.length });
+    }
+    return wb;
+  }
+  function buildXLSX(data) { return window.XLSX.write(buildWorkbook(data), { bookType: 'xlsx', type: 'array', compression: true, bookSST: true }); }
+  function fileName(data, format) { return `Meu-Controle-${data.module === 'monthly' ? 'Financeiro-' + data.period : 'Casamento-' + isoToday()}.${format}`; }
+  function canShareFile(file) { try { return !!(navigator.share && navigator.canShare && file && navigator.canShare({ files: [file] })); } catch (_) { return false; } }
+  function showReady(result) {
+    const slot = $('#reportReady'); if (!slot || result.account !== (sbUser?.id || null)) return;
+    slot.classList.remove('hidden');
+    slot.innerHTML = `<div class="report-ready-title">Arquivo pronto</div><div class="muted report-filename">${esc(result.name)}</div><div class="report-actions">
+      ${canShareFile(result.file) ? '<button class="btn primary sm" id="reportShare">Salvar ou compartilhar</button>' : ''}
+      <a class="btn plain sm" id="reportDownload" href="${result.url}" download="${esc(result.name)}">Baixar arquivo</a>
+      <a class="btn ghost sm" href="${result.url}" target="_blank" rel="noopener">Abrir ${result.format === 'pdf' ? 'prévia' : 'arquivo'}</a></div><div id="reportDelivery" class="muted" role="status"></div>`;
+    const shareButton = $('#reportShare');
+    if (shareButton) shareButton.onclick = async () => {
+      if (shareButton.disabled || result.account !== (sbUser?.id || null)) return; shareButton.disabled = true;
+      try { await navigator.share({ files: [result.file], title: result.title }); $('#reportDelivery') && ($('#reportDelivery').textContent = 'Compartilhamento encerrado.'); }
+      catch (error) { if (error.name !== 'AbortError' && $('#reportDelivery')) $('#reportDelivery').textContent = 'Use Baixar arquivo ou Abra a prévia e escolha compartilhar no navegador.'; }
+      finally { if (shareButton.isConnected) shareButton.disabled = false; }
+    };
+    $('#reportDownload').onclick = () => { $('#reportDelivery').textContent = 'Download solicitado. No iPhone, você também pode abrir o arquivo e salvar em Arquivos.'; };
+  }
+  async function generate(module, format, month, trigger) {
+    if (generating) return; generating = true;
+    const accountAtStart = sbUser?.id || null;
+    const status = $('#reportStatus'), buttons = [...$('#sheet').querySelectorAll('[data-report-module]')];
+    buttons.forEach(button => button.disabled = true); trigger?.setAttribute('aria-busy', 'true');
+    if (status) { status.className = 'report-status'; status.textContent = 'Gerando arquivo…'; }
+    $('#reportReady')?.classList.add('hidden');
+    try {
+      const snapshot = module === 'monthly' ? snapshotMonthly(month) : snapshotWedding();
+      await ensureDependencies(format);
+      await new Promise(resolve => setTimeout(resolve, 0)); // Let the status paint before CPU-intensive generation.
+      if ((sbUser?.id || null) !== accountAtStart) throw new Error('A conta mudou. Abra a exportação novamente.');
+      const bytes = format === 'pdf' ? buildPDF(snapshot) : buildXLSX(snapshot), mime = format === 'pdf' ? PDF_MIME : XLSX_MIME;
+      const blob = new Blob([bytes], { type: mime }), name = fileName(snapshot, format);
+      const file = typeof File === 'function' ? new File([blob], name, { type: mime, lastModified: Date.now() }) : null;
+      const result = { blob, file, url: URL.createObjectURL(blob), name, title: snapshot.title, format, account: accountAtStart };
+      if (ready) { const oldURL = ready.url; setTimeout(() => URL.revokeObjectURL(oldURL), 60000); }
+      ready = result; showReady(result); if ($('#reportStatus')) $('#reportStatus').textContent = 'Arquivo pronto para salvar ou compartilhar.';
+    } catch (error) { if ($('#reportStatus')) { $('#reportStatus').className = 'report-status error'; $('#reportStatus').textContent = error.message || 'Não foi possível gerar o arquivo. Tente novamente.'; } }
+    finally { generating = false; $('#sheet').querySelectorAll('[data-report-module]').forEach(button => button.disabled = false); buttons.forEach(button => { if (button.isConnected) button.disabled = false; }); trigger?.removeAttribute('aria-busy'); }
+  }
+  const downloadIcon = '<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg>';
+  const documentIcon = '<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6"/></svg>';
+  const accountMenu = backupMenu;
+  function open() {
+    const month = view.ym;
+    if (ready && ready.account !== (sbUser?.id || null)) { URL.revokeObjectURL(ready.url); ready = null; }
+    openSheet(`<h3>Exportar Relatórios</h3><p class="muted">Escolha o relatório e o formato.</p>
+      <section class="report-module"><div class="report-module-head"><span class="report-module-icon">${documentIcon}</span><div><h4>Fechamento Financeiro Mensal</h4><p class="muted">${esc(ymLabel(month))}</p></div></div><div class="report-actions"><button class="btn report-action" data-report-module="monthly" data-report-format="pdf">${downloadIcon} Baixar PDF</button><button class="btn report-action" data-report-module="monthly" data-report-format="xlsx">${downloadIcon} Baixar Excel</button></div></section>
+      <section class="report-module wedding-report"><div class="report-module-head"><span class="report-module-icon">${iconSvg('ring')}</span><div><h4>Planejamento do Casamento</h4><p class="muted">Orçamento, fornecedores e pagamentos</p></div></div><div class="report-actions"><button class="btn report-action" data-report-module="wedding" data-report-format="pdf">${downloadIcon} Baixar PDF</button><button class="btn report-action" data-report-module="wedding" data-report-format="xlsx">${downloadIcon} Baixar Excel</button></div></section>
+      <p class="muted" style="margin-top:12px">${sbUser ? 'Relatórios com os dados carregados no aplicativo.' : 'Relatórios com os dados deste aparelho. Entre na conta para carregar seus dados da nuvem.'}</p>
+      <div class="report-status" id="reportStatus" role="status" aria-live="polite"></div><div id="reportReady" class="report-ready hidden"></div>
+      <div class="foot"><button class="btn plain" id="reportAccount">Conta e backup</button><button class="btn primary" id="reportClose">Fechar</button></div>`, '#reportClose');
+    $('#reportAccount').onclick = accountMenu; $('#reportClose').onclick = closeSheet;
+    $('#sheet').querySelectorAll('[data-report-module]').forEach(button => button.onclick = () => generate(button.dataset.reportModule, button.dataset.reportFormat, month, button));
+    if (generating) { $('#sheet').querySelectorAll('[data-report-module]').forEach(button => button.disabled = true); $('#reportStatus').textContent = 'Gerando arquivo…'; }
+    else if (ready) showReady(ready);
+  }
+  backupMenu = open;
+  $('#menuBtn').onclick = open; $('#menuBtn').setAttribute('aria-label', 'Configurações');
+  $('#settingsTop').onclick = open;
+  window.MCReports = Object.freeze({ snapshotMonthly, snapshotWedding, buildPDF, buildWorkbook, buildXLSX, open, versions: { jspdf: '4.2.1', autoTable: '5.0.9', xlsx: '0.20.3' } });
+})();
+
+</script>
 </body>
 </html>
+
 
 
