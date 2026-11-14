@@ -369,9 +369,40 @@ h1,h2,h3,h4{font-weight:600}
 @media(max-width:420px){.pix-cotas{grid-template-columns:1fr}.pix-cota{padding:18px}.pix-cota[aria-pressed=true]{padding:17px}.pix-cota strong{font-size:26px}.row .actions{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){.intro,.intro *{animation:none!important;transition:none!important}}
 
+
+/* Fotos, igreja em camadas e monograma original. */
+.monogram-image{display:inline-grid;position:relative;place-items:center;vertical-align:middle}
+.monogram-image img{display:block;width:100%;height:100%;object-fit:contain;filter:url(#monograma-bronze);mix-blend-mode:multiply}
+.monogram-header{width:64px;height:52px}.topbar .mono{display:flex;align-items:center;min-width:64px;min-height:52px}
+.monogram-seal{width:92px;height:92px}.seal .monogram-image{pointer-events:none}
+.monogram-fallback{display:none;font:600 28px var(--serif);color:var(--bronze)}
+.monogram-image.asset-failed img{display:none}.monogram-image.asset-failed .monogram-fallback{display:block}
+.hero-church{isolation:isolate;background:#FAF8F5;min-height:620px;padding-block:48px 68px}
+.church-layers{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.church-parallax{position:absolute;left:0;top:-48px;width:100%;height:calc(100% + 96px);max-width:none;object-fit:cover;object-position:center 43%;will-change:transform}
+.church-cream{position:absolute;inset:0;background:rgba(250,248,245,.85)}
+.church-edges{position:absolute;inset:0;background:linear-gradient(to bottom,#FAF8F5 0%,rgba(250,248,245,0) 22%,rgba(250,248,245,0) 75%,#FAF8F5 100%)}
+.hero-church .hero2-in{z-index:1}.church-unavailable .church-parallax{display:none}
+.hero-church .arch{background:#EFE4CF;box-shadow:0 28px 50px -34px #5C493866}
+.ceremony-card{padding:0;overflow:hidden;width:100%;text-align:left;box-shadow:0 12px 26px #5C49380D}
+.ceremony-photo{display:block;width:100%;height:310px;object-fit:cover;object-position:center 37%;border-radius:0}
+.ceremony-body{padding:22px}.ceremony-body h3{font-size:30px}.ceremony-directions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.local-church{height:340px;border-radius:10px;margin-bottom:22px}
+.story-main-photo{max-width:680px;margin:0 auto 42px;overflow:hidden;border-radius:220px 220px 8px 8px;background:var(--soft)}
+.story-main-photo img{width:100%;max-height:740px;object-fit:cover;object-position:center}
+.wedding-photo-editor{margin:16px 0 26px}.wedding-photo-editor .photo-field{align-items:flex-start;flex-wrap:wrap}
+.wedding-photo-preview{width:120px;height:148px;display:grid;place-items:center;background:var(--soft);border:1px solid var(--line);border-radius:60px 60px 8px 8px;overflow:hidden;flex-shrink:0;text-align:center;padding:0}
+.wedding-photo-preview img{width:100%;height:100%;object-fit:cover;border-radius:0}.wedding-photo-preview .s{padding:10px;font-size:12px}
+.wedding-photo-controls{flex:1;min-width:min(230px,100%)}.wedding-photo-controls input[type=file]{width:100%;font:14px var(--sans);padding:10px;background:var(--paper)}
+.wedding-photo-controls input::file-selector-button{border:0;border-radius:8px;background:var(--bronze);color:var(--off-white);padding:11px 13px;margin-right:10px;font:500 12px var(--sans);cursor:pointer}
+.photo-upload-status{margin-top:10px;min-height:22px;color:var(--bronze)}
+@media(max-width:639px){.hero-church{min-height:0;padding-block:28px 52px}.church-parallax{object-position:center 32%}.ceremony-photo{height:280px}.ceremony-directions .btn{flex:1;white-space:nowrap}.wedding-photo-controls{min-width:100%}}
+@media(prefers-reduced-motion:reduce){.church-parallax{transform:none!important;will-change:auto}}
+
 </style>
 </head>
 <body>
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs><filter id="monograma-bronze" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="table" tableValues="0.360784 1"/><feFuncG type="table" tableValues="0.286275 1"/><feFuncB type="table" tableValues="0.219608 1"/></feComponentTransfer></filter></defs></svg>
 <header class="topbar">
   <a href="#/" class="mono" id="mono">&amp;</a>
   <button class="burger" data-action="menu" aria-label="Abrir menu"><span></span><span></span><span></span></button>
@@ -395,6 +426,7 @@ const CONFIG = {
   SUPABASE_URL: 'https://vaqnqecrsrcpwxkhmryg.supabase.co',
   SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhcW5xZWNyc3JjcHd4a2htcnlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxMDY4MDUsImV4cCI6MjEwODY4MjgwNX0.mQKwtRgt-lX5HewvAeh675_79W6keCAldgPlDbbKkJ0'
 };
+const ASSETS = {church:'./public/igreja.jpg',monogram:'./public/monograma.png'};
 const PREVIEW = !!window.__PREVIEW__;
 const DEMO = !CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY || !window.supabase;
 
@@ -537,6 +569,7 @@ const DEFAULTS = {
   contactPhone: '',
   pix: {keyType: 'aleatoria', key: PREVIEW ? '00000000-0000-0000-0000-000000000000' : '', name: 'LUCIANO E ISABELLE', city: 'OURO BRANCO', suggested: [50, 100, 200, 500], message: 'Se preferir, contribua com qualquer valor para a nossa nova vida juntos.'},
   story: {
+    photo: '',
     intro: 'Cada história de amor é única, e a nossa começou assim…',
     timeline: [
       {year: '2019', title: 'Nos conhecemos', text: 'Conte aqui como vocês se conheceram.', photo: ''},
@@ -620,6 +653,8 @@ try { demoAdmin = sessionStorage.getItem('demoAdmin') === '1'; } catch {}
 const byDate = (a, b) => String(b.created_at).localeCompare(String(a.created_at));
 
 const LocalDB = {
+  async uploadWeddingPhoto(blob){ return blobToDataURL(blob); },
+  async saveWeddingPhoto(field,url){ if (!demoAdmin) throw new Error('Entre na Área dos Noivos'); if (!store.settings) store.settings = {}; setPath(store.settings,field,url); persist(); },
   async listCotas(admin = false){ return store.cotas_pix.filter(c => (admin && demoAdmin) || c.ativo).map(c => ({...c})); },
   async saveCota(c){
     if (!demoAdmin) throw new Error('Entre na Área dos Noivos');
@@ -689,6 +724,14 @@ const LocalDB = {
 const sb = DEMO ? null : window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
 const must = ({data, error}) => { if (error) throw new Error(error.message || 'Erro no servidor'); return data; };
 const SupaDB = {
+  async uploadWeddingPhoto(blob,field){
+    if (!['heroPhoto','story.photo'].includes(field)) throw new Error('Campo de foto inválido');
+    const path = `${field === 'heroPhoto' ? 'casal' : 'historia'}/${uid()}.jpg`;
+    const result = await sb.storage.from('fotos-casamento').upload(path,blob,{contentType:'image/jpeg',cacheControl:'31536000',upsert:false});
+    if (result.error) throw new Error('Não foi possível enviar a foto. Confira a conexão e se o SQL fotos-casamento foi executado.');
+    return sb.storage.from('fotos-casamento').getPublicUrl(path).data.publicUrl;
+  },
+  async saveWeddingPhoto(field,url){ must(await sb.rpc('set_wedding_photo',{p_field:field,p_url:url})); },
   async listCotas(admin = false){
     let q = sb.from('cotas_pix').select('*').order('criado_em').order('id');
     if (!admin) q = q.eq('ativo',true);
@@ -827,6 +870,7 @@ function hydrateQR(root = document){
 /* ============================ ESTRUTURA ============================== */
 let S = structuredClone(DEFAULTS);
 let timers = [];
+let viewCleanup = [];
 const NAV = [['', 'Início'], ['rsvp', 'Confirmar presença'], ['presentes', 'Lista de presentes'], ['pix', 'Presente via Pix'], ['local', 'Local e roteiro'], ['historia', 'Nossa história'], ['guia', 'Guia do convidado'], ['mural', 'Mural de mensagens'], ['album', 'Álbum dos convidados']];
 const route = () => location.hash.replace(/^#\/?/, '').split(/[?/]/)[0] || 'home';
 const titleBlock = (t, lead, eyebrow = '') => `<div class="title fade">${eyebrow ? `<p class="eyebrow">${esc(eyebrow)}</p>` : ''}<h2>${esc(t)}</h2>${divider()}${lead ? `<p class="lead">${esc(lead)}</p>` : ''}</div>`;
@@ -839,9 +883,19 @@ function breakdown(g){
 const contactLink = (txt = 'Fale com os noivos') => S.contactPhone ? `<a href="https://wa.me/${waNumber(S.contactPhone)}" target="_blank" rel="noopener">${txt}</a>` : '';
 const initials = () => `${(S.name1 || ' ')[0]} & ${(S.name2 || ' ')[0]}`;
 
+function monogramHTML(context){
+  return `<span class="monogram-image monogram-${context}"><img src="${ASSETS.monogram}" alt="" decoding="async"><span class="monogram-fallback" aria-hidden="true">${esc(initials())}</span></span>`;
+}
+document.addEventListener('error',e => {
+  const img = e.target;
+  if (img.tagName !== 'IMG') return;
+  if (img.closest('.monogram-image')) img.closest('.monogram-image').classList.add('asset-failed');
+  if (img.classList.contains('church-parallax')) img.closest('.hero-church').classList.add('church-unavailable');
+  if (img.classList.contains('ceremony-photo')) img.hidden = true;
+},true);
 function applyBrand(){
   document.title = `${S.name1} & ${S.name2} · Nosso casamento`;
-  $('#mono').textContent = initials();
+  $('#mono').innerHTML = monogramHTML('header'); $('#mono').setAttribute('aria-label', `${S.name1} e ${S.name2} — Início`);
   $('#menu').innerHTML = `<button class="x" data-action="menu" aria-label="Fechar menu">${ic('x', 26)}</button>` +
     NAV.map(([r, l]) => `<a href="#/${r}" data-r="${r || 'home'}">${l}</a>`).join('') + '<a href="#/admin" class="small" data-r="admin">Área dos noivos</a>';
   $('#tabbar').innerHTML = [['home', '#/', 'home', 'Início'], ['rsvp', '#/rsvp', 'check', 'Presença'], ['presentes', '#/presentes', 'gift', 'Presentes'], ['pix', '#/pix', 'pix', 'Pix']].map(([r, h, i, l]) => `<a href="${h}" data-r="${r}">${ic(i, 22)}${l}</a>`).join('') + `<button data-action="menu">${ic('menu', 22)}Mais</button>`;
@@ -850,6 +904,7 @@ function applyBrand(){
 function closeMenu(){ $('#menu').classList.remove('open'); }
 
 async function render(){
+  viewCleanup.forEach(fn => fn()); viewCleanup = [];
   timers.forEach(clearInterval); timers = []; closeMenu(); closeModal();
   const r = route();
   document.body.dataset.route = r;
@@ -890,13 +945,34 @@ function startCountdown(el){
   tick(); timers.push(setInterval(tick, 1000));
 }
 
+function startHeroParallax(){
+  const section = $('.hero-church'), image = $('.church-parallax'); if (!section || !image) return;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  let frame = 0;
+  const paint = () => {
+    frame = 0;
+    if (!section.isConnected) return;
+    const rect = section.getBoundingClientRect();
+    const shift = reduced.matches ? 0 : Math.max(-40,Math.min(40,(innerHeight / 2 - rect.top - rect.height / 2) * .08));
+    image.style.transform = `translate3d(0,${shift.toFixed(2)}px,0)`;
+  };
+  const schedule = () => { if (!frame) frame = requestAnimationFrame(paint); };
+  window.addEventListener('scroll',schedule,{passive:true}); window.addEventListener('resize',schedule,{passive:true});
+  reduced.addEventListener?.('change',schedule); schedule();
+  viewCleanup.push(() => { window.removeEventListener('scroll',schedule); window.removeEventListener('resize',schedule); reduced.removeEventListener?.('change',schedule); cancelAnimationFrame(frame); });
+}
+function ceremonyCard(){
+  const c = S.ceremony, address = String(c.address || '').trim();
+  return `<article class="card ceremony-card"><img class="ceremony-photo" src="${ASSETS.church}" alt="Fachada da igreja da cerimônia" loading="lazy" decoding="async"><div class="ceremony-body"><p class="eyebrow">Cerimônia · ${fmtTime(c.time || S.time)}</p><h3>${esc(c.name)}</h3><p class="s">${esc(address)}</p>${address ? `<div class="ceremony-directions"><a class="btn sm gold" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}" target="_blank" rel="noopener noreferrer">Google Maps</a><a class="btn sm ghost" href="https://waze.com/ul?q=${encodeURIComponent(address)}&navigate=yes" target="_blank" rel="noopener noreferrer">Waze</a></div>` : '<p class="s">O endereço será divulgado pelos noivos.</p>'}</div></article>`;
+}
 const PAGES = {
   async home(app){
     const photo = S.heroPhoto, d = new Date(S.date + 'T12:00:00');
-    const sched = (S.guide.schedule || []).slice(0, 4), first = (S.story.timeline || []).find(t => t.photo) || {};
+    const sched = (S.guide.schedule || []).slice(0, 4), storyPhoto = S.story.photo || (S.story.timeline || []).find(t => t.photo)?.photo || '';
     const dd = n => String(n).padStart(2, '0');
     app.innerHTML = `
-    <section class="hero2">
+    <section class="hero2 hero-church">
+      <div class="church-layers" aria-hidden="true"><img class="church-parallax" src="${ASSETS.church}" alt="" fetchpriority="high" decoding="async"><div class="church-cream"></div><div class="church-edges"></div></div>
       
       <div class="hero2-in">
         <div class="arch fade">${photo ? `<img src="${esc(photo)}" alt="${esc(S.name1)} e ${esc(S.name2)}">` : `<div class="arch-ph">${ic('rings', 56)}<span>Foto do casal</span></div>`}</div>
@@ -915,7 +991,7 @@ const PAGES = {
     <section class="wrap"><div class="std">
       <div class="card cal">${calendarHTML(d)}</div>
       <div class="std-info">
-        <div class="info-row">${ic('rings', 24)}<div><p class="eyebrow">Cerimônia · ${fmtTime(S.ceremony.time || S.time)}</p><p>${esc(S.ceremony.name)}</p><p class="s">${esc(S.ceremony.address)}</p></div></div>
+        ${ceremonyCard()}
         ${S.party.same ? '' : `<div class="info-row">${ic('glass', 24)}<div><p class="eyebrow">Festa · ${fmtTime(S.party.time)}</p><p>${esc(S.party.name)}</p><p class="s">${esc(S.party.address)}</p></div></div>`}
         ${S.guide.dress ? `<div class="info-row">${ic('dress', 24)}<div><p class="eyebrow">Traje</p><p>${esc(S.guide.dress)}</p></div></div>` : ''}
         <a class="btn" href="#/local">${ic('map', 16)} Como chegar</a>
@@ -923,7 +999,7 @@ const PAGES = {
     </div></section>
     ${sched.length ? `<section class="section wrap"><div class="title"><p class="eyebrow">O grande dia</p><h2>Programação</h2>${divider()}</div><ol class="day">${sched.map(s => `<li><b>${fmtTime(s.time)}</b><span>${esc(s.item)}</span></li>`).join('')}</ol></section>` : ''}
     <section class="wrap story-t">
-      <div class="arch sm">${first.photo ? `<img src="${esc(first.photo)}" alt="">` : `<div class="arch-ph">${ic('heart', 40)}<span>Nossa foto</span></div>`}</div>
+      <div class="arch sm">${storyPhoto ? `<img src="${esc(storyPhoto)}" alt="${esc(S.name1)} e ${esc(S.name2)} — Nossa história" loading="lazy">` : `<div class="arch-ph">${ic('heart', 40)}<span>Nossa foto</span></div>`}</div>
       <div><p class="eyebrow">Nossa história</p><h2>Como tudo começou</h2><p>${esc(S.story.intro)}</p><a class="btn" href="#/historia">Ler nossa história</a></div>
     </section>
     <section class="wrap"><div class="title"><p class="eyebrow">Para você</p><h2>Tudo sobre o casamento</h2>${divider()}</div><div class="quick">
@@ -937,7 +1013,7 @@ const PAGES = {
       <a href="#/rsvp">${ic('check', 28)}Confirmar presença</a>
     </div></section>
     ${S.hashtag ? `<section class="tagband">${divider()}<p class="eyebrow">Compartilhe com a gente</p><p class="tag">${esc(S.hashtag)}</p><p class="s">Use no Instagram e envie suas fotos também para o nosso álbum, assim elas chegam até nós.</p><a class="btn gold" href="#/album">${ic('camera', 16)} Enviar fotos para o álbum</a></section>` : ''}`;
-    startCountdown($('#cd'));
+    startCountdown($('#cd')); startHeroParallax();
   },
 
   async rsvp(app){
@@ -975,7 +1051,7 @@ const PAGES = {
   },
 
   async local(app){
-    const place = (p, label) => `<div class="card fade"><p class="eyebrow">${label}</p><h3>${esc(p.name)}</h3>
+    const place = (p, label) => `<div class="card fade">${p === S.ceremony ? `<img class="ceremony-photo local-church" src="${ASSETS.church}" alt="Fachada da igreja da cerimônia" loading="lazy" decoding="async">` : ''}<p class="eyebrow">${label}</p><h3>${esc(p.name)}</h3>
       <p class="s">${ic('clock', 15)} ${fmtTime(p.time)} &nbsp; ${ic('map', 15)} ${esc(p.address)}</p>
       <iframe class="map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa ${esc(p.name)}" src="https://www.google.com/maps?q=${encodeURIComponent(p.address)}&output=embed"></iframe>
       <div class="grid g2"><a class="btn gold sm" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.address)}">Abrir no Google Maps</a><a class="btn sm" target="_blank" rel="noopener" href="https://waze.com/ul?q=${encodeURIComponent(p.address)}&navigate=yes">Abrir no Waze</a></div></div>`;
@@ -991,6 +1067,7 @@ const PAGES = {
   async historia(app){
     const st = S.story;
     app.innerHTML = `<section class="section wrap">${titleBlock('Nossa história', st.intro)}
+      ${st.photo ? `<figure class="story-main-photo"><img src="${esc(st.photo)}" alt="${esc(S.name1)} e ${esc(S.name2)} — Nossa história" decoding="async"></figure>` : ''}
       <div class="tl">${(st.timeline || []).map(t => `<div class="tl-item fade"><div class="tl-year">${esc(t.year)}</div><h3>${esc(t.title)}</h3><p style="margin:0">${esc(t.text)}</p>${t.photo ? `<img src="${esc(t.photo)}" alt="${esc(t.title)}" loading="lazy">` : ''}</div>`).join('')}</div>
       ${st.message ? `<div class="center section"><div class="ornament">${ic('heart', 18)}</div><p class="welcome">${esc(st.message)}</p><p class="mono" style="font-size:34px;margin-top:10px">${esc(S.name1)} & ${esc(S.name2)}</p></div>` : ''}
     </section>`;
@@ -1410,14 +1487,14 @@ const ADMIN = {
     if (!draft) draft = structuredClone(S);
     const F = fieldHTML;
     return `<div id="settings" class="settings">
-      <fieldset><legend>Noivos</legend><div class="grid g2"><div>${F('name1', 'Nome 1')}</div><div>${F('name2', 'Nome 2')}</div></div>${F('heroEyebrow', 'Frase acima dos nomes')}${F('hashtag', 'Hashtag do casamento')}${F('heroPhoto', 'Foto do casal (página inicial)', 'photo')}${F('welcome', 'Frase de boas-vindas', 'textarea')}</fieldset>
+      <fieldset><legend>Noivos</legend><div class="grid g2"><div>${F('name1', 'Nome 1')}</div><div>${F('name2', 'Nome 2')}</div></div>${F('heroEyebrow', 'Frase acima dos nomes')}${F('hashtag', 'Hashtag do casamento')}${weddingPhotoField('heroPhoto','Foto do Casal - Tela Inicial')}${F('welcome', 'Frase de boas-vindas', 'textarea')}</fieldset>
       <fieldset><legend>Data e horário</legend><div class="grid g2"><div>${F('date', 'Data do casamento', 'date')}</div><div>${F('time', 'Horário', 'time')}</div></div>${F('rsvpDeadline', 'Confirmar presença até', 'date')}</fieldset>
       <fieldset><legend>Cerimônia</legend>${F('ceremony.name', 'Nome do local')}${F('ceremony.address', 'Endereço completo')}${F('ceremony.time', 'Horário', 'time')}</fieldset>
       <fieldset><legend>Festa</legend><div class="mt">${F('party.same', 'A festa é no mesmo local da cerimônia', 'bool')}</div>${F('party.name', 'Nome do local')}${F('party.address', 'Endereço completo')}${F('party.time', 'Horário', 'time')}${F('parking', 'Estacionamento', 'textarea')}</fieldset>
       <fieldset><legend>Pix e presentes</legend>${F('pix.keyType', 'Tipo de chave', 'select:celular=Celular|cpf=CPF ou CNPJ|email=E-mail|aleatoria=Chave aleatória')}${F('pix.key', 'Chave Pix')}<p class="s">Pode digitar do jeito que preferir, com ou sem pontos, traços e parênteses. O site ajusta o formato.</p>
         <div class="grid g2"><div>${F('pix.name', 'Nome do favorecido')}</div><div>${F('pix.city', 'Cidade')}</div></div><button type="button" class="btn sm ghost mt" data-action="pix-test">${ic('pix', 15)} Testar QR Code</button>${F('pix.suggested', 'Valores sugeridos (separe por vírgula)', 'numlist')}${F('pix.message', 'Texto da página Pix', 'textarea')}${F('giftsIntro', 'Texto da lista de presentes', 'textarea')}</fieldset>
       <fieldset><legend>Contato</legend>${F('contactPhone', 'WhatsApp dos noivos (para dúvidas dos convidados)', 'tel')}</fieldset>
-      <fieldset><legend>Nossa história</legend>${F('story.intro', 'Introdução', 'textarea')}${listEditor('story.timeline', [{k: 'year', label: 'Ano'}, {k: 'title', label: 'Título'}, {k: 'text', label: 'Texto', type: 'textarea'}, {k: 'photo', label: 'Foto', type: 'photo'}], 'Adicionar momento')}${F('story.message', 'Mensagem aos convidados', 'textarea')}</fieldset>
+      <fieldset><legend>Nossa história</legend>${weddingPhotoField('story.photo','Foto Nossa História')}${F('story.intro', 'Introdução', 'textarea')}${listEditor('story.timeline', [{k: 'year', label: 'Ano'}, {k: 'title', label: 'Título'}, {k: 'text', label: 'Texto', type: 'textarea'}, {k: 'photo', label: 'Foto', type: 'photo'}], 'Adicionar momento')}${F('story.message', 'Mensagem aos convidados', 'textarea')}</fieldset>
       <fieldset><legend>Guia do convidado</legend>${F('guide.dress', 'Traje recomendado', 'textarea')}${F('guide.palette', 'Paleta sugerida (cores em hex, separadas por vírgula)', 'colorlist')}${F('guide.kids', 'Crianças', 'textarea')}${F('guide.accessibility', 'Acessibilidade', 'textarea')}
         <label>Programação</label>${listEditor('guide.schedule', [{k: 'time', label: 'Horário', type: 'time'}, {k: 'item', label: 'Atividade'}], 'Adicionar horário')}
         <label>Dúvidas frequentes</label>${listEditor('guide.faq', [{k: 'q', label: 'Pergunta'}, {k: 'a', label: 'Resposta', type: 'textarea'}], 'Adicionar pergunta')}</fieldset>
@@ -1428,6 +1505,51 @@ const ADMIN = {
   }
 };
 
+let photoSaving = false;
+function weddingPhotoField(k,label){
+  const url = getPath(S,k) || '', id = k === 'heroPhoto' ? 'photo-home' : 'photo-story';
+  return `<section class="wedding-photo-editor" data-photo-field="${k}"><label for="${id}">${label}</label><div class="photo-field"><div class="wedding-photo-preview">${url ? `<img src="${esc(url)}" alt="Prévia de ${esc(label)}" decoding="async">` : `<span class="s">Nenhuma foto enviada</span>`}</div><div class="wedding-photo-controls"><input id="${id}" type="file" accept="image/*,.heic,.heif" data-wedding-photo="${k}" aria-describedby="${id}-hint"><p class="s" id="${id}-hint">Escolha da galeria ou dos arquivos. A foto será salva automaticamente.</p>${url ? `<button type="button" class="btn sm ghost" data-action="remove-wedding-photo" data-k="${k}">Remover foto</button>` : ''}</div></div><p class="s photo-upload-status" role="status" aria-live="polite"></p></section>`;
+}
+async function prepareWeddingPhoto(file){
+  if (!file || file.size === 0) throw new Error('Escolha uma foto válida.');
+  if (file.size > 25 * 1024 * 1024) throw new Error('Escolha uma foto de até 25 MB.');
+  const validType = /^image\/(jpeg|png|webp|heic|heif)$/i.test(file.type);
+  const validName = /\.(jpe?g|png|webp|heic|heif)$/i.test(file.name || '');
+  if (!validType && !(file.type === '' && validName)) throw new Error('Use uma foto JPG, PNG, WebP ou HEIC.');
+  try {
+    const blob = await compressToBlob(file,2200,.88);
+    if (blob.size > 10 * 1024 * 1024) throw new Error('A foto ficou muito grande. Escolha outra imagem.');
+    return blob;
+  } catch(e){ throw new Error('Não foi possível abrir esta foto. Tente uma imagem JPG ou PNG da galeria.'); }
+}
+async function handleWeddingPhoto(input){
+  const file = input.files?.[0]; if (!file) return;
+  const field = input.dataset.weddingPhoto;
+  if (!['heroPhoto','story.photo'].includes(field)) return;
+  if (photoSaving) { input.value = ''; return toast('Aguarde o envio da foto atual.','err'); }
+  const editor = input.closest('.wedding-photo-editor'), status = $('.photo-upload-status',editor);
+  photoSaving = true;
+  $$('[data-wedding-photo], [data-action=remove-wedding-photo], [data-action=save-settings]').forEach(el => el.disabled = true);
+  status.textContent = 'Preparando e enviando a foto…';
+  try {
+    const blob = await prepareWeddingPhoto(file);
+    status.textContent = 'Enviando e salvando…';
+    const url = await DB.uploadWeddingPhoto(blob,field);
+    await DB.saveWeddingPhoto(field,url);
+    setPath(S,field,url); if (draft) setPath(draft,field,url);
+    if (editor.isConnected) {
+      $('.wedding-photo-preview',editor).innerHTML = `<img src="${esc(url)}" alt="Foto salva" decoding="async">`;
+      if (!$('[data-action=remove-wedding-photo]',editor)) $('.wedding-photo-controls',editor).insertAdjacentHTML('beforeend',`<button type="button" class="btn sm ghost" data-action="remove-wedding-photo" data-k="${field}">Remover foto</button>`);
+      status.textContent = 'Foto salva! Ela já está disponível no site.';
+    }
+    toast('Foto salva automaticamente!');
+  } catch(e){ if (editor.isConnected) status.textContent = e.message; toast(e.message,'err'); }
+  finally {
+    photoSaving = false; input.value = '';
+    $$('[data-wedding-photo], [data-action=remove-wedding-photo], [data-action=save-settings]').forEach(el => el.disabled = false);
+  }
+}
+document.addEventListener('change', e => { if (e.target.matches('[data-wedding-photo]')) handleWeddingPhoto(e.target); });
 function fieldHTML(k, label, type = 'text', val){
   const v = val !== undefined ? val : (getPath(draft, k) ?? '');
   if (type.startsWith('select:')) return `<label>${label}</label><select data-k="${k}">${type.slice(7).split('|').map(o => { const [ov, ol] = o.split('='); return `<option value="${ov}" ${v === ov ? 'selected' : ''}>${ol}</option>`; }).join('')}</select>`;
@@ -1558,11 +1680,16 @@ function showIntro(){
   let seen = false; try { seen = sessionStorage.getItem('convite') === '1'; } catch {}
   if (seen || route() === 'admin') return;
   const el = document.createElement('div'); el.className = 'intro'; el.id = 'intro';
-  el.innerHTML = `<div class="flap"></div><div class="pocket"></div><div class="intro-c"><p class="eyebrow">Você recebeu um convite</p><button class="seal" data-action="open-invite" aria-label="Abrir convite">${esc((S.name1 || ' ')[0] + '&' + (S.name2 || ' ')[0])}</button><p class="to">${esc(S.name1)} &amp; ${esc(S.name2)}</p><p class="s">Toque no selo para abrir</p></div>`;
+  el.innerHTML = `<div class="flap"></div><div class="pocket"></div><div class="intro-c"><p class="eyebrow">Você recebeu um convite</p><button class="seal" data-action="open-invite" aria-label="Abrir convite">${monogramHTML('seal')}</button><p class="to">${esc(S.name1)} &amp; ${esc(S.name2)}</p><p class="s">Toque no selo para abrir</p></div>`;
   document.body.appendChild(el); document.body.style.overflow = 'hidden';
   setTimeout(() => ACTIONS['open-invite'](), 4500);
 }
 const ACTIONS = {
+  async 'remove-wedding-photo'(el){
+    if (photoSaving) return;
+    const field = el.dataset.k; if (!['heroPhoto','story.photo'].includes(field)) return;
+    await busy(el,async () => { await DB.saveWeddingPhoto(field,''); setPath(S,field,''); if (draft) setPath(draft,field,''); drawAdmin(); toast('Foto removida do site'); });
+  },
   'cotas-retry'(){ return loadGuestCotas(); },
   'cotas-admin-retry'(){ return reloadAdmin(); },
   'cota-pick'(el){
@@ -1645,7 +1772,7 @@ const ACTIONS = {
   amt(el){ selectedCota = null; $('#amt').value = Number(el.dataset.v).toFixed(2).replace('.', ','); updatePixBox(); },
   view(el){ openModal(el.dataset.type === 'video' ? `<video src="${esc(el.dataset.src)}" controls autoplay playsinline></video>` : `<img src="${esc(el.dataset.src)}" alt="">`, 'dark'); },
   async logout(){ await DB.logout(); location.hash = '#/'; },
-  atab(el){ adminTab = el.dataset.t; if (adminTab === 'config') draft = null; drawAdmin(); window.scrollTo(0, 0); },
+  atab(el){ if (photoSaving) return toast('Aguarde o envio da foto atual.'); adminTab = el.dataset.t; if (adminTab === 'config') draft = null; drawAdmin(); window.scrollTo(0, 0); },
   gfilt(el){ gFilter = el.dataset.v; drawGuestChips(); drawGuestList(); },
   'guest-link'(el){ const g = A.guests.find(x => x.id === el.dataset.id); if (g?.code) copyText(siteLink('rsvp/' + g.code)); },
   'guest-new'(){ guestModal(); },
@@ -1699,6 +1826,7 @@ const ACTIONS = {
   'li-add'(el){ const arr = getPath(draft, el.dataset.path) || []; arr.push(JSON.parse(el.dataset.tpl)); setPath(draft, el.dataset.path, arr); drawAdmin(); },
   'li-del'(el){ const arr = getPath(draft, el.dataset.path) || []; arr.splice(Number(el.dataset.i), 1); drawAdmin(); },
   async 'save-settings'(el){
+    if (photoSaving) return toast('Aguarde o envio da foto atual.');
     if (!draft.name1 || !draft.name2 || !draft.date) return toast('Preencha os nomes e a data', 'err');
     if (Number(draft.kidsAge?.baby) >= Number(draft.kidsAge?.child)) return toast('A idade das crianças pequenas tem que ser menor que a das crianças', 'err');
     await busy(el, async () => { await DB.saveSettings(draft); S = deepMerge(structuredClone(DEFAULTS), structuredClone(draft)); applyBrand(); $$('#menu a').forEach(a => a.classList.toggle('active', a.dataset.r === 'admin')); toast('Configurações salvas!'); });
@@ -1862,4 +1990,5 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal
 </script>
 </body>
 </html>
+
 
