@@ -19,9 +19,9 @@
 <link rel="apple-touch-icon" href="icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#b08d57;--gold-2:#c9a96e;--gold-dark:#8a6a3b;--ivory:#fbf8f2;--paper:#fff;--ink:#3a322a;--muted:#8b8073;--line:#ece3d3;--soft:#f5efe4;--ok:#5f8a5b;--warn:#b98530;--bad:#b45a4f;--shadow:0 10px 30px rgba(80,60,30,.08);--r:16px;--serif:'Cormorant Garamond',Georgia,serif;--script:'Great Vibes',cursive;--sans:'Jost','Montserrat',system-ui,sans-serif}
+:root{--gold:#b08d57;--gold-2:#c9a96e;--gold-dark:#8a6a3b;--ivory:#fbf8f2;--paper:#fff;--ink:#3a322a;--muted:#8b8073;--line:#ece3d3;--soft:#f5efe4;--ok:#5f8a5b;--warn:#b98530;--bad:#b45a4f;--shadow:0 10px 30px rgba(80,60,30,.08);--r:16px;--serif:'Cormorant Garamond',Georgia,serif;--script:'Cormorant Garamond',Georgia,serif;--sans:'Jost','Montserrat',system-ui,sans-serif}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{margin:0;background:var(--ivory);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
@@ -336,6 +336,39 @@ footer{margin-top:0}
 .mem-n b{display:block;font-weight:500}
 .mem-n .s{font-size:12px}
 @media (prefers-reduced-motion:reduce){.br path{stroke-dashoffset:0}.br .leaf{opacity:1}.names2 span{background-position:0 0}}
+
+/* Editorial: papel, bronze e tipografia com leitura confortável. */
+:root{--bronze:#5C4938;--off-white:#FBF8F2;--muted:#74695E}
+h1,h2,h3,h4{font-weight:600}
+.mono,.names,.names2,.hero .names{font-family:var(--serif);font-weight:500}
+.btn,.btn.gold{background:var(--bronze);border-color:var(--bronze);color:var(--off-white);box-shadow:0 4px 12px rgba(60,42,28,.12)}
+.btn:hover,.btn.gold:hover{background:#49392C;border-color:#49392C}
+.btn.ghost,.btn.danger{background:var(--paper);box-shadow:none}
+.btn.ghost:hover{background:var(--soft);border-color:var(--bronze);color:var(--ink)}
+.btn.danger:hover{background:#fff4f1;border-color:var(--bad);color:var(--bad)}
+.btn:focus-visible,.pix-cota:focus-visible{outline:3px solid var(--bronze);outline-offset:4px}
+.names2{font-size:clamp(48px,13vw,82px);line-height:1.05;max-width:100%}
+.names2 span{background:none;color:var(--bronze);animation:none;overflow-wrap:anywhere}
+.editorial-rule{height:1px;width:44px;margin:20px auto;background:#B6A48E}
+.seal{position:relative;isolation:isolate;width:116px;height:112px;border-radius:48% 52% 46% 54% / 53% 45% 55% 47%;background:radial-gradient(ellipse at 31% 22%,rgba(255,239,201,.48),transparent 40%),radial-gradient(ellipse at 73% 82%,#735332,transparent 65%),linear-gradient(135deg,#C8A575,#AA8352 47%,#8D683D);border:1px solid #987447;box-shadow:0 16px 23px -8px #61432266,2px 4px 5px #54371933,inset 2px 3px 3px #F4D5A577,inset -3px -4px 5px #60442566;color:#FFF5E4;font:600 34px var(--serif);letter-spacing:-.05em;text-shadow:0 1px 1px #52351C,0 -1px 0 #FFE6B688;animation:none}
+.seal:before{content:'';position:absolute;inset:9px;border:1px solid #79552F80;border-radius:49% 51% 48% 52%;box-shadow:inset 1px 2px 2px #5C3F2444,0 1px 1px #FBE3BC66;pointer-events:none}
+.seal:after{content:'';position:absolute;inset:0;border-radius:inherit;opacity:.22;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.6' filter='url(%23n)'/%3E%3C/svg%3E");mix-blend-mode:multiply}
+.pix-cotas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0 26px}
+.pix-cota{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:7px;min-width:0;padding:20px 18px;border:1px solid var(--line);border-radius:6px;background:#FFFCF7;color:var(--ink);text-align:left;cursor:pointer;font:inherit;transition:background .15s,border-color .15s;overflow-wrap:anywhere}
+.pix-cota:hover{border-color:#A48B71}
+.pix-cota[aria-pressed=true]{background:#F0E8DC;border:2px solid var(--bronze);padding:19px 17px}
+.pix-cota .emoji{font-size:30px;line-height:1.2}
+.pix-cota strong{font:600 25px/1.08 var(--serif)}
+.pix-cota .price{font:500 18px var(--sans);color:var(--bronze);margin-top:auto;padding-top:12px}
+.pix-cota .s{line-height:1.5}
+.pix-selection{margin:18px 0 0;color:var(--bronze);font-size:14px}
+.pix-selection:empty{display:none}
+.cota-description{white-space:pre-line;overflow-wrap:anywhere}
+.cota-admin-emoji{font-size:28px;width:42px;text-align:center;flex-shrink:0}
+#pix-cotas-state:empty{display:none}
+@media(max-width:420px){.pix-cotas{grid-template-columns:1fr}.pix-cota{padding:18px}.pix-cota[aria-pressed=true]{padding:17px}.pix-cota strong{font-size:26px}.row .actions{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){.intro,.intro *{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
@@ -417,7 +450,13 @@ function compressToBlob(file, max = 1600, q = .82){
 const blobToDataURL = b => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b); });
 async function copyText(t){
   try { await navigator.clipboard.writeText(t); }
-  catch { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+  catch {
+    const ta = document.createElement('textarea'); ta.value = t;
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0'; ta.setAttribute('readonly', '');
+    document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, ta.value.length);
+    let copied = false; try { copied = document.execCommand('copy'); } finally { ta.remove(); }
+    if (!copied) throw new Error('Não foi possível copiar. Selecione o código e copie manualmente.');
+  }
   toast('Copiado!');
 }
 async function busy(target, fn){
@@ -462,24 +501,7 @@ const ICONS = {
 };
 const ic = (n, s = 22) => `<svg class="i" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n] || ''}</svg>`;
 
-const SPRIG = (() => {
-  let leaves = '';
-  for (let i = 0; i < 5; i++) { const x = 22 + i * 14, up = i % 2 === 0, y = up ? 8.5 : 15.5; leaves += `<ellipse cx="${x}" cy="${y}" rx="5.2" ry="2.1" transform="rotate(${up ? -28 : 28} ${x} ${y})"/>`; }
-  const half = `<path d="M10 12H90" fill="none" stroke="currentColor" stroke-width=".8"/><g fill="currentColor">${leaves}</g>`;
-  return `<svg class="sprig" viewBox="0 0 200 24" aria-hidden="true">${half}<g transform="translate(200 0) scale(-1 1)">${half}</g><path d="M100 6.5l4.2 5.5-4.2 5.5-4.2-5.5z" fill="currentColor"/></svg>`;
-})();
-const divider = () => `<div class="divider">${SPRIG}</div>`;
-function branchSVG(cls){
-  const P = [[14, 236], [38, 96], [150, 12]];
-  const q = t => [0, 1].map(k => (1 - t) ** 2 * P[0][k] + 2 * (1 - t) * t * P[1][k] + t * t * P[2][k]);
-  let leaves = '';
-  for (let i = 1; i <= 10; i++) {
-    const t = i / 11, [x, y] = q(t), [x2, y2] = q(t + .01), ang = Math.atan2(y2 - y, x2 - x) * 180 / Math.PI, side = i % 2 ? 1 : -1, len = 17 - i * .9;
-    leaves += `<ellipse class="leaf" style="--d:${i * 110}ms" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${len.toFixed(1)}" ry="${(len * .36).toFixed(1)}" transform="rotate(${(ang + side * 48).toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}) translate(${len.toFixed(1)} 0)"/>`;
-    if (i % 3 === 0) { const [bx, by] = q(t + .03); leaves += `<circle class="leaf" style="--d:${i * 110 + 60}ms" cx="${(bx - side * 9).toFixed(1)}" cy="${(by + 6).toFixed(1)}" r="2.2"/>`; }
-  }
-  return `<svg class="${cls}" viewBox="0 0 180 250" aria-hidden="true"><path d="M14 236Q38 96 150 12" fill="none" stroke="currentColor" stroke-width="1.1"/><g fill="currentColor">${leaves}</g></svg>`;
-}
+const divider = () => '<div class="editorial-rule" aria-hidden="true"></div>';
 function calendarHTML(d){
   const y = d.getFullYear(), m = d.getMonth(), first = new Date(y, m, 1).getDay(), days = new Date(y, m + 1, 0).getDate();
   const cells = [...Array(first).fill(''), ...range(1, days)];
@@ -586,12 +608,26 @@ function seed(){
 let store = null;
 try { store = JSON.parse(localStorage.getItem(LS_KEY)); } catch {}
 if (!store || !store.guests) store = seed();
+const COTAS_EXEMPLO = [
+  {id:'11111111-1111-4111-8111-111111111111', titulo:'Vale-futebol do Luciano', descricao:'Um passe livre para o noivo assistir à partida. A resenha está incluída!', emoji:'⚽', valor:50, ativo:true},
+  {id:'22222222-2222-4222-8222-222222222222', titulo:'Jantar VIP com os noivos', descricao:'Uma ajuda para um jantar especial, com histórias da lua de mel de sobremesa.', emoji:'🍽️', valor:150, ativo:true},
+  {id:'33333333-3333-4333-8333-333333333333', titulo:'Rodada de drinks na pista', descricao:'Patrocine os brindes e os passos de dança mais duvidosos da noite.', emoji:'🍹', valor:80, ativo:true}
+];
+if (!Array.isArray(store.cotas_pix)) store.cotas_pix = COTAS_EXEMPLO.map(c => ({...c, criado_em:nowISO()}));
 function persist(){ try { localStorage.setItem(LS_KEY, JSON.stringify(store)); } catch { toast('Espaço do navegador cheio. No modo demonstração as fotos ocupam bastante espaço.', 'err'); } }
 let demoAdmin = false;
 try { demoAdmin = sessionStorage.getItem('demoAdmin') === '1'; } catch {}
 const byDate = (a, b) => String(b.created_at).localeCompare(String(a.created_at));
 
 const LocalDB = {
+  async listCotas(admin = false){ return store.cotas_pix.filter(c => (admin && demoAdmin) || c.ativo).map(c => ({...c})); },
+  async saveCota(c){
+    if (!demoAdmin) throw new Error('Entre na Área dos Noivos');
+    if (c.id) { const row = store.cotas_pix.find(x => x.id === c.id); if (!row) throw new Error('Cota não encontrada'); Object.assign(row,c); }
+    else store.cotas_pix.push({...c,id:uid(),criado_em:nowISO()});
+    persist();
+  },
+  async deleteCota(id){ if (!demoAdmin) throw new Error('Entre na Área dos Noivos'); store.cotas_pix = store.cotas_pix.filter(c => c.id !== id); persist(); },
   async getSettings(){ return deepMerge(structuredClone(DEFAULTS), store.settings || {}); },
   async saveSettings(s){ store.settings = s; persist(); },
   async findGuests(q){ const n = norm(q); if (n.length < 3) return []; return store.guests.filter(g => norm(g.name).includes(n)).slice(0, 5).map(({id, name, max_people, status, people, children, babies}) => ({id, name, max_people, status, people, children, babies})); },
@@ -653,6 +689,17 @@ const LocalDB = {
 const sb = DEMO ? null : window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
 const must = ({data, error}) => { if (error) throw new Error(error.message || 'Erro no servidor'); return data; };
 const SupaDB = {
+  async listCotas(admin = false){
+    let q = sb.from('cotas_pix').select('*').order('criado_em').order('id');
+    if (!admin) q = q.eq('ativo',true);
+    return must(await q) || [];
+  },
+  async saveCota(c){
+    const {id, ...row} = c;
+    if (id) must(await sb.from('cotas_pix').update(row).eq('id',id).select('id').single());
+    else must(await sb.from('cotas_pix').insert(row).select('id').single());
+  },
+  async deleteCota(id){ must(await sb.from('cotas_pix').delete().eq('id',id).select('id').single()); },
   async getSettings(){ const d = must(await sb.from('settings').select('data').eq('id', 1).maybeSingle()); return deepMerge(structuredClone(DEFAULTS), d?.data || {}); },
   async saveSettings(s){ must(await sb.from('settings').upsert({id: 1, data: s, updated_at: nowISO()})); },
   async findGuests(q){ return must(await sb.rpc('find_guest', {q})) || []; },
@@ -704,30 +751,70 @@ const SupaDB = {
 const DB = DEMO ? LocalDB : SupaDB;
 
 /* ============================== PIX ================================== */
-function emv(id, val){ const v = String(val); return id + String(v.length).padStart(2, '0') + v; }
-function crc16(str){ let crc = 0xFFFF; for (let i = 0; i < str.length; i++) { crc ^= str.charCodeAt(i) << 8; for (let j = 0; j < 8; j++) { crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) : (crc << 1); crc &= 0xFFFF; } } return crc.toString(16).toUpperCase().padStart(4, '0'); }
+function emv(id, val){
+  const v = String(val), length = new TextEncoder().encode(v).length;
+  if (length > 99) throw new Error('Campo Pix maior que o limite permitido');
+  return id + String(length).padStart(2,'0') + v;
+}
+function crc16(str){
+  let crc = 0xFFFF;
+  for (const byte of new TextEncoder().encode(str)) {
+    crc ^= byte << 8;
+    for (let j=0; j<8; j++) crc = ((crc & 0x8000) ? (crc << 1) ^ 0x1021 : crc << 1) & 0xFFFF;
+  }
+  return crc.toString(16).toUpperCase().padStart(4,'0');
+}
+function validPixAmount(amount){ return Number.isFinite(amount) && amount >= .01 && amount < 100000 && Math.abs(amount*100-Math.round(amount*100)) < .000001; }
+function pixAmount(value){
+  const raw = String(value ?? '').trim().replace(/^R\$\s*/i,'');
+  if (!raw || !/^(?:\d+|\d{1,3}(?:\.\d{3})+)(?:,\d{1,2})?$/.test(raw) && !/^\d+(?:\.\d{1,2})?$/.test(raw)) return NaN;
+  const amount = Number(raw.includes(',') ? raw.replace(/\./g,'').replace(',','.') : raw);
+  return validPixAmount(amount) ? amount : NaN;
+}
 function pixPayload({key, name, city, amount}){
-  const clean = s => norm(s).toUpperCase().replace(/[^A-Z0-9 ]/g, '').trim();
-  const gui = emv('00', 'br.gov.bcb.pix') + emv('01', String(key).trim());
-  let p = emv('00', '01') + emv('26', gui) + emv('52', '0000') + emv('53', '986') +
-    (amount > 0 ? emv('54', Number(amount).toFixed(2)) : '') + emv('58', 'BR') +
-    emv('59', clean(name).slice(0, 25) || 'NOIVOS') + emv('60', clean(city).slice(0, 15) || 'BRASIL') + emv('62', emv('05', '***'));
-  p += '6304'; return p + crc16(p);
+  if (!validPixAmount(Number(amount))) throw new Error('Informe um valor entre R$ 0,01 e R$ 99.999,99, com até duas casas decimais.');
+  if (!key || new TextEncoder().encode(key).length > 77) throw new Error('Confira a chave Pix nas Configurações.');
+  const clean = s => norm(s).toUpperCase().replace(/[^A-Z0-9 ]/g,'').trim();
+  const receiver = clean(name).slice(0,25), town = clean(city).slice(0,15);
+  if (!receiver || !town) throw new Error('Cadastre o nome do favorecido e a cidade nas Configurações do Pix.');
+  const gui = emv('00','br.gov.bcb.pix') + emv('01',key);
+  const payload = emv('00','01') + emv('26',gui) + emv('52','0000') + emv('53','986') +
+    emv('54',Number(amount).toFixed(2)) + emv('58','BR') + emv('59',receiver) + emv('60',town) + emv('62',emv('05','***')) + '6304';
+  return payload + crc16(payload);
 }
 function pixKey(cfg = S){
   const k = String(cfg.pix.key || '').trim(), t = cfg.pix.keyType;
-  if (t === 'celular') { let d = k.replace(/\D/g, ''); if (!(d.startsWith('55') && d.length > 11)) d = '55' + d; return '+' + d; }
-  if (t === 'cpf') return k.replace(/\D/g, '');
-  if (t === 'email' || t === 'aleatoria') return k.toLowerCase();
-  return k;
+  if (t === 'celular') {
+    let d = k.replace(/\D/g,'');
+    if (d.length === 10 || d.length === 11) d = '55' + d;
+    if (!/^55\d{10,11}$/.test(d)) throw new Error('Confira a chave Pix de celular nas Configurações.');
+    return '+' + d;
+  }
+  if (t === 'cpf') {
+    const d = k.replace(/\D/g,'');
+    if (!/^(?:\d{11}|\d{14})$/.test(d)) throw new Error('A chave CPF/CNPJ deve ter 11 ou 14 dígitos.');
+    return d;
+  }
+  if (t === 'email') {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(k) || k.length > 77) throw new Error('Confira a chave Pix de e-mail nas Configurações.');
+    return k.toLowerCase();
+  }
+  if (t === 'aleatoria') {
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(k)) throw new Error('Confira a chave Pix aleatória nas Configurações.');
+    return k.toLowerCase();
+  }
+  throw new Error('Selecione o tipo da chave Pix nas Configurações.');
 }
 function pixBlock(amount, cfg = S){
-  if (!cfg.pix.key) return '<p class="note mt">A chave Pix ainda não foi cadastrada pelos noivos.</p>';
-  const code = pixPayload({...cfg.pix, key: pixKey(cfg), amount});
+  if (!cfg.pix.key) return '<p class="note mt" role="status">A chave Pix ainda não foi cadastrada pelos noivos.</p>';
+  if (!validPixAmount(Number(amount))) return '<p class="note mt" role="status">Escolha uma brincadeira ou informe um valor entre R$ 0,01 e R$ 99.999,99 para gerar o Pix.</p>';
+  let code, key;
+  try { key = pixKey(cfg); code = pixPayload({...cfg.pix,key,amount:Number(amount)}); }
+  catch(e){ return `<p class="note mt" role="alert">${esc(e.message)}</p>`; }
   return `<div class="pix"><div class="qr-wrap"><div class="qr" data-qr="${esc(code)}"></div>${PREVIEW ? '<span class="wm"><b>Exemplo</b></span>' : ''}</div>
-    <p class="s center">${amount > 0 ? 'Valor: <b>' + brl(amount) + '</b> · ' : ''}Favorecido: ${esc(cfg.pix.name)}</p>
-    <label>Pix copia e cola</label><div class="copy">${esc(code)}</div>
-    <div class="grid g2 mt"><button type="button" class="btn sm" data-action="copy" data-text="${esc(code)}">${ic('copy', 16)} Copiar código</button><button type="button" class="btn sm ghost" data-action="copy" data-text="${esc(pixKey(cfg))}">Copiar chave</button></div></div>`;
+    <p class="s center">Valor: <b>${brl(amount)}</b> · Favorecido: ${esc(cfg.pix.name)}</p>
+    <label for="pix-code">Pix Copia e Cola</label><textarea id="pix-code" class="copy" readonly rows="4" spellcheck="false">${esc(code)}</textarea>
+    <div class="grid g2 mt"><button type="button" class="btn sm" data-action="copy-pix" data-text="${esc(code)}">${ic('copy',16)} COPIAR CÓDIGO PIX</button><button type="button" class="btn sm ghost" data-action="copy" data-text="${esc(key)}">Copiar chave</button></div></div>`;
 }
 function hydrateQR(root = document){
   $$('[data-qr]', root).forEach(el => {
@@ -810,7 +897,7 @@ const PAGES = {
     const dd = n => String(n).padStart(2, '0');
     app.innerHTML = `
     <section class="hero2">
-      ${branchSVG('br br-tl')}${branchSVG('br br-br')}
+      
       <div class="hero2-in">
         <div class="arch fade">${photo ? `<img src="${esc(photo)}" alt="${esc(S.name1)} e ${esc(S.name2)}">` : `<div class="arch-ph">${ic('rings', 56)}<span>Foto do casal</span></div>`}</div>
         <div>
@@ -866,19 +953,25 @@ const PAGES = {
   },
 
   async pix(app){
+    selectedCota = null; PIX_COTAS = [];
     app.innerHTML = `<section class="section wrap narrow">${titleBlock('Presente via Pix', S.pix.message)}<div class="card" id="pixcard">
       <form data-form="pix">
-        <label>Escolha um valor</label>
+        <p class="eyebrow">Um presente, uma boa história</p><h3>Brincadeiras do Pix</h3>
+        <p class="s">Escolha uma brincadeira para presentear ou contribua com um valor livre.</p>
+        <div id="pix-cotas-state" role="status">Carregando brincadeiras…</div><div id="pix-cotas" class="pix-cotas" aria-label="Brincadeiras disponíveis"></div>
+        <label>Valores sugeridos</label>
         <div class="amounts">${(S.pix.suggested || []).map(v => `<button type="button" class="chip" data-action="amt" data-v="${v}">${brlShort(v)}</button>`).join('')}</div>
-        <label for="amt">Ou digite outro valor</label><input name="amount" id="amt" inputmode="decimal" placeholder="R$ 0,00" required>
+        <label for="amt">Valor do presente (R$)</label><input name="amount" id="amt" inputmode="decimal" placeholder="0,00" maxlength="12" required aria-describedby="pix-selection">
+        <p id="pix-selection" class="pix-selection" role="status"></p>
         <div id="pixbox"></div>
-        <label>Seu nome</label><input name="name" required minlength="2" autocomplete="name">
-        <label>Mensagem de carinho (opcional)</label><textarea name="message" maxlength="500" placeholder="Deixe um recado para os noivos"></textarea>
-        <button class="btn gold block mt">Já fiz o Pix — avisar os noivos</button>
-        <p class="s center mt">Faça o Pix pelo app do seu banco e depois toque no botão acima para que os noivos saibam.</p>
+        <label for="pix-guest-name">Seu nome</label><input id="pix-guest-name" name="name" required minlength="2" maxlength="120" autocomplete="name">
+        <label for="pix-guest-message">Mensagem de carinho (opcional)</label><textarea id="pix-guest-message" name="message" maxlength="500" placeholder="Deixe um recado para os noivos"></textarea>
+        <button id="pix-notify" class="btn gold block mt" disabled>Já fiz o Pix — avisar os noivos</button>
+        <p class="s center mt">Pague pelo app do seu banco e depois avise os noivos. O recebimento será conferido por eles no extrato.</p>
       </form></div></section>`;
     updatePixBox();
-    $('#amt').addEventListener('input', debounce(updatePixBox, 450));
+    $('#amt').addEventListener('input', () => { selectedCota = null; updatePixBox(); });
+    await loadGuestCotas();
   },
 
   async local(app){
@@ -1084,10 +1177,27 @@ function drawGifts(){
       <button class="btn ${taken ? 'ghost' : 'gold'} sm block" data-action="gift" data-id="${g.id}" ${taken ? 'disabled' : ''}>${taken ? 'Já escolhido' : 'Presentear'}</button></div></article>`;
   }).join('') || '<div class="empty" style="grid-column:1/-1">Nenhum presente cadastrado ainda.</div>';
 }
+let PIX_COTAS = [], selectedCota = null;
+function cotaTableError(e){
+  return /cotas_pix|schema cache|42P01|PGRST205/i.test(e.message) ? 'As brincadeiras ainda não foram habilitadas. Os noivos precisam executar o SQL cotas_pix no Supabase.' : 'Não foi possível carregar as brincadeiras. Tente novamente.';
+}
+async function loadGuestCotas(){
+  const box = $('#pix-cotas'), state = $('#pix-cotas-state'); if (!box) return;
+  try {
+    const rows = await DB.listCotas();
+    if (!box.isConnected) return;
+    PIX_COTAS = rows; state.textContent = rows.length ? '' : 'As brincadeiras serão divulgadas em breve. Você já pode usar o valor livre.';
+    box.innerHTML = rows.map(c => `<button type="button" class="pix-cota" data-action="cota-pick" data-id="${esc(c.id)}" aria-pressed="false"><span class="emoji" aria-hidden="true">${esc(c.emoji)}</span><strong>${esc(c.titulo)}</strong><span class="s cota-description">${esc(c.descricao)}</span><span class="price">${brl(c.valor)}</span></button>`).join('');
+  } catch(e){ if (box.isConnected) { state.textContent = cotaTableError(e); box.innerHTML = '<button type="button" class="btn ghost sm" data-action="cotas-retry">Tentar novamente</button>'; } }
+}
 function updatePixBox(){
-  const a = parseMoney($('#amt').value);
-  $('#pixbox').innerHTML = pixBlock(a); hydrateQR($('#pixbox'));
-  $$('[data-action=amt]').forEach(b => b.classList.toggle('on', Number(b.dataset.v) === a));
+  const input = $('#amt'), box = $('#pixbox'); if (!input || !box) return;
+  const amount = pixAmount(input.value);
+  box.innerHTML = pixBlock(amount); hydrateQR(box);
+  $$('[data-action=amt]').forEach(b => b.classList.toggle('on', Number(b.dataset.v) === amount));
+  $$('[data-action=cota-pick]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.id === selectedCota?.id)));
+  $('#pix-selection').textContent = selectedCota ? `Brincadeira escolhida: ${selectedCota.titulo}. Ela será incluída no aviso aos noivos.` : 'Presente de valor livre';
+  $('#pix-notify').disabled = !box.querySelector('[data-action=copy-pix]');
 }
 
 /* ---- mural e álbum ---- */
@@ -1115,13 +1225,15 @@ let A = {guests: [], gifts: [], contrib: [], msgs: [], photos: []};
 let adminTab = 'resumo', gFilter = 'todos', gSearch = '', rt = null, draft = null;
 let waTpl = 'Olá, {nome}! Estamos muito felizes em convidar você para o nosso casamento no dia {data}. Por favor, confirme sua presença até {prazo} pelo link: {link}';
 const STATUS = {confirmado: ['b-ok', 'Confirmado'], pendente: ['b-warn', 'Pendente'], recusado: ['b-bad', 'Recusou']};
-const TABS = [['resumo', 'Resumo'], ['convidados', 'Convidados'], ['whats', 'WhatsApp'], ['presentes', 'Presentes'], ['pix', 'Pix'], ['mensagens', 'Mensagens'], ['album', 'Álbum'], ['config', 'Configurações']];
+const TABS = [['resumo', 'Resumo'], ['convidados', 'Convidados'], ['whats', 'WhatsApp'], ['presentes', 'Presentes'], ['pix', 'Pix'], ['brincadeiras', 'Brincadeiras do Pix'], ['mensagens', 'Mensagens'], ['album', 'Álbum'], ['config', 'Configurações']];
 const sum = (arr, f) => arr.reduce((s, x) => s + (Number(f(x)) || 0), 0);
 
 async function reloadAdmin(silent = false){
   const [guests, gifts, contrib, msgs, photos] = await Promise.all([DB.listGuests(), DB.listGiftsAdmin(), DB.listContributions(), DB.listMessagesAdmin(), DB.listPhotos()]);
-  A = {guests, gifts, contrib, msgs, photos};
-  if (silent && (adminTab === 'config' || (adminTab === 'whats' && document.activeElement?.tagName === 'TEXTAREA'))) return;
+  let cotas = [], cotasError = '';
+  try { cotas = await DB.listCotas(true); } catch(e){ cotasError = cotaTableError(e); }
+  A = {guests, gifts, contrib, msgs, photos, cotas, cotasError};
+  if (silent && (!$('#modal').classList.contains('hidden') || adminTab === 'config' || (adminTab === 'whats' && document.activeElement?.tagName === 'TEXTAREA'))) return;
   if (silent && adminTab === 'convidados' && document.activeElement?.id === 'gsearch') { drawGuestChips(); drawGuestList(); return; }
   drawAdmin();
 }
@@ -1134,14 +1246,14 @@ function drawAdmin(){
   if (adminTab === 'album') tableCardCanvas().then(c => { const i = $('#tcard'); if (i) i.src = c.toDataURL('image/png'); }).catch(e => console.error(e));
 }
 async function ogCanvas(){
-  try { await Promise.all(['130px "Great Vibes"', '500 40px "Cormorant Garamond"', '500 26px "Jost"'].map(f => document.fonts.load(f))); } catch {}
+  try { await Promise.all(['500 130px "Cormorant Garamond"', '500 40px "Cormorant Garamond"', '500 26px "Jost"'].map(f => document.fonts.load(f))); } catch {}
   const W = 1200, H = 630, c = document.createElement('canvas'); c.width = W; c.height = H;
   const x = c.getContext('2d'), serif = '"Cormorant Garamond", Georgia, serif', sans = 'Jost, Montserrat, sans-serif', spacing = v => { if ('letterSpacing' in x) x.letterSpacing = v; };
   x.fillStyle = '#fbf8f2'; x.fillRect(0, 0, W, H);
   const g = x.createRadialGradient(W / 2, 0, 40, W / 2, 0, 700); g.addColorStop(0, '#ffffff'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, W, H);
   x.strokeStyle = '#c9a96e'; x.lineWidth = 2.5; x.strokeRect(34, 34, W - 68, H - 68); x.lineWidth = 1.2; x.strokeRect(50, 50, W - 100, H - 100);
   x.textAlign = 'center'; spacing('9px'); x.fillStyle = '#8a6a3b'; x.font = `500 24px ${sans}`; x.fillText('VAMOS NOS CASAR', W / 2, 150); spacing('0px');
-  const names = `${S.name1} & ${S.name2}`; let s = 140; do { x.font = `${s}px "Great Vibes", cursive`; s -= 4; } while (x.measureText(names).width > W - 200 && s > 40);
+  const names = `${S.name1} & ${S.name2}`; let s = 140; do { x.font = `${s}px "Cormorant Garamond", Georgia, serif`; s -= 4; } while (x.measureText(names).width > W - 200 && s > 40);
   const gr = x.createLinearGradient(200, 0, W - 200, 0); gr.addColorStop(0, '#7e5f32'); gr.addColorStop(.45, '#c9a96e'); gr.addColorStop(1, '#8a6a3b');
   x.fillStyle = gr; x.fillText(names, W / 2, 320);
   x.strokeStyle = '#b08d57'; x.lineWidth = 1.2; x.beginPath(); x.moveTo(430, 382); x.lineTo(585, 382); x.moveTo(615, 382); x.lineTo(770, 382); x.stroke();
@@ -1154,7 +1266,7 @@ async function ogCanvas(){
 async function tableCardCanvas(){
   if (!window.QRCode) throw new Error('Não foi possível gerar o QR Code. Verifique a internet.');
   const url = PREVIEW ? 'https://seu-usuario.github.io/casamento/#/album' : siteLink('album');
-  try { await Promise.all(['110px "Great Vibes"', '500 64px "Cormorant Garamond"', 'italic 40px "Cormorant Garamond"', '500 30px "Jost"'].map(f => document.fonts.load(f))); } catch {}
+  try { await Promise.all(['500 110px "Cormorant Garamond"', '500 64px "Cormorant Garamond"', 'italic 40px "Cormorant Garamond"', '500 30px "Jost"'].map(f => document.fonts.load(f))); } catch {}
   const W = 1200, H = 1800, c = document.createElement('canvas'); c.width = W; c.height = H;
   const x = c.getContext('2d'), gold = '#b08d57', dark = '#8a6a3b', ink = '#2f2a24';
   const serif = '"Cormorant Garamond", Georgia, serif', sans = 'Jost, Montserrat, sans-serif';
@@ -1178,7 +1290,7 @@ async function tableCardCanvas(){
   x.fillStyle = '#8b8073'; x.font = `28px ${sans}`; x.fillText('Suas fotos e vídeos vão direto para o nosso álbum', W / 2, 1262);
   x.strokeStyle = gold; x.lineWidth = 1.5; x.beginPath(); x.moveTo(400, 1340); x.lineTo(580, 1340); x.moveTo(620, 1340); x.lineTo(800, 1340); x.stroke();
   x.fillStyle = gold; x.beginPath(); x.moveTo(600, 1330); x.lineTo(610, 1340); x.lineTo(600, 1350); x.lineTo(590, 1340); x.fill();
-  x.fillStyle = dark; fit(`${S.name1} & ${S.name2}`, '#px "Great Vibes", cursive', 120, W - 240); x.fillText(`${S.name1} & ${S.name2}`, W / 2, 1490);
+  x.fillStyle = dark; fit(`${S.name1} & ${S.name2}`, '#px "Cormorant Garamond", Georgia, serif', 120, W - 240); x.fillText(`${S.name1} & ${S.name2}`, W / 2, 1490);
   if (S.hashtag) { x.fillStyle = ink; x.font = `italic 46px ${serif}`; x.fillText(S.hashtag, W / 2, 1580); }
   const d = new Date(S.date + 'T12:00:00'), dd = n => String(n).padStart(2, '0');
   if ('letterSpacing' in x) x.letterSpacing = '6px';
@@ -1190,11 +1302,17 @@ function subscribeRealtime(){
   if (DEMO || rt) return;
   const reload = debounce(() => reloadAdmin(true).catch(console.error), 800);
   rt = sb.channel('painel-noivos');
-  ['guests', 'gifts', 'contributions', 'messages', 'photos'].forEach(t => rt.on('postgres_changes', {event: '*', schema: 'public', table: t}, reload));
+  ['guests', 'gifts', 'contributions', 'messages', 'photos', 'cotas_pix'].forEach(t => rt.on('postgres_changes', {event: '*', schema: 'public', table: t}, reload));
   rt.subscribe();
 }
 
 const ADMIN = {
+  brincadeiras(){
+    return `<div class="panel-title"><h3>Brincadeiras do Pix</h3><button class="btn sm gold" data-action="cota-new" ${A.cotasError ? 'disabled' : ''}>${ic('plus',14)} Nova brincadeira</button></div>
+      <p class="s">As cotas ativas aparecem na página Pix dos convidados. Edite os valores e os textos quando quiser. Pausar retira o card da lista.</p>
+      ${A.cotasError ? `<p class="note" role="alert">${esc(A.cotasError)}</p><button class="btn ghost sm" data-action="cotas-admin-retry">Tentar novamente</button>` :
+      A.cotas.map(c => `<div class="row"><span class="cota-admin-emoji" aria-hidden="true">${esc(c.emoji)}</span><div class="main"><div class="t">${esc(c.titulo)}</div><p class="s cota-description">${esc(c.descricao)}</p><b>${brl(c.valor)}</b> <span class="badge ${c.ativo ? 'b-ok' : 'b-warn'}">${c.ativo ? 'Ativa' : 'Pausada'}</span></div><div class="actions"><button class="btn sm ghost" data-action="cota-toggle" data-id="${esc(c.id)}">${c.ativo ? 'Pausar' : 'Ativar'}</button><button class="iconbtn" data-action="cota-edit" data-id="${esc(c.id)}" aria-label="Editar ${esc(c.titulo)}">${ic('edit',16)}</button><button class="iconbtn bad" data-action="cota-del" data-id="${esc(c.id)}" aria-label="Excluir ${esc(c.titulo)}">${ic('trash',16)}</button></div></div>`).join('') || '<div class="empty">Crie a primeira brincadeira para os convidados.</div>'}`;
+  },
   resumo(){
     const g = A.guests, conf = g.filter(x => x.status === 'confirmado'), pend = g.filter(x => x.status === 'pendente'), rec = g.filter(x => x.status === 'recusado');
     const people = sum(conf, x => x.people), invited = sum(g, x => x.max_people), pendPeople = sum(pend, x => x.max_people);
@@ -1401,6 +1519,15 @@ async function exportExcel(){
 }
 
 /* ---- presentes (admin) ---- */
+function cotaModal(c = {emoji:'🎁',ativo:true}){
+  openModal(`<h3>${c.id ? 'Editar brincadeira' : 'Nova brincadeira'}</h3><form data-form="cotaEdit" data-id="${esc(c.id || '')}">
+    <label for="cota-title">Título</label><input id="cota-title" name="titulo" required maxlength="120" value="${esc(c.titulo)}">
+    <label for="cota-desc">Descrição</label><textarea id="cota-desc" name="descricao" maxlength="600">${esc(c.descricao)}</textarea>
+    <div class="grid g2"><div><label for="cota-emoji">Emoji</label><input id="cota-emoji" name="emoji" required maxlength="16" value="${esc(c.emoji)}" placeholder="⚽"></div><div><label for="cota-value">Valor livre em R$</label><input id="cota-value" name="valor" inputmode="decimal" required maxlength="12" value="${c.valor ? Number(c.valor).toFixed(2).replace('.',',') : ''}" placeholder="50,00"></div></div>
+    <label class="check mt"><input type="checkbox" name="ativo" ${c.ativo ? 'checked' : ''}> Ativa para os convidados</label>
+    <button class="btn gold block mt">Salvar brincadeira</button></form>`);
+  $('#cota-title').focus();
+}
 function giftModal(g = {category: 'fisico', unique_reserve: true}){
   openModal(`<h3>${g.id ? 'Editar presente' : 'Novo presente'}</h3><form data-form="giftEdit" data-id="${g.id || ''}">
     <label>Nome do presente</label><input name="title" required value="${esc(g.title)}">
@@ -1436,6 +1563,30 @@ function showIntro(){
   setTimeout(() => ACTIONS['open-invite'](), 4500);
 }
 const ACTIONS = {
+  'cotas-retry'(){ return loadGuestCotas(); },
+  'cotas-admin-retry'(){ return reloadAdmin(); },
+  'cota-pick'(el){
+    const c = PIX_COTAS.find(c => c.id === el.dataset.id); if (!c) return;
+    selectedCota = {...c}; $('#amt').value = Number(c.valor).toFixed(2).replace('.',','); updatePixBox();
+    $('#pixbox').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',block:'nearest'});
+  },
+  'cota-new'(){ cotaModal(); },
+  'cota-edit'(el){ const c = A.cotas.find(c => c.id === el.dataset.id); if (c) cotaModal(c); },
+  async 'cota-toggle'(el){
+    const c = A.cotas.find(c => c.id === el.dataset.id); if (!c) return;
+    await busy(el,async () => { await DB.saveCota({id:c.id,ativo:!c.ativo}); await reloadAdmin(); toast(c.ativo ? 'Brincadeira pausada' : 'Brincadeira ativada'); });
+  },
+  'cota-del'(el){
+    const c = A.cotas.find(c => c.id === el.dataset.id); if (!c) return;
+    openModal(`<h3>Excluir brincadeira?</h3><p>${esc(c.titulo)}</p><p class="s">Os avisos de Pix anteriores serão preservados.</p><button class="btn danger block" data-action="cota-delete-confirm" data-id="${esc(c.id)}">Excluir brincadeira</button><button class="btn ghost block mt" data-action="close">Cancelar</button>`);
+  },
+  async 'cota-delete-confirm'(el){ await busy(el,async () => { await DB.deleteCota(el.dataset.id); closeModal(); await reloadAdmin(); toast('Brincadeira excluída'); }); },
+  async 'copy-pix'(el){
+    const original = el.innerHTML;
+    el.disabled = true;
+    try { await copyText(el.dataset.text); el.textContent = 'Copiado!'; setTimeout(() => { if (el.isConnected) { el.innerHTML = original; el.disabled = false; } },2000); }
+    catch(e){ el.disabled = false; throw e; }
+  },
   'open-invite'(){
     const el = $('#intro'); if (!el || el.classList.contains('open')) return;
     el.classList.add('open'); document.body.style.overflow = '';
@@ -1476,7 +1627,7 @@ const ACTIONS = {
       giftPending = null;
     });
   },
-  copy(el){ copyText(el.dataset.text); },
+  copy(el){ return copyText(el.dataset.text); },
   'copy-link'(){ copyText(siteLink('rsvp')); },
   'pix-test'(){
     if (!draft?.pix?.key) return toast('Digite a chave Pix primeiro', 'err');
@@ -1491,7 +1642,7 @@ const ACTIONS = {
     if (PREVIEW) return toast('No site publicado, este botão baixa o cartão em imagem para imprimir.');
     await busy(el, async () => { const c = await tableCardCanvas(); await new Promise(r => c.toBlob(b => { downloadBlob(b, 'cartao-mesa-album.png'); r(); }, 'image/png')); });
   },
-  amt(el){ $('#amt').value = Number(el.dataset.v).toFixed(2).replace('.', ','); updatePixBox(); },
+  amt(el){ selectedCota = null; $('#amt').value = Number(el.dataset.v).toFixed(2).replace('.', ','); updatePixBox(); },
   view(el){ openModal(el.dataset.type === 'video' ? `<video src="${esc(el.dataset.src)}" controls autoplay playsinline></video>` : `<img src="${esc(el.dataset.src)}" alt="">`, 'dark'); },
   async logout(){ await DB.logout(); location.hash = '#/'; },
   atab(el){ adminTab = el.dataset.t; if (adminTab === 'config') draft = null; drawAdmin(); window.scrollTo(0, 0); },
@@ -1557,11 +1708,20 @@ document.addEventListener('click', e => {
   const el = e.target.closest('[data-action]'); if (!el) return;
   const fn = ACTIONS[el.dataset.action]; if (!fn) return;
   if (el.type !== 'checkbox') e.preventDefault();
-  fn(el, e);
+  Promise.resolve().then(() => fn(el,e)).catch(e => toast(e.message || 'Não foi possível concluir a ação','err'));
 });
 
 /* ======================== FORMULÁRIOS (envio) ======================== */
 const FORMS = {
+  async cotaEdit(f,d){
+    const valor = pixAmount(d.valor);
+    if (!validPixAmount(valor)) return toast('Informe um valor de R$ 0,01 a R$ 99.999,99, com até duas casas decimais.','err');
+    const titulo = d.titulo.trim(), emoji = d.emoji.trim();
+    if (!titulo || titulo.length > 120 || !emoji || [...emoji].length > 16) return toast('Confira o título e o emoji da brincadeira.','err');
+    const c = {titulo,descricao:d.descricao.trim(),emoji,valor,ativo:!!d.ativo};
+    if (f.dataset.id) c.id = f.dataset.id;
+    await busy(f,async () => { await DB.saveCota(c); closeModal(); await reloadAdmin(); toast('Brincadeira salva!'); });
+  },
   async rsvp(f, d){
     const conf = d.status === 'confirmado', status = d.status;
     const rows = $$('.mem:not(.me)', f).map(r => ({name: $('[name=m_name]', r).value.trim(), cat: $('[name=m_cat]', r).value}));
@@ -1594,10 +1754,22 @@ const FORMS = {
     });
   },
   async pix(f, d){
-    const amount = parseMoney(d.amount); if (amount <= 0) return toast('Informe o valor do Pix', 'err');
+    const amount = pixAmount(d.amount), chosen = selectedCota ? {...selectedCota} : null;
+    if (!validPixAmount(amount)) return toast('Informe um valor de R$ 0,01 a R$ 99.999,99, com até duas casas decimais.','err');
+    if (d.name.trim().length < 2) return toast('Informe seu nome','err');
+    pixPayload({...S.pix,key:pixKey(S),amount});
     await busy(f, async () => {
-      await DB.addContribution({name: d.name.trim(), amount, message: d.message});
-      $('#pixcard').innerHTML = `<div class="center fade"><div class="ornament">${ic('heart')}</div><h3>Muito obrigado!</h3><p>Avisamos os noivos da sua contribuição de <b>${brl(amount)}</b>. Seu carinho significa muito.</p><a class="btn" href="#/mural">Deixar um recado no mural</a></div>`;
+      if (chosen) {
+        const current = (await DB.listCotas()).find(c => c.id === chosen.id);
+        if (!current || !current.ativo || Number(current.valor) !== amount || current.titulo !== chosen.titulo) {
+          selectedCota = null; await loadGuestCotas(); updatePixBox();
+          throw new Error('Esta brincadeira foi atualizada ou pausada. Confira com os noivos antes de enviar o aviso.');
+        }
+      }
+      const message = [chosen ? `Brincadeira do Pix: ${chosen.titulo}` : 'Presente via Pix — valor livre', d.message?.trim()].filter(Boolean).join('\n');
+      await DB.addContribution({name:d.name.trim(),amount,message});
+      const card = $('#pixcard'); if (!card || !f.isConnected) return;
+      card.innerHTML = `<div class="center fade"><h3>Muito obrigado!</h3><p>Avisamos os noivos da sua contribuição de <b>${brl(amount)}</b>${chosen ? ` pela brincadeira <b>${esc(chosen.titulo)}</b>` : ''}.</p><p class="s">O recebimento será conferido no extrato pelos noivos.</p><a class="btn" href="#/mural">Deixar um recado no mural</a></div>`;
     });
   },
   async msg(f, d){
@@ -1651,7 +1823,7 @@ const FORMS = {
 document.addEventListener('submit', e => {
   const f = e.target.closest('form[data-form]'); if (!f) return;
   e.preventDefault();
-  FORMS[f.dataset.form]?.(f, Object.fromEntries(new FormData(f)));
+  Promise.resolve().then(() => FORMS[f.dataset.form]?.(f,Object.fromEntries(new FormData(f)))).catch(e => toast(e.message || 'Não foi possível salvar','err'));
 });
 
 /* ---- edição ao vivo das configurações e campos do painel ---- */
@@ -1690,3 +1862,4 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal
 </script>
 </body>
 </html>
+
