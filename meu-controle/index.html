@@ -1853,79 +1853,203 @@ render();
     else { if (!window.jspdf?.jsPDF) await loadDependency('pdf'); if (!window.jspdf.jsPDF.API.autoTable) await loadDependency('table'); if (!window.jspdf.jsPDF.API.autoTable) throw new Error('PDF indisponível. Tente novamente.'); }
   }
   function buildPDF(data) {
-    const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', compress: true, putOnlyUsedFonts: true });
-    const wedding = data.module === 'wedding', color = wedding ? [30, 58, 47] : [15, 23, 42], W = 210, H = 297, M = 14, width = W - M * 2;
-    doc.setProperties({ title: `${data.title} - ${data.periodLabel}`, author: 'Meu Controle', subject: data.title, creator: 'Meu Controle PWA' });
-    doc.setCreationDate(new Date(data.generatedAt));
-    let y = 42;
-    const ensure = h => { if (y + h > H - 18) { doc.addPage(); y = 42; } };
-    const label = (message, fontSize = 8, ink = [100, 116, 139]) => {
-      doc.setFont('helvetica', 'normal'); doc.setFontSize(fontSize); doc.setTextColor(...ink);
-      const lines = doc.splitTextToSize(pdfText(message), width); const h = lines.length * fontSize * 0.39;
-      ensure(h + 3); doc.text(lines, M, y); y += h + 4;
-    };
-    const metrics = items => {
-      for (let start = 0; start < items.length; start += 3) {
-        ensure(26); const group = items.slice(start, start + 3), cw = (width - 10) / 3;
-        group.forEach(([name, number], index) => {
-          const x = M + index * (cw + 5); doc.setFillColor(248, 250, 252); doc.setDrawColor(226, 232, 240); doc.roundedRect(x, y - 4, cw, 23, 2, 2, 'FD');
-          doc.setFont('helvetica', 'normal'); doc.setTextColor(71, 85, 105); doc.setFontSize(7.5); doc.text(pdfText(name), x + 4, y + 2);
-          const out = number === null ? 'A definir' : typeof number === 'number' ? fmt(number) : text(number);
-          doc.setFont('helvetica', 'bold'); doc.setTextColor(...color); let size = 13; doc.setFontSize(size);
-          while (doc.getTextWidth(pdfText(out)) > cw - 8 && size > 8) doc.setFontSize(--size);
-          doc.text(pdfText(out), x + 4, y + 12);
-        }); y += 28;
+    const wedding = data.module === 'wedding';
+    const palette = { slate: '#0F172A', sage: '#1E3A2F', gold: '#B8893B', line: '#E2E8F0', muted: '#64748B', light: '#F8FAFC', ink: '#334155' };
+    const color = wedding ? palette.sage : palette.slate, W = 210, H = 297, M = 14, width = W - M * 2;
+    // All graphics are native PDF paths/text. No canvas, raster images or chart dependencies.
+    const render = (compact, splitAfter = 0) => {
+      const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', compress: true, putOnlyUsedFonts: true });
+      doc.setProperties({ title: `${data.title} - ${data.periodLabel}`, author: 'Meu Controle', subject: data.title, creator: 'Meu Controle PWA' });
+      doc.setCreationDate(new Date(data.generatedAt));
+      const font = compact ? 7.25 : 7.75, padding = compact ? 1.45 : 1.8, gap = compact ? 4 : 5.5;
+      const bodyTop = 39, noteSize = 6.5, noteStep = noteSize * 0.352778 * 1.15;
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(noteSize);
+      const noteLines = data.notes.flatMap(note => doc.splitTextToSize(pdfText(note), width));
+      const criteriaTop = H - 18 - noteLines.length * noteStep - 5;
+      const bodyBottom = criteriaTop - 5, marginBottom = H - bodyBottom;
+      let y = bodyTop;
+      const flow = { supplierStart: 0, suppliers: [], payments: [], supplierHead: 0, paymentHead: 0 };
+      const ensure = h => { if (y + h > bodyBottom) { doc.addPage(); y = bodyTop; } };
+      const write = (message, size = 8, ink = palette.muted, x = M, yy = y, opts = {}) => {
+        doc.setFont('helvetica', opts.bold ? 'bold' : 'normal'); doc.setFontSize(size); doc.setTextColor(ink);
+        doc.text(pdfText(message), x, yy, opts);
+      };
+      const fit = (message, maxWidth, size = 8) => {
+        const source = pdfText(message); doc.setFontSize(size);
+        if (doc.getTextWidth(source) <= maxWidth) return source;
+        let out = source; while (out && doc.getTextWidth(out + '...') > maxWidth) out = out.slice(0, -1);
+        return out + '...'; // Full names remain in the detailed tables.
+      };
+      const label = (message, size = 7.5, ink = palette.muted) => {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(size);
+        const lines = doc.splitTextToSize(pdfText(message), width), step = size * 0.352778 * 1.15;
+        ensure(lines.length * step + 2); doc.setTextColor(ink); doc.text(lines, M, y); y += lines.length * step + 2;
+      };
+      const title = message => { write(message, 10, color, M, y, { bold: true }); y += 5; };
+      const metrics = items => {
+        const rowHeight = wedding ? (compact ? 21 : 23) : 25;
+        for (let start = 0; start < items.length; start += 3) {
+          ensure(rowHeight); const cw = (width - 8) / 3;
+          items.slice(start, start + 3).forEach(([name, number], index) => {
+            const x = M + index * (cw + 4); doc.setFillColor(palette.light); doc.setDrawColor(palette.line);
+            doc.roundedRect(x, y - 3, cw, rowHeight - 3, 2, 2, 'FD');
+            write(name, 7.2, palette.muted, x + 3.5, y + 2);
+            const out = number === null ? 'A definir' : typeof number === 'number' ? fmt(number) : text(number);
+            doc.setFont('helvetica', 'bold'); let size = 12.5; doc.setFontSize(size);
+            while (doc.getTextWidth(pdfText(out)) > cw - 7 && size > 8) doc.setFontSize(--size);
+            write(out, size, color, x + 3.5, y + 11, { bold: true });
+          }); y += rowHeight;
+        }
+        y += 1;
+      };
+      const section = (heading, headings, body, columns = {}, opts = {}) => {
+        ensure(heading ? 21 : 16); if (heading) title(heading);
+        doc.autoTable({ startY: y, margin: { top: bodyTop, bottom: marginBottom, left: M, right: M }, tableWidth: width, theme: 'plain',
+          head: [headings.map(pdfText)], body: body.length ? body.map(row => row.map(cell => typeof cell === 'object' && cell !== null ? cell : pdfText(cell))) : [[{ content: 'Nenhum registro neste período.', colSpan: headings.length }]],
+          styles: { font: 'helvetica', fontSize: font, cellPadding: padding, overflow: 'linebreak', textColor: palette.ink, lineColor: palette.line, lineWidth: 0.1, valign: 'middle' },
+          headStyles: { fillColor: color, textColor: '#FFFFFF', fontStyle: 'bold' }, alternateRowStyles: { fillColor: palette.light },
+          columnStyles: columns, rowPageBreak: 'avoid', ...opts });
+        y = doc.lastAutoTable.finalY + gap;
+      };
+      const pct = ratio => (ratio * 100).toFixed(1).replace('.', ',') + '%';
+      const classificationChart = () => {
+        const keys = ['necessario', 'casamento', 'superfluo', 'nc'];
+        const fallback = ['#16A34A', palette.sage, '#DC2626', '#CBD2DE'];
+        const parts = keys.map((key, i) => ({ name: CLS[key].l, amount: Math.max(0, data.classification.find(c => c.name === CLS[key].l)?.amount || 0), color: CLS[key].c || fallback[i] }));
+        const sum = total(parts.map(p => p.amount));
+        ensure(32); title('Classificação das despesas');
+        doc.setFillColor(palette.line); doc.rect(M, y, width, 4, 'F');
+        let x = M;
+        if (sum > 0) parts.forEach(part => { const segment = width * part.amount / sum; if (segment > 0) { doc.setFillColor(part.color); doc.rect(x, y, segment, 4, 'F'); x += segment; } });
+        y += 11;
+        parts.forEach((part, i) => {
+          const xx = M + i * (width / 4), share = sum > 0 ? part.amount / sum : 0;
+          doc.setFillColor(part.color); doc.rect(xx, y - 2, 2, 2, 'F');
+          write(part.name, 7.25, palette.ink, xx + 3.5, y);
+          write(`${fmt(part.amount)} | ${pct(share)}`, 7.1, palette.muted, xx + 3.5, y + 4.5);
+        });
+        y += 12;
+      };
+      const categoryChart = () => {
+        const rows = data.categories.filter(c => c.amount > 0).slice().sort((a, b) => b.amount - a.amount);
+        const sum = total(rows.map(r => r.amount));
+        const shown = rows.slice(0, 5);
+        if (rows.length > 5) shown.push({ name: 'Demais categorias', amount: total(rows.slice(5).map(r => r.amount)), aggregate: true });
+        ensure(12 + Math.max(1, shown.length) * 7); title('Por categoria');
+        if (!sum) { label('Sem despesas positivas neste período.'); return; }
+        const barX = M + 40, barWidth = 99;
+        shown.forEach(row => {
+          const ratio = row.amount / sum;
+          write(fit(row.name, 37, 7.5), 7.5, palette.ink, M, y + 2.5);
+          doc.setFillColor(palette.line); doc.rect(barX, y, barWidth, 3, 'F');
+          doc.setFillColor(row.aggregate ? palette.muted : (CATCOLOR[row.name] || palette.muted)); doc.rect(barX, y, barWidth * ratio, 3, 'F');
+          write(`${fmt(row.amount)} | ${pct(ratio)}`, 7.1, palette.muted, W - M, y + 2.5, { align: 'right' });
+          y += 7;
+        }); y += 1;
+      };
+      const budgetChart = () => {
+        const rows = data.suppliers.filter(i => i.total > 0 && i.status !== 'Presente').slice().sort((a, b) => b.total - a.total);
+        const sum = total(rows.map(r => r.total));
+        const shown = rows.slice(0, 4).map(i => ({ name: i.name, amount: i.total, paid: Math.min(i.total, Math.max(0, i.paid)) }));
+        if (rows.length > 4) shown.push({ name: 'Demais fornecedores', amount: total(rows.slice(4).map(i => i.total)), paid: total(rows.slice(4).map(i => Math.min(i.total, Math.max(0, i.paid)))) });
+        const step = compact ? 5.8 : 6.5;
+        ensure(15 + Math.max(1, shown.length) * step); title('Distribuição do Orçamento');
+        if (!sum) { label('Nenhum custo contratado até o momento.'); return; }
+        doc.setFillColor(palette.sage); doc.rect(M, y - 2, 2, 2, 'F'); write('Já pago', 7, palette.muted, M + 3.5, y);
+        doc.setFillColor(palette.line); doc.rect(M + 26, y - 2, 2, 2, 'F'); write('Falta pagar', 7, palette.muted, M + 29.5, y);
+        write('Maiores custos contratados', 6.8, palette.muted, W - M, y, { align: 'right' }); y += 4.5;
+        const max = Math.max(...shown.map(i => i.amount)), barX = M + 46, barWidth = 88;
+        shown.forEach(row => {
+          const length = barWidth * row.amount / max, paid = barWidth * row.paid / max;
+          write(fit(row.name, 43, 7.25), 7.25, palette.ink, M, y + 2.2);
+          doc.setFillColor(palette.line); doc.rect(barX, y, length, 2.8, 'F');
+          if (paid > 0) { doc.setFillColor(palette.sage); doc.rect(barX, y, paid, 2.8, 'F'); }
+          write(`${fmt(row.amount)} | ${pct(row.amount / sum)}`, 7.1, palette.muted, W - M, y + 2.2, { align: 'right' }); y += step;
+        }); y += 2;
+      };
+      if (!wedding) {
+        metrics([['Faturas do mês', data.totals.invoices], ['Total em aberto', data.totals.open], ['Limite livre atual', data.totals.free],
+          ['Contas fixas no mês', data.totals.fixed], ['Despesas positivas', data.totals.expenses], ['Parcelas previstas incluídas', data.totals.projected]]);
+        section('Resumo das faturas', ['Cartão', 'Fatura', 'Situação', 'Limite total', 'Livre atual'], data.cards.map(c => [c.name, fmt(c.total), c.status, c.limit ? fmt(c.limit) : 'Não definido', c.free === null ? 'Não definido' : fmt(c.free)]), { 0: { cellWidth: 52 }, 1: { halign: 'right' }, 3: { halign: 'right' }, 4: { halign: 'right' } });
+        label(`Em aberto: ${fmt(data.totals.openCards)} em faturas e ${fmt(data.totals.openFixed)} em contas fixas.`);
+        classificationChart();
+        categoryChart();
+        section('', ['Categoria', 'Valor', 'Participação'], data.categories.map(c => [c.name, fmt(c.amount), pct(c.percent)]), { 1: { halign: 'right' }, 2: { halign: 'right' } });
+        section('Extrato detalhado', ['Data', 'Descrição / origem', 'Cartão / conta', 'Parcela', 'Categoria', 'Classe', 'Valor'],
+          data.rows.map(r => [dateBR(r.date), `${r.name}\n${r.origin} - ${r.posting}; ${r.payment}`, r.account, r.installment, r.category, r.classification, fmt(r.amount)]),
+          { 0: { cellWidth: 17 }, 1: { cellWidth: 49 }, 2: { cellWidth: 29 }, 3: { cellWidth: 13 }, 4: { cellWidth: 24 }, 5: { cellWidth: 26 }, 6: { cellWidth: 24, halign: 'right' } },
+          { foot: [[{ content: 'Total líquido dos lançamentos', colSpan: 6 }, fmt(data.totals.net)]], showFoot: 'lastPage', footStyles: { fillColor: '#F1F5F9', textColor: palette.slate, fontStyle: 'bold', halign: 'right' } });
+      } else {
+        metrics([['Custo contratado', data.totals.total], ['Já pago', data.totals.pago], ['Guardado', data.totals.guard], ['Falta juntar', data.totals.juntar],
+          ['Falta pagar fornecedores', data.totals.falta], ['Meta mensal sugerida', data.totals.monthly]]);
+        const timeline = data.totals.months > 0 ? `${data.totals.months} aporte(s) até a cerimônia.` : data.totals.needNow !== null ? `Valor necessário agora: ${fmt(data.totals.needNow)}.` : 'Defina a data para calcular a meta mensal.';
+        label(`Orçamento: ${fmt(data.goal)} | Objetivo: ${fmt(data.totals.target)} | ${timeline}`, 7.25);
+        if (data.totals.discrepancy > 0) label(`Origem a revisar: ${fmt(data.totals.discrepancy)} em pagamentos sem depósito correspondente.`, 7.5, '#995718');
+        y += 1; budgetChart();
+        flow.supplierStart = y;
+        const supplierRows = data.suppliers.map(i => [i.name + (i.giver ? `\nPresente de ${i.giver}` : ''), fmt(i.total), fmt(i.paid), fmt(i.remaining), i.progress === null ? '-' : Math.floor(i.progress * 100) + '%', i.status]);
+        const supplierSection = (from, to, continuation) => section(continuation ? 'Itens e fornecedores (continuação)' : 'Itens e fornecedores',
+          ['Fornecedor', 'Contratado', 'Já pago', 'Falta pagar', 'Progresso', 'Status'], supplierRows.slice(from, to),
+          { 0: { cellWidth: 45 }, 1: { halign: 'right' }, 2: { halign: 'right' }, 3: { halign: 'right' }, 4: { cellWidth: 23, minCellHeight: compact ? 7.5 : 8.5 }, 5: { cellWidth: 24 } },
+          { didDrawCell: hook => {
+            if (hook.column.index === 0) {
+              if (hook.section === 'head') flow.supplierHead = hook.cell.height;
+              else if (hook.section === 'body') flow.suppliers[from + hook.row.index] = hook.row.height;
+            }
+            if (hook.section !== 'body' || hook.column.index !== 4) return;
+            const item = data.suppliers[from + hook.row.index]; if (!item || item.progress === null) return;
+            const x = hook.cell.x + padding, barWidth = hook.cell.width - 2 * padding, yy = hook.cell.y + hook.cell.height - 1.4;
+            doc.setFillColor(palette.line); doc.rect(x, yy, barWidth, 0.6, 'F'); if (item.progress > 0) { doc.setFillColor(palette.gold); doc.rect(x, yy, barWidth * item.progress, 0.6, 'F'); }
+          } });
+        if (splitAfter > 0) {
+          supplierSection(0, splitAfter, false); doc.addPage(); y = bodyTop;
+          supplierSection(splitAfter, data.suppliers.length, true);
+        } else supplierSection(0, data.suppliers.length, false);
+        section('Histórico de pagamentos', ['Data', 'Fornecedor', 'Origem', 'Observação', 'Valor'], data.payments.map(p => [dateBR(p.date), p.supplier, p.origin, p.note, fmt(p.amount)]),
+          { 0: { cellWidth: 20 }, 1: { cellWidth: 42 }, 2: { cellWidth: 35 }, 3: { cellWidth: 57 }, 4: { cellWidth: 28, halign: 'right' } },
+          { didDrawCell: hook => { if (hook.column.index !== 0) return; if (hook.section === 'head') flow.paymentHead = hook.cell.height; else if (hook.section === 'body') flow.payments[hook.row.index] = hook.row.height; } });
       }
+      const pageCount = doc.getNumberOfPages(), contentEnd = y;
+      // Reserve footer space before laying out every table. Criteria never create a page of their own.
+      doc.setPage(pageCount); doc.setDrawColor(palette.line); doc.line(M, criteriaTop, W - M, criteriaTop);
+      write('Critérios do relatório', 7, color, M, criteriaTop + 3.5, { bold: true });
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(noteSize); doc.setTextColor(palette.muted);
+      doc.text(noteLines, M, criteriaTop + 7, { lineHeightFactor: 1.15 });
+      for (let page = 1; page <= pageCount; page++) {
+        doc.setPage(page); doc.setFillColor(color); doc.rect(0, 0, W, 31, 'F');
+        if (wedding) { doc.setFillColor(palette.gold); doc.rect(0, 30, W, 1, 'F'); }
+        write('MEU CONTROLE', 8, '#E2E8F0', M, 8);
+        write(data.title, 16, '#FFFFFF', M, 17, { bold: true }); write(data.periodLabel, 9, '#FFFFFF', M, 25);
+        doc.setDrawColor(palette.line); doc.line(M, H - 13, W - M, H - 13);
+        write(`Gerado em ${generatedLabel(data.generatedAt)}`, 7, palette.muted, M, H - 8);
+        write(`${page} / ${pageCount}`, 7, palette.muted, W - M, H - 8, { align: 'right' });
+      }
+      return { doc, pageCount, contentEnd, flow, bodyBottom, bodyTop, gap };
     };
-    const section = (title, headings, body, columns = {}, opts = {}) => {
-      ensure(32); doc.setFont('helvetica', 'bold'); doc.setFontSize(10.5); doc.setTextColor(...color); doc.text(pdfText(title), M, y); y += 5;
-      doc.autoTable({ startY: y, margin: { top: 40, bottom: 18, left: M, right: M }, tableWidth: width, theme: 'plain',
-        head: [headings.map(pdfText)], body: body.length ? body.map(row => row.map(cell => typeof cell === 'object' && cell !== null ? cell : pdfText(cell))) : [{ content: 'Nenhum registro neste período.', colSpan: headings.length }].map(cell => [cell]),
-        styles: { font: 'helvetica', fontSize: 8, cellPadding: 2.5, overflow: 'linebreak', textColor: [51, 65, 85], lineColor: [226, 232, 240], lineWidth: 0.1, valign: 'middle' },
-        headStyles: { fillColor: color, textColor: [255, 255, 255], fontStyle: 'bold' }, alternateRowStyles: { fillColor: [248, 250, 252] },
-        columnStyles: columns, rowPageBreak: 'avoid', ...opts });
-      y = doc.lastAutoTable.finalY + 10;
-    };
-    if (!wedding) {
-      metrics([['Faturas do mês', data.totals.invoices], ['Total em aberto', data.totals.open], ['Limite livre atual', data.totals.free],
-        ['Contas fixas no mês', data.totals.fixed], ['Despesas positivas', data.totals.expenses], ['Parcelas previstas incluídas', data.totals.projected]]);
-      section('Resumo das faturas', ['Cartão', 'Fatura', 'Situação', 'Limite total', 'Livre atual'], data.cards.map(c => [c.name, fmt(c.total), c.status, c.limit ? fmt(c.limit) : 'Não definido', c.free === null ? 'Não definido' : fmt(c.free)]), { 0: { cellWidth: 52 }, 1: { halign: 'right' }, 3: { halign: 'right' }, 4: { halign: 'right' } });
-      label(`Em aberto: ${fmt(data.totals.openCards)} em faturas e ${fmt(data.totals.openFixed)} em contas fixas.`);
-      section('Classificação das despesas', ['Classificação', 'Valor'], data.classification.map(c => [c.name, fmt(c.amount)]), { 1: { halign: 'right' } });
-      section('Categorias de despesas', ['Categoria', 'Valor', 'Participação'], data.categories.map(c => [c.name, fmt(c.amount), (c.percent * 100).toFixed(1).replace('.', ',') + '%']), { 1: { halign: 'right' }, 2: { halign: 'right' } });
-      label(data.notes[1]);
-      section('Extrato detalhado', ['Data', 'Descrição / origem', 'Cartão / conta', 'Parcela', 'Categoria', 'Classe', 'Valor'],
-        data.rows.map(r => [dateBR(r.date), `${r.name}\n${r.origin} - ${r.posting}; ${r.payment}`, r.account, r.installment, r.category, r.classification, fmt(r.amount)]),
-        { 0: { cellWidth: 17 }, 1: { cellWidth: 49 }, 2: { cellWidth: 29 }, 3: { cellWidth: 13 }, 4: { cellWidth: 24 }, 5: { cellWidth: 26 }, 6: { cellWidth: 24, halign: 'right' } });
-      label(`Total líquido dos lançamentos: ${fmt(data.totals.net)}.`);
-    } else {
-      metrics([['Custo contratado', data.totals.total], ['Já pago', data.totals.pago], ['Guardado', data.totals.guard], ['Falta juntar', data.totals.juntar],
-        ['Falta pagar fornecedores', data.totals.falta], ['Meta mensal sugerida', data.totals.monthly]]);
-      label(`Orçamento: ${fmt(data.goal)}. Objetivo considerado: ${fmt(data.totals.target)}.`);
-      if (data.totals.months > 0) label(`${data.totals.months} aporte(s) até a cerimônia.`);
-      else if (data.totals.needNow !== null) label(`Data de hoje ou já encerrada. Valor necessário agora: ${fmt(data.totals.needNow)}.`);
-      else if (!data.date) label('Defina a data do casamento no aplicativo para calcular a meta mensal.');
-      if (data.totals.discrepancy > 0) label(`Origem a revisar: ${fmt(data.totals.discrepancy)} em pagamentos sem depósito correspondente.`, 8.5, [153, 87, 24]);
-      section('Itens e fornecedores', ['Fornecedor', 'Contratado', 'Já pago', 'Falta pagar', 'Progresso', 'Status'],
-        data.suppliers.map(i => [i.name + (i.giver ? `\nPresente de ${i.giver}` : ''), fmt(i.total), fmt(i.paid), fmt(i.remaining), i.progress === null ? '-' : Math.floor(i.progress * 100) + '%', i.status]),
-        { 0: { cellWidth: 45 }, 1: { halign: 'right' }, 2: { halign: 'right' }, 3: { halign: 'right' }, 4: { cellWidth: 23, minCellHeight: 12 }, 5: { cellWidth: 24 } },
-        { didDrawCell: hook => { if (hook.section !== 'body' || hook.column.index !== 4) return; const item = data.suppliers[hook.row.index]; if (!item || item.progress === null) return;
-          const x = hook.cell.x + 2.5, barWidth = hook.cell.width - 5, yy = hook.cell.y + hook.cell.height - 2.5;
-          doc.setFillColor(226, 232, 240); doc.rect(x, yy, barWidth, 0.9, 'F'); if (item.progress > 0) { doc.setFillColor(184, 147, 80); doc.rect(x, yy, barWidth * item.progress, 0.9, 'F'); } } });
-      section('Histórico de pagamentos', ['Data', 'Fornecedor', 'Origem', 'Observação', 'Valor'], data.payments.map(p => [dateBR(p.date), p.supplier, p.origin, p.note, fmt(p.amount)]), { 0: { cellWidth: 20 }, 1: { cellWidth: 42 }, 2: { cellWidth: 35 }, 3: { cellWidth: 57 }, 4: { cellWidth: 28, halign: 'right' } });
+    let result = render(false);
+    // A slightly denser layout is used only when it actually removes a sparse trailing page.
+    if (wedding && result.pageCount === 2 && result.contentEnd < 130) {
+      const tighter = render(true);
+      if (tighter.pageCount === 1) result = tighter;
     }
-    ensure(20); label('Critérios do relatório', 9, color); data.notes.forEach(note => label(note, 7.5));
-    const pageCount = doc.getNumberOfPages();
-    for (let page = 1; page <= pageCount; page++) {
-      doc.setPage(page); doc.setFillColor(...color); doc.rect(0, 0, W, 32, 'F');
-      if (wedding) { doc.setFillColor(184, 147, 80); doc.rect(0, 31, W, 1, 'F'); }
-      doc.setTextColor(226, 232, 240); doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.text('MEU CONTROLE', M, 8);
-      doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.text(pdfText(data.title), M, 17);
-      doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.text(pdfText(data.periodLabel), M, 25);
-      doc.setDrawColor(226, 232, 240); doc.line(M, H - 13, W - M, H - 13); doc.setTextColor(100, 116, 139); doc.setFontSize(7);
-      doc.text(`Gerado em ${generatedLabel(data.generatedAt)}`, M, H - 8); doc.text(`${page} / ${pageCount}`, W - M, H - 8, { align: 'right' });
+    // If two pages are necessary, move complete supplier rows to balance their content.
+    // Real AutoTable row heights (including wrapped names/notes) drive the split.
+    if (wedding && result.pageCount === 2 && result.contentEnd < 160 && data.suppliers.length > 1) {
+      const f = result.flow, heights = f.suppliers, sumRows = rows => rows.reduce((sum, h) => sum + (h || 0), 0);
+      let best = null;
+      for (let cut = 1; cut < heights.length; cut++) {
+        const firstEnd = f.supplierStart + 5 + f.supplierHead + sumRows(heights.slice(0, cut));
+        const lastEnd = result.bodyTop + 5 + f.supplierHead + sumRows(heights.slice(cut)) + result.gap + 5 + f.paymentHead + sumRows(f.payments) + result.gap;
+        if (firstEnd > result.bodyBottom || lastEnd > result.bodyBottom) continue;
+        const score = Math.max(firstEnd, lastEnd);
+        if (!best || score < best.score) best = { cut, score };
+      }
+      if (best) {
+        const balanced = render(false, best.cut);
+        if (balanced.pageCount === 2 && balanced.contentEnd > result.contentEnd + 12) result = balanced;
+      }
     }
-    return doc.output('arraybuffer');
+    return result.doc.output('arraybuffer');
   }
   function excelDate(iso) { const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(text(iso)); return match ? Date.UTC(+match[1], +match[2] - 1, +match[3]) / 86400000 + 25569 : null; }
   function buildWorkbook(data) {
