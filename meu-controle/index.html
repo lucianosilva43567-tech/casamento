@@ -373,6 +373,23 @@ body.finance-view .btn.primary{box-shadow:none}
 @media(max-width:900px){#v-visao .finance-hero,#v-visao .overview-kpis{grid-column:1/-1}}
 @media(max-width:760px){#v-cartoes .tiles{grid-template-columns:1fr}#v-visao .distribution{grid-column:1/-1}#v-visao .overview-kpis{gap:12px}#v-visao .overview-kpis .kpi{padding:14px}#sheet .clsbtns{width:100%;justify-content:flex-start}#sheet .clsbtns button{flex:1;white-space:normal}#v-visao .finance-hero{padding:22px}.clsbig{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.clsbig div{min-width:0}body.finance-view .bnav a{min-width:0;flex:1}body.finance-view .bnav .add{width:48px;flex:none}}
 
+
+/* Statement categories and loan summaries share the same restrained icon system. */
+.cat-ico,.category-button,.category-chip{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;width:34px;height:34px;flex-shrink:0}
+.category-button{border:1px solid transparent;vertical-align:middle;margin-right:9px;min-width:34px}
+.category-button:hover{border-color:#CBD5E1}.category-button:focus-visible{outline:2px solid #475569;outline-offset:2px}
+.category-button .ui-icon,.cat-ico .ui-icon{width:18px;height:18px}
+.category-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:16px}
+.category-option{display:flex;flex-direction:column;gap:7px;align-items:center;padding:12px 6px;border:1px solid #E2E8F0;border-radius:12px;font-size:12px;font-weight:600;min-width:0;overflow-wrap:anywhere}
+.category-option[aria-pressed=true]{background:#F1F5F9;border-color:#64748B}
+.loan-title{display:flex;align-items:center;gap:10px;min-width:0}.loan-title .nm{overflow-wrap:anywhere}
+.loan-summary{display:flex;align-items:center;justify-content:space-between;gap:8px 18px;flex-wrap:wrap;margin-top:10px}
+.loan-summary .paid-rest{font-size:12.5px;color:#475569}.loan-end{font-size:11.5px;color:#64748B;white-space:nowrap}
+#fLoans .item{border:1px solid #E2E8F0;box-shadow:none}#fLoans .bar{height:4px}#fLoans .bar span{background:#64748B!important}
+#oInst .li{align-items:flex-start;gap:10px}#oInst .main2{flex-basis:140px}#oInst .t{white-space:normal;overflow-wrap:anywhere}#oInst .amt{font-size:14px;white-space:nowrap}
+#v-cartoes .mobile-transaction{cursor:default}#v-cartoes .mobile-transaction .main2{cursor:pointer}
+@media(max-width:420px){.category-options{grid-template-columns:repeat(2,minmax(0,1fr))}.loan-summary{align-items:flex-start}#oInst .amt{margin-left:44px}}
+
 </style>
 </head>
 <body>
@@ -493,7 +510,7 @@ body.finance-view .btn.primary{box-shadow:none}
     </div>
     <div class="card s4">
       <div class="ch"><h2><svg class="ui-icon" aria-hidden="true"><use href="#i-rep"/></svg>Por categoria</h2><span class="muted" id="catFilterLbl"></span></div>
-      <div id="cats"></div>
+      <div class="donut" id="cardCategoryDonut" style="margin:8px auto 18px" aria-label="Distribuição por categoria"></div><div id="cats"></div>
     </div>
   </section>
 
@@ -564,14 +581,14 @@ body.finance-view .btn.primary{box-shadow:none}
 <script>
 /* ============ ESTADO ============ */
 function iconSvg(name){
- const paths={card:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18M7 15h4"/>',wallet:'<path d="M20 8H5a2 2 0 0 1 0-4h13v4M4 7v12a1 1 0 0 0 1 1h15V8"/><path d="M16 12h5v5h-5z"/>',calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18"/>',chart:'<path d="M3 3v18h18M7 16v-4M12 16V8M17 16V5"/>',ring:'<circle cx="12" cy="14" r="7"/><path d="m9 3 3 4 3-4z"/>',stream:'<rect x="3" y="4" width="18" height="14" rx="2"/><path d="m10 8 5 3-5 3zM8 21h8"/>',gym:'<path d="m6 6 12 12M3 8l5-5M2 5l3-3M16 21l5-5M19 22l3-3M5 11l6-6M13 19l6-6"/>',bank:'<path d="m3 8 9-5 9 5H3ZM3 21h18M5 10v8M10 10v8M15 10v8M20 10v8"/>',home:'<path d="m3 11 9-8 9 8M5 9v12h14V9M9 21v-7h6v7"/>',bag:'<path d="M5 7h14l1 14H4L5 7ZM9 7V5a3 3 0 0 1 6 0v2"/>',check:'<path d="m5 12 4 4L19 6"/>',trash:'<path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7"/>',help:'<circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4M12 17h.01"/>',repeat:'<path d="m17 2 4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="m9 3-1 3-3 1-2 3 2 2-1 4 3 2 3-1 2 4 3-2 1-3 4-1 1-3-3-2 1-4-3-2-3 1z"/>',receipt:'<path d="M5 3v18l3-2 4 2 4-2 3 2V3l-3 2-4-2-4 2-3-2ZM9 9h6M9 13h6"/>',link:'<path d="m10 13 4-4M8 16l-2 2a4 4 0 0 1-6-6l5-5a4 4 0 0 1 6 0M16 8l2-2a4 4 0 0 1 6 6l-5 5a4 4 0 0 1-6 0" transform="translate(1 0) scale(.9)"/>',health:'<path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/>'};
+ const paths={cart:'<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>',gem:'<path d="M6 3h12l4 6-10 13L2 9l4-6ZM2 9h20M6 3l6 19 6-19"/>',pie:'<path d="M21.2 15.9A10 10 0 1 1 8.1 2.8"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>',book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/>',tools:'<path d="m14 7 3 3 4-4a6 6 0 0 1-8 8L6 21a2 2 0 0 1-3-3l7-7a6 6 0 0 1 8-8l-4 4Z"/>',card:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18M7 15h4"/>',wallet:'<path d="M20 8H5a2 2 0 0 1 0-4h13v4M4 7v12a1 1 0 0 0 1 1h15V8"/><path d="M16 12h5v5h-5z"/>',calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18"/>',chart:'<path d="M3 3v18h18M7 16v-4M12 16V8M17 16V5"/>',ring:'<circle cx="12" cy="14" r="7"/><path d="m9 3 3 4 3-4z"/>',stream:'<rect x="3" y="4" width="18" height="14" rx="2"/><path d="m10 8 5 3-5 3zM8 21h8"/>',gym:'<path d="m6 6 12 12M3 8l5-5M2 5l3-3M16 21l5-5M19 22l3-3M5 11l6-6M13 19l6-6"/>',bank:'<path d="m3 8 9-5 9 5H3ZM3 21h18M5 10v8M10 10v8M15 10v8M20 10v8"/>',home:'<path d="m3 11 9-8 9 8M5 9v12h14V9M9 21v-7h6v7"/>',bag:'<path d="M5 7h14l1 14H4L5 7ZM9 7V5a3 3 0 0 1 6 0v2"/>',check:'<path d="m5 12 4 4L19 6"/>',trash:'<path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7"/>',help:'<circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4M12 17h.01"/>',repeat:'<path d="m17 2 4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="m9 3-1 3-3 1-2 3 2 2-1 4 3 2 3-1 2 4 3-2 1-3 4-1 1-3-3-2 1-4-3-2-3 1z"/>',receipt:'<path d="M5 3v18l3-2 4 2 4-2 3 2V3l-3 2-4-2-4 2-3-2ZM9 9h6M9 13h6"/>',link:'<path d="m10 13 4-4M8 16l-2 2a4 4 0 0 1-6-6l5-5a4 4 0 0 1 6 0M16 8l2-2a4 4 0 0 1 6 6l-5 5a4 4 0 0 1-6 0" transform="translate(1 0) scale(.9)"/>',health:'<path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/>'};
  return `<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]||paths.bag}</svg>`;
 }
-function recurringIcon(r){return iconSvg(r.type==="emprestimo"?"bank":/academia|gym|fitness/i.test(r.name)?"gym":"stream")}
+function recurringIcon(r){return iconSvg(r.type==="emprestimo"?(/casa|obra|imovel|imóvel|habitac|construc|construç/i.test(r.name)?"home":"bank"):/academia|gym|fitness/i.test(r.name)?"gym":"stream")}
 
-const CATS=["Alimentação","Mercado","Combustível","Transporte","Assinaturas","Compras","Casa","Lazer","Saúde","Casamento","Empréstimos","Outros"].map(c=>[c,""]);
-const CATICON=Object.fromEntries(CATS.map(([c])=>[c,iconSvg(({Assinaturas:"stream",Casamento:"ring",Empréstimos:"bank",Casa:"home",Saúde:"health"})[c]||"bag")]));
-const CATCOLOR={"Alimentação":"#F59E0B","Mercado":"#10B981","Combustível":"#EF4444","Transporte":"#6366F1","Assinaturas":"#8B5CF6","Compras":"#EC4899","Casa":"#2F5BEA","Lazer":"#14B8A6","Saúde":"#F97316","Casamento":"#B8893B","Empréstimos":"#0EA5E9","Outros":"#94A3B8"};
+const CATS=["Alimentação","Mercado","Combustível","Transporte","Assinaturas","Compras","Casa","Lazer","Saúde","Acessórios","Educação","Serviços","Casamento","Empréstimos","Outros"].map(c=>[c,""]);
+const CATICON=Object.fromEntries(CATS.map(([c])=>[c,iconSvg(({Mercado:"cart",Compras:"cart",Acessórios:"gem",Educação:"book",Serviços:"tools",Assinaturas:"stream",Casamento:"ring",Empréstimos:"bank",Casa:"home",Saúde:"health",Outros:"receipt"})[c]||"bag")]));
+const CATCOLOR={"Alimentação":"#F59E0B","Mercado":"#10B981","Combustível":"#EF4444","Transporte":"#6366F1","Assinaturas":"#8B5CF6","Compras":"#EC4899","Casa":"#2F5BEA","Lazer":"#14B8A6","Saúde":"#F97316","Casamento":"#B8893B","Empréstimos":"#0EA5E9","Acessórios":"#9A6D30","Educação":"#4F46A5","Serviços":"#54776C","Outros":"#64748B"};
 const WED_SUGG=["Buffet","Decoração","Local / Salão","Fotografia","Filmagem","Vestido","Traje do noivo","Som / DJ","Bolo e doces","Convites","Alianças","Cerimonial","Lua de mel"];
 
 function defaultState(){return{v:1,
@@ -717,6 +734,19 @@ function catRows(list,limit){
   return{cs,tot,html:cs.length?cs.slice(0,limit||99).map(([k,v])=>`<div class="catrow"><span class="cat-ico" style="background:${CATCOLOR[k]}22">${CATICON[k]||iconSvg("bag")}</span><span>${esc(k)}</span><span class="pct">${Math.round(v/tot*100)}%</span><span class="num" style="font-weight:800">${fmt(v)}</span></div>`).join("")
     :`<div class="empty"><b>Sem gastos neste mês</b>Lance um gasto para ver a distribuição.</div>`};
 }
+function categoryButton(e){
+  const cat=e.p.cat||"Outros",color=CATCOLOR[cat]||"#64748B";
+  const type=e.imp?"import":e.rec?"rec":"manual",id=e.imp?(e.imp.categorySourceId||e.imp.id):e.rec?e.rec.id:e.p.id;
+  return `<button type="button" class="category-button" data-category-type="${type}" data-category-id="${esc(id)}" style="background:${color}14;color:${color}" aria-label="Alterar categoria de ${esc(e.p.desc)}: ${esc(cat)}" title="Alterar categoria: ${esc(cat)}">${CATICON[cat]||iconSvg("receipt")}</button>`;
+}
+function importedInstallmentDetails(t,cardId,ym){const n=+t.parcelas,k=(+t.parcela||1)-1;return{rest:Math.max(0,n-k-1)*(+t.valor||0),estimated:true,last:addMonths(ym,Math.max(0,n-k-1))}}
+function installmentRows(ym){
+  const seen=new Set();return entriesFor(ym).filter(e=>!e.rec&&e.n>1&&e.amount>0).filter(e=>{const id=e.imp?"i:"+e.imp.id:"m:"+e.p.id+":"+e.k;if(seen.has(id))return false;seen.add(id);return true}).map(e=>{
+    if(e.imp){const more=importedInstallmentDetails(e.imp,e.p.card,ym);return{...e,parc:e.amount,rest:more.rest,last:more.last,estimated:more.estimated}}
+    const parts=splitCents(e.p.amount,e.n);return{...e,parc:e.amount,rest:parts.slice(e.k+1).reduce((a,b)=>a+b,0),last:invoiceYM(e.p,e.n-1),estimated:false};
+  });
+}
+
 function cardDue(c,ym){const[y,m]=ymParts(ym);const last=new Date(y,m+1,0).getDate();return Math.min(c.due,last)}
 
 function futureImportedTotal(){return 0}
@@ -773,18 +803,15 @@ function renderVisao(){
       <div class="stack" style="height:${Math.max(3,tt/mx*125)}px;${d.k===view.ym?"box-shadow:0 0 0 2px var(--accent)":""}">${d.per.map((v,i)=>v?`<span style="height:${v/tt*100}%;background:${S.cards[i].dot}"></span>`:"").join("")}</div><small>${ymShort(d.k)}</small></div>`}).join("");
   $("#oMonthsLeg").innerHTML=S.cards.map(c=>`<div><i class="dot" style="background:${c.dot}"></i> ${esc(shortName(c))}</div>`).join("");
 
-  // Parceladas
-  const inst=S.purchases.filter(p=>(p.inst||1)>1).map(p=>{const n=p.inst,parts=splitCents(p.amount,n);let k=-1;for(let i=0;i<n;i++)if(invoiceYM(p,i)===view.ym)k=i;
-    if(k<0)return null;const rest=parts.slice(k+1).reduce((a,b)=>a+b,0);return{p,k,n,parc:parts[k],rest}}).filter(Boolean);
-  const totParc=inst.reduce((s,x)=>s+x.parc,0),totRest=inst.reduce((s,x)=>s+x.rest,0);
-  $("#oInstLbl").textContent=inst.length?`${fmt(totParc)} no mês · faltam ${fmt(totRest)}`:"";
-  $("#oInst").innerHTML=inst.length?inst.map(x=>{const c=card(x.p.card);return`<div class="li click" data-editp="${x.p.id}" tabindex="0" role="button">
-    <div class="ic">${CATICON[x.p.cat]||iconSvg("bag")}</div>
-    <div class="main2"><div class="t">${esc(x.p.desc)} <span class="pill blue">${x.k+1}/${x.n}</span></div>
-      <div class="s"><i class="dot" style="background:${c?c.dot:"#999"}"></i> ${fmt(x.parc)} por mês · última em ${ymLabel(invoiceYM(x.p,x.n-1))}</div>
-      <div class="bar" style="margin-top:6px;height:6px"><span style="width:${(x.k+1)/x.n*100}%;background:var(--accent)"></span></div></div>
-    <div class="amt num">${fmt(x.p.amount)}<div class="s" style="font-weight:600">faltam ${fmt(x.rest)}</div></div></div>`}).join("")
-    :`<div class="empty"><b>Nenhuma compra parcelada neste mês</b>Ao lançar um gasto, escolha o número de parcelas.</div>`;
+  // One source of invoice entries for manual and Open Finance installments.
+  const inst=installmentRows(view.ym),totParc=inst.reduce((sum,x)=>sum+cents(x.parc),0)/100,totRest=inst.reduce((sum,x)=>sum+cents(x.rest),0)/100;
+  $("#oInstLbl").textContent=inst.length?`${fmt(totParc)} no mês · ${fmt(totRest)} nas próximas parcelas`:"";
+  $("#oInst").innerHTML=inst.length?inst.map(x=>{const c=card(x.p.card);return `<div class="li">
+    ${categoryButton(x)}<div class="main2"><div class="t"><button class="installment-open" data-editp="${esc(x.p.id)}" style="font-weight:700;text-align:left">${esc(x.p.desc)}</button> <span class="pill gray">${x.k+1}/${x.n}</span></div>
+      <div class="s">${esc(c?.name||"Cartão")} · ${x.imp?(x.imp.previsto?"prevista":"Pluggy"):"manual"} · última em ${ymLabel(x.last).toLowerCase()}</div>
+      <div class="bar" style="margin-top:7px;height:4px"><span style="width:${(x.k+1)/x.n*100}%;background:#64748B"></span></div></div>
+    <div class="amt num">${fmt(x.parc)}<div class="s" style="font-weight:500">resta${x.estimated?"m ≈":""} ${fmt(x.rest)}</div></div></div>`}).join("")
+    :`<div class="empty"><b>Nenhuma compra parcelada nesta fatura</b>Compras manuais e do Pluggy aparecem aqui.</div>`;
 
   // Casamento mini
   const pp=w.total?Math.min(1,w.pago/w.total):0,sp=w.total?Math.min(1-pp,Math.max(0,w.guard)/w.total):0;
@@ -811,18 +838,18 @@ function renderCards(){
   const list=view.filter==="all"?all:all.filter(e=>e.p.card===view.filter);
   {const fc=view.filter!=="all"&&card(view.filter);const tot=list.reduce((s,e)=>s+e.amount,0);
    $("#pTitle").textContent=`Fatura de ${ymLabel(view.ym).toLowerCase()}${fc?` · vence ${String(cardDue(fc,view.ym)).padStart(2,"0")}/${view.ym.slice(5)}`:""} · ${fmt(tot)}`}
-  const cr=catRows(list);$("#cats").innerHTML=cr.html;
+  const cr=catRows(list);$("#cats").innerHTML=cr.html;$("#cardCategoryDonut").innerHTML=donutSVG(cr.cs,cr.tot);
   $("#catFilterLbl").textContent=view.filter==="all"?"todos":shortName(card(view.filter));
   const emptyHTML=`<div class="empty"><b>Nenhuma compra nesta fatura</b>Use <b>+ Gasto</b> para lançar.</div>`;
   $("#ptbl").innerHTML=list.length?list.map(e=>{const c=card(e.p.card);return`<tr data-editp="${e.p.id}" tabindex="0">
-    <td><span style="margin-right:8px">${CATICON[e.p.cat]||iconSvg("bag")}</span>${esc(e.p.desc)}</td>
+    <td>${categoryButton(e)}${esc(e.p.desc)}</td>
     <td><i class="dot" style="background:${c?c.dot:"#999"}"></i> ${esc(c?shortName(c):"")}</td>
     <td class="muted">${dateBR(e.p.date)}</td><td><span class="pill gray">${esc(e.p.cat)}</span> <span class="ctag" title="${CLS[clsOf(e)].l}">${clsOf(e)==="nc"?"":CLS[clsOf(e)].i}</span></td>
     <td class="r">${e.n>1?`<span class="pill blue">${e.k+1}/${e.n}</span>`:e.rec?'<span class="pill gray">mensal</span>':'<span class="muted">à vista</span>'}</td>
     <td class="r num" style="font-weight:800;white-space:nowrap">${e.imp?'<span title="Importada do banco" style="margin-right:4px">'+iconSvg("link")+'</span>':""}${fmt(e.amount)}${e.imp?`<button class="xbtn" data-ignimp="${e.imp.id}" title="Não é minha" aria-label="Não é minha">✕</button>`:""}</td></tr>`}).join(""):`<tr><td colspan="6">${emptyHTML}</td></tr>`;
   $("#plist").innerHTML=list.length?list.map(e=>{const c=card(e.p.card);
-    return`<div class="li click" data-editp="${e.p.id}" tabindex="0" role="button"><div class="ic">${CATICON[e.p.cat]||iconSvg("bag")}</div>
-      <div class="main2"><div class="t">${esc(e.p.desc)}</div><div class="s"><i class="dot" style="background:${c?c.dot:"#999"}"></i> ${esc(c?shortName(c):"")} · ${dateBR(e.p.date)}${e.n>1?` · <b>${e.k+1}/${e.n}</b>`:""}</div></div>
+    return`<div class="li mobile-transaction">${categoryButton(e)}
+      <div class="main2" data-editp="${esc(e.p.id)}" tabindex="0" role="button"><div class="t">${esc(e.p.desc)}</div><div class="s"><i class="dot" style="background:${c?c.dot:"#999"}"></i> ${esc(c?shortName(c):"")} · ${dateBR(e.p.date)}${e.n>1?` · <b>${e.k+1}/${e.n}</b>`:""}</div></div>
       <div class="amt num">${e.imp?iconSvg("link"):""}${fmt(e.amount)}</div>${e.imp?`<button class="xbtn" data-ignimp="${e.imp.id}" aria-label="Não é minha">✕</button>`:""}</div>`}).join(""):emptyHTML;
 }
 
@@ -854,10 +881,10 @@ function renderFixas(){
   const loans=(S.recurring||[]).filter(r=>r.type==="emprestimo");
   $("#fLoans").innerHTML=loans.length?loans.map(r=>{const k=monthsBetween(r.start,ym),done=loanPaid(r),cur=recIndex(r,ym),left=r.inst-done;
     return`<div class="item">
-      <div class="top2"><div class="click" data-editrec="${r.id}" role="button" tabindex="0" style="cursor:pointer"><div class="nm">${esc(r.name)}</div><div class="muted" style="margin-top:2px">dia ${String(r.day).padStart(2,"0")} · ${methodLabel(r)}</div></div>
+      <div class="top2"><div class="click" data-editrec="${r.id}" role="button" tabindex="0" style="cursor:pointer"><div class="loan-title"><span class="category-chip" style="background:#F1F5F9;color:#475569">${recurringIcon(r)}</span><div><div class="nm">${esc(r.name)}</div><div class="muted" style="margin-top:2px">dia ${String(r.day).padStart(2,"0")} · ${methodLabel(r)}</div></div></div></div>
         <div style="text-align:right"><div class="num" style="font-weight:800;font-size:16px">${fmt(r.amount)}<span class="muted">/mês</span></div>${cur>=0?`<span class="pill blue">parcela ${cur+1}/${r.inst}</span>`:k>=r.inst?'<span class="pill ok">Quitado</span>':'<span class="pill gray">ainda não começou</span>'}</div></div>
       <div class="bar" style="margin-top:12px"><span style="width:${done/r.inst*100}%;background:#0EA5E9"></span></div>
-      <div class="muted" style="margin-top:6px">Pagou ${done} de ${r.inst} (${fmt(done*r.amount)}) · faltam ${left} = <b>${fmt(left*r.amount)}</b></div><div class="muted">${ymLabel(r.start).toLowerCase()} até ${ymLabel(addMonths(r.start,r.inst-1)).toLowerCase()}</div>
+      <div class="loan-summary"><div class="paid-rest">Pago: <b class="num">${fmt(done*r.amount)}</b> <span aria-hidden="true">•</span> Resta: <b class="num">${fmt(left*r.amount)}</b> (${left} parcela${left===1?"":"s"})</div><div class="loan-end">Até ${ymLabel(addMonths(r.start,r.inst-1)).toLowerCase()}</div></div>
       ${cur>=0?`<div class="acts">${recStatus(r,ym)}</div>`:""}
     </div>`}).join(""):`<div class="empty"><b>Nenhum empréstimo</b>Cadastre empréstimos, financiamentos ou consórcios.</div>`;
 }
@@ -1461,7 +1488,7 @@ async function writeWeddingLink(t,itemId,ignore){
     if(error)throw new Error(error.code==='40001'?'O casamento mudou em outro aparelho. Reabra para sincronizar.':error.message);
     if(!data||!Array.isArray(data.dados?.items))throw new Error('Resposta inválida ao vincular pagamento');
     S.wedding=data.dados;sbVersion=data.atualizado_em;lastWed=JSON.stringify(S.wedding);
-    if(ignore!==undefined)t.ignorada=ignore;
+    if(ignore!==undefined){t.ignorada=ignore;ofProject()}
     undoSnap=null; // Atomic server operations are reversed through the same transaction, never a stale local snapshot.
     try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}
     render();return true;
@@ -1499,11 +1526,18 @@ const OF_CAT=[[/grocer|supermarket|supermercado/i,"Mercado"],[/gas station|fuel|
  [/restaurant|food|delivery|bakery|bar|coffee/i,"Alimentação"],[/streaming|digital service|telecom|internet|software|subscription/i,"Assinaturas"],
  [/online shopping|shopping|clothing|electronic|department|retail/i,"Compras"],[/health|pharma|drug|hospital|dental|medic/i,"Saúde"],
  [/gaming|entertainment|leisure|travel|hotel|airline|cinema|sport/i,"Lazer"],[/housing|home|utilities|rent|electric|water/i,"Casa"],[/loan|interest|fee|iof/i,"Empréstimos"]];
-const ofCat=c=>{for(const[re,v]of OF_CAT)if(re.test(c||""))return v;return"Outros"};
+const normalizeMerchant=value=>String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-Z0-9]+/g," ").trim();
+const CATEGORY_WORDS=[[/\b(JOIAS?|SEMI JOIAS?|SEMIJOIAS?|ALIANCAS?|JOALHERIA|BIJUTERIAS?)\b/,"Acessórios"],[/\b(MERCADO ?LIVRE|MERCADOLIVRE|SANTANDER SHOP|AMAZON|SHOPEE|SHEIN|MAGALU|ALIEXPRESS)\b/,"Compras"],[/\b(CLAUDE|ANTHROPIC|CHATGPT|OPENAI|NETFLIX|SPOTIFY|DISNEY|YOUTUBE|ICLOUD|ADOBE|GOOGLE ONE|GOOGLE PLAY)\b/,"Assinaturas"],[/\b(UBER|99APP|99 POP|CABIFY)\b/,"Transporte"],[/\b(SUPERMERCADO|SUPERMERCADOS|ATACADAO|ASSAI|CARREFOUR|HORTIFRUTI)\b/,"Mercado"],[/\b(IF00D|IFOOD|RESTAURANTE|PADARIA|LANCHONETE|PIZZARIA)\b/,"Alimentação"],[/\b(FARMACIA|DROGARIA|DROGASIL|DROGA RAIA)\b/,"Saúde"],[/\b(ACADEMIA|SMART FIT|GYMPASS|WELLHUB)\b/,"Saúde"]];
+function ofCat(category,description){const merchant=normalizeMerchant(description);for(const[re,value]of CATEGORY_WORDS)if(re.test(merchant))return value;
+  if(/houseware|furniture|construction|home|housing|utilities|rent|electric|water/i.test(category||""))return"Casa";
+  if(/education|school|university|course/i.test(category||""))return"Educação";
+  if(/^services?$/i.test(category||""))return"Serviços";
+  for(const[re,value]of OF_CAT)if(re.test(category||""))return value;return"Outros";
+}
 const finKey=(conta,final)=>conta+"|"+final;
 const grpKey=t=>[t.conta_id,t.final,t.data,t.descricao,t.parcelas||1].join("|");
-function impInfo(t){const ed=Object.assign({},(S.impEdits||{})[grpKey(t)]||{},(S.impTxnEdits||{})[t.id]||{}),ru=(S.impRules||{})[t.descricao]||{};
-  return{nome:ed.nome||ru.nome||t.descricao,cat:ed.cat||ru.cat||ofCat(t.categoria),cls:weddingLinkFor(t.id)?"casamento":ed.cls!==undefined?ed.cls:(ru.cls||null),regra:!!S.impRules&&!!S.impRules[t.descricao]}}
+function impInfo(t){const ed=Object.assign({},(S.impEdits||{})[grpKey(t)]||{},(S.impTxnEdits||{})[t.categorySourceId||t.id]||{}),ru=(S.impRules||{})[t.descricao]||{};
+  return{nome:ed.nome||ru.nome||t.descricao,cat:ed.cat||ru.cat||ofCat(t.categoria,t.descricao),cls:weddingLinkFor(t.id)?"casamento":ed.cls!==undefined?ed.cls:(ru.cls||null),regra:!!S.impRules&&!!S.impRules[t.descricao]}}
 window.ofSetCls=async(t,cls)=>{
   if(cls==="casamento"){weddingPurchaseForm(t);return false}
   const wasLinked=!!weddingLinkFor(t.id);if(wasLinked)await writeWeddingLink(t,null);
@@ -1515,18 +1549,42 @@ function impYM(t,cid){const c=card(cid);
   if(t.fatura&&c)return addMonths(t.fatura,(c.due<=c.close)?1:0);
   if(t.fatura)return t.fatura;
   return invoiceYM({card:cid,date:t.data},(t.parcela||1)-1)}
-/* Parcelas futuras que o banco ainda não lançou (ex.: Santander só lança no fechamento) */
+/* Purchase fingerprints include merchant and first invoice cycle. Real postings are never collapsed by this heuristic. */
+function installmentKey(t){return [t.conta_id,t.final,t.data,normalizeMerchant(t.descricao),+t.parcelas||1,t.fatura?addMonths(t.fatura,1-(+t.parcela||1)):'' ].join('|')}
 function ofProject(){
-  const g={};for(const t of OF.imp){if(!t.parcelas||t.parcelas<2||!t.parcela||!t.fatura)continue;
-    const k=[t.conta_id,t.final,t.data,t.parcelas,Math.round(+t.valor)].join("|");(g[k]=g[k]||[]).push(t)}
-  const out=[];
-  for(const k in g){const rows=g[k];if(rows.some(r=>r.ignorada))continue;
-    const last=rows.reduce((a,b)=>b.parcela>a.parcela?b:a);const have=new Set(rows.map(r=>r.parcela));
-    for(let j=last.parcela+1;j<=last.parcelas;j++){if(have.has(j))continue;
-      out.push(Object.assign({},last,{id:"p:"+last.id+":"+j,parcela:j,fatura:addMonths(last.fatura,j-last.parcela),previsto:true,ignorada:false}))}}
-  OF.proj=out;
+  const groups=new Map(),seen=new Set();
+  for(const t of OF.imp){
+    if(seen.has(t.id))continue;seen.add(t.id);
+    if(!t.fatura||!Number.isInteger(+t.parcela)||!Number.isInteger(+t.parcelas)||+t.parcelas<2||+t.parcela<1||+t.parcela>+t.parcelas||!(+t.valor>0))continue;
+    const key=installmentKey(t);if(!groups.has(key))groups.set(key,new Map());const byPart=groups.get(key),part=+t.parcela;if(!byPart.has(part))byPart.set(part,[]);byPart.get(part).push(t);
+  }
+  const out=[],series=new Map();
+  for(const[key,byPart]of groups){
+    const width=Math.max(...[...byPart.values()].map(rows=>rows.length));
+    for(const rows of byPart.values())rows.sort((a,b)=>(+a.valor)-(+b.valor)||String(a.id).localeCompare(String(b.id)));
+    // Equal-looking purchases remain separate lanes, including two charges on the same day.
+    for(let lane=0;lane<width;lane++){
+      const rows=[...byPart.values()].map(values=>values[lane]).filter(Boolean),seriesKey=key+'|lane:'+lane;
+      rows.forEach(t=>t._seriesKey=seriesKey);series.set(seriesKey,rows);
+      if(rows.some(t=>t.ignorada))continue;
+      const last=rows.reduce((a,b)=>+b.parcela>+a.parcela?b:a);
+      for(let part=(+last.parcela)+1;part<=+last.parcelas;part++)out.push({...last,id:'p:'+last.id+':'+part,categorySourceId:last.id,parcela:part,fatura:addMonths(last.fatura,part-(+last.parcela)),previsto:true,ignorada:false,_seriesKey:seriesKey});
+    }
+  }
+  OF.proj=out;OF.series=series;
 }
-const ofAll=()=>OF.imp.concat(OF.proj||[]);
+const ofAll=()=>{const seen=new Set();return OF.imp.concat(OF.proj||[]).filter(t=>{if(seen.has(t.id))return false;seen.add(t.id);return true})};
+importedInstallmentDetails=function(t,cardId,ym){
+  const n=+t.parcelas,k=+t.parcela||1;
+  const rows=ofAll().filter(x=>x._seriesKey&&x._seriesKey===t._seriesKey&&!x.ignorada);
+  let rest=0,estimated=false;
+  for(let part=k+1;part<=n;part++){
+    const row=rows.find(x=>+x.parcela===part);
+    rest+=cents(row?row.valor:t.valor);if(!row||row.previsto)estimated=true;
+  }
+  return{rest:rest/100,estimated,last:addMonths(ym,n-k)};
+};
+
 futureImportedTotal=function(){const fm=finMap();return ofAll().filter(t=>!t.ignorada&&(t.parcelas||1)>1).reduce((sum,t)=>{const f=fm[finKey(t.conta_id,t.final)];return f&&!f.oculto&&f.cartao_app&&card(f.cartao_app)&&impYM(t,f.cartao_app)>view.ym?sum+Math.max(0,Number(t.valor)||0):sum},0)};
 const _entriesFor=entriesFor;
 entriesFor=function(ym){
@@ -1602,7 +1660,7 @@ async function setIgn(id,val){const t=OF.imp.find(x=>x.id===id);if(!t)return fal
   try{
     if(weddingLinkFor(id)){await writeWeddingLink(t,null,val);return true}
     const {data,error}=await sb.from("mc_importadas").update({ignorada:val}).eq("id",id).eq("user_id",sbUser.id).select("id");if(error||!data?.length)throw error||new Error("Compra não atualizada");
-    t.ignorada=val;render();return true;
+    t.ignorada=val;ofProject();render();return true;
   }catch(e){toast(e.message||"Não consegui salvar",false);return false}
 }
 document.addEventListener("click",async e=>{
@@ -1627,6 +1685,29 @@ document.addEventListener("change",async e=>{
   s.disabled=false;
   if(!error&&f.oculto)toastAct(`Final ${final} oculto`,async()=>{Object.assign(f,prev);render();await sb.from("mc_finais").update(prev).eq("conta_id",conta).eq("final",final)});
 });
+function assignCategory(type,id,category,merchantRule=false){
+  if(!CATS.some(([name])=>name===category))return false;
+  if(type==='import'){
+    const transaction=OF.imp.find(t=>t.id===id);if(!transaction)return false;
+    mutate('Categoria: '+category,()=>{
+      S.impTxnEdits=S.impTxnEdits||{};S.impTxnEdits[id]=Object.assign({},S.impTxnEdits[id],{cat:category});
+      if(merchantRule)S.impRules[transaction.descricao]=Object.assign({},S.impRules[transaction.descricao],{cat:category});
+    });return true;
+  }
+  const source=type==='rec'?S.recurring:S.purchases,entry=source.find(item=>item.id===id);if(!entry)return false;
+  mutate('Categoria: '+category,()=>entry.cat=category);return true;
+}
+function categoryForm(type,id){
+  const item=type==='import'?OF.imp.find(t=>t.id===id):type==='rec'?S.recurring.find(t=>t.id===id):S.purchases.find(t=>t.id===id);
+  if(!item){toast('Compra não encontrada. Sincronize e tente novamente.',false);return}
+  const info=type==='import'?impInfo(item):{nome:item.desc||item.name,cat:item.cat||(item.type==='emprestimo'?'Empréstimos':'Outros')};
+  openSheet(`<h3>Categoria da compra</h3><p class="muted">${esc(info.nome)}</p><div class="category-options" role="group" aria-label="Escolher categoria">${CATS.map(([name])=>`<button type="button" class="category-option" data-pick-category="${esc(name)}" aria-pressed="${info.cat===name}"><span class="category-chip" style="background:${CATCOLOR[name]||'#64748B'}14;color:${CATCOLOR[name]||'#64748B'}">${CATICON[name]||iconSvg('receipt')}</span>${esc(name)}</button>`).join('')}</div>
+    ${type==='import'?'<label class="check" style="margin-top:16px"><input id="categoryRule" type="checkbox">Usar também em próximas compras com este nome</label>':''}<div class="foot"><button class="btn plain" id="categoryCancel">Cancelar</button></div>`, '#categoryCancel');
+  $('#categoryCancel').onclick=closeSheet;
+  $('#sheet').querySelectorAll('[data-pick-category]').forEach(button=>button.onclick=()=>{const all=!!$('#categoryRule')?.checked;if(assignCategory(type,id,button.dataset.pickCategory,all))closeSheet()});
+}
+document.addEventListener('click',event=>{const button=event.target.closest('[data-category-id]');if(!button)return;event.preventDefault();event.stopPropagation();categoryForm(button.dataset.categoryType,button.dataset.categoryId)},true);
+
 /* editar compra importada: nome, categoria, tipo, não é minha */
 function impSheet(t){
   const inf=impInfo(t);let cls=inf.cls||"";
@@ -1651,7 +1732,7 @@ function impSheet(t){
   $("#eSave").onclick=save;onKeyEnter=save;
   $("#eIgn").onclick=async()=>{if(await setIgn(t.id,true)){closeSheet();toast("Compra removida dos seus gastos",false)}};
 }
-document.addEventListener("click",e=>{const r=e.target.closest("[data-editp^='i:']");if(!r||e.target.closest("[data-ignimp]"))return;e.stopPropagation();
+document.addEventListener("click",e=>{const r=e.target.closest("[data-editp^='i:']");if(!r||e.target.closest("[data-ignimp],[data-category-id]"))return;e.stopPropagation();
   const t=ofAll().find(x=>"i:"+x.id===r.dataset.editp);if(!t)return;
   if(t.previsto){toast(`Parcela ${t.parcela}/${t.parcelas} prevista — o banco lança quando a fatura fechar`,false);return}
   impSheet(t);
